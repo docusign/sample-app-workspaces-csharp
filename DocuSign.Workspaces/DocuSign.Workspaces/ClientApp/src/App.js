@@ -70,8 +70,7 @@ function App() {
     <div className="home">
       <header className="home-hero">
         <div className="home-hero__overlay" />
-        <div className="home-hero__content">
-          <div className="nav">
+        <div className="nav">
             <div className="nav__brand">
               <img className="nav__logo" src="/signsphere-logo.png" alt="Signsphere" />
             </div>
@@ -95,8 +94,10 @@ function App() {
               )}
             </div>
           </div>
+        <div className="home-hero__content">
 
           <div className="home-hero__grid">
+            <div className="home-hero__elipse"></div>
             <div className="home-hero__copy">
               <h1 className="home_title">Welcome to the Workspaces Sample App</h1>
               <p className="home-hero__subtext">
