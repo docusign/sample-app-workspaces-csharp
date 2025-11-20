@@ -81,15 +81,18 @@ body::before {
     padding: 12px clamp(16px, 4vw, 48px);
     margin: 0;
     background: #6e47cc;
-    position: absolute;
-    top: 0;
-    left: 50%;
-    transform: translateX(-50%);
-    width: 100%;
-    /* width: min(1440px, 100%); */
+    border-radius: 0 0 32px 32px;
+    position: relative; 
+    width: min(1440px, 100%);
+     margin: 0 auto;       
     box-shadow: 0 14px 30px rgba(0, 0, 0, 0.12);
     z-index: 2;
 }
+
+.nav__cta:hover {
+        color:#6e47cc;
+        background-color: aliceblue;
+    }
 
 .nav__brand {
     display: flex;
@@ -431,6 +434,7 @@ body::before {
 @media (max-width: 1320px) {
     .nav {
         width: calc(100% - 24px);
+         padding: 12px 1.75rem;
     }
 
     .home-hero__content {
@@ -453,6 +457,18 @@ body::before {
         flex-direction: column;
         align-items: flex-start;
         gap: 24px;
+    }
+    .nav {
+         padding: 12px 0.95rem;
+    }
+    .nav__link {
+        gap: 5px;
+        text-align: center;
+        font-size: 18px;
+    }
+
+    .nav__cta {
+        font-size: 16px;
     }
 
     .footer__actions {
@@ -540,11 +556,12 @@ body::before {
         left: 0;
         width:'100%';
         transform: none;
+        padding: 16px;
     }
 
     .nav__toggle {
          display: block;
-        right: 70px;
+        right: 30px;
     }
 
     .nav__links {
@@ -566,6 +583,7 @@ body::before {
     .nav__link {
         padding: 1rem 2rem;
         text-align: center;
+        /* font-size: 8px; */
     }
 
     .nav--open .nav__actions {
@@ -588,7 +606,7 @@ body::before {
         flex-direction: row;
         align-items: center;
         padding: 16px;
-        gap: 8px;
+        /* gap: 8px; */
     }
 
 
@@ -612,9 +630,9 @@ body::before {
     }
 
     .nav__actions {
-        position: absolute  ;
-        align-self: end;
-        padding-right: 1rem;
+        /* position: absolute  ;
+        align-self: end; */
+        margin-left: 2rem;
     }
 
     .home-hero__copy h1 {
