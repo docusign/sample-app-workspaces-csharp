@@ -11,6 +11,7 @@ const API_BASE = 'https://localhost:5001';
 function App() {
   const [accountStatus, setAccountStatus] = useState(null);
   const [isLoginOpen, setIsLoginOpen] = useState(false);
+  const [isNavOpen, setIsNavOpen] = useState(false);
 
   const getCookie = (name) => {
     const match = document.cookie.match(new RegExp('(^| )' + name + '=([^;]+)'));
@@ -69,31 +70,46 @@ function App() {
   return (
     <div className="home">
       <header className="home-hero">
-        <div className="home-hero__overlay" />
-        <div className="nav">
-            <div className="nav__brand">
-              <img className="nav__logo" src="/signsphere-logo.png" alt="Signsphere" />
-            </div>
-            <nav className="nav__links">
-              <button className="nav__link" type="button">
-                Workspaces API <span className="nav__arrow">›</span>
-              </button>
-              <button className="nav__link" type="button">
-                Github Source <span className="nav__arrow">›</span>
-              </button>
-            </nav>
-            <div className="nav__actions">
-              {accountStatus?.isConnected ? (
-                <button className="pill pill--light nav__cta" type="button" onClick={logout}>
-                  Log out
-                </button>
-              ) : (
-                <button className="pill pill--light nav__cta" type="button" onClick={openLoginModal}>
-                  Login
-                </button>
-              )}
-            </div>
+        <div className={`nav__overlay ${isNavOpen ? 'nav__overlay--open' : ''}`} onClick={() => setIsNavOpen(false)} />
+        <div className={`nav ${isNavOpen ? 'nav--open' : ''}`}>
+          <div className="nav__brand">
+            <img className="nav__logo" src="/signsphere-logo.png" alt="Signsphere" />
           </div>
+          <button className="nav__toggle" type="button" onClick={() => setIsNavOpen(!isNavOpen)}>
+            <span />
+            <span />
+            <span />
+          </button>
+          <nav className={`nav__links ${isNavOpen ? 'nav__links--open' : ''}`}>
+            <button
+              className="nav__link"
+              // href="https://developers.docusign.com/docs/workspaces-api/"
+              target="_blank"
+              rel="noreferrer"
+            >
+              Workspaces API <span className="nav__arrow">›</span>
+            </button>
+            <button
+              className="nav__link"
+              // href="https://github.com/docusign/code-examples-csharp/tree/master/Workspaces"
+              target="_blank"
+              rel="noreferrer"
+            >
+              Github Source <span className="nav__arrow">›</span>
+            </button>
+            <div className="nav__actions">
+            {accountStatus?.isConnected ? (
+              <button className="pill pill--light nav__cta" type="button" onClick={logout}>
+                Log out
+              </button>
+            ) : (
+              <button className="pill pill--light nav__cta" type="button" onClick={openLoginModal}>
+                Login
+              </button>
+            )}
+          </div>
+          </nav>
+        </div>
         <div className="home-hero__content">
 
           <div className="home-hero__grid">
