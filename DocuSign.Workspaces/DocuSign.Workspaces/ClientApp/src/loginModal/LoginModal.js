@@ -1,5 +1,6 @@
 import React, { useEffect, useMemo, useState } from 'react';
-import './LoginModal.css';
+import { useTranslation } from 'react-i18next';
+import './LoginModal.scss';
 
 function LoginModal({
   isOpen,
@@ -12,6 +13,7 @@ function LoginModal({
   resumeAuthStep,
   onClearAuthStep,
 }) {
+  const { t } = useTranslation();
   const defaultEnv = useMemo(() => environments?.[0]?.url || '', [environments]);
 
   const [modalStage, setModalStage] = useState('choice'); // choice | step | profile
@@ -60,8 +62,11 @@ function LoginModal({
     ...statusJson,
     connectedUser: statusJson.connectedUser || statusJson.ConnectedUser || {},
     isConsentGranted:
-      typeof statusJson.isConsentGranted === 'boolean' ? statusJson.isConsentGranted : statusJson.IsConsentGranted,
-    isConnected: typeof statusJson.isConnected === 'boolean' ? statusJson.isConnected : statusJson.IsConnected,
+      typeof statusJson.isConsentGranted === 'boolean'
+        ? statusJson.isConsentGranted
+        : statusJson.IsConsentGranted,
+    isConnected:
+      typeof statusJson.isConnected === 'boolean' ? statusJson.isConnected : statusJson.IsConnected,
   });
 
   const normalizeSettings = (settingsJson) => ({
@@ -101,12 +106,17 @@ function LoginModal({
       userId: normalizedSettings.userId || normalizedSettings.UserId || prev.userId,
     }));
     setProfileForm({
-      fullName: normalizedSettings.userProfile?.fullName || normalizedSettings.userProfile?.FullName || '',
+      fullName:
+        normalizedSettings.userProfile?.fullName || normalizedSettings.userProfile?.FullName || '',
       email: normalizedSettings.userProfile?.email || normalizedSettings.userProfile?.Email || '',
       countryCode:
-        normalizedSettings.userProfile?.countryCode || normalizedSettings.userProfile?.CountryCode || '',
+        normalizedSettings.userProfile?.countryCode ||
+        normalizedSettings.userProfile?.CountryCode ||
+        '',
       phoneNumber:
-        normalizedSettings.userProfile?.phoneNumber || normalizedSettings.userProfile?.PhoneNumber || '',
+        normalizedSettings.userProfile?.phoneNumber ||
+        normalizedSettings.userProfile?.PhoneNumber ||
+        '',
     });
 
     return { status: normalizedStatus, settings: normalizedSettings };
@@ -182,7 +192,9 @@ function LoginModal({
       const basePath = overrideBasePath || acgForm.basePath;
       const userId = overrideUserId || acgForm.userId;
       const query = new URLSearchParams({ basePath, userId });
-      const response = await fetch(`${apiBase}/api/accounts?${query.toString()}`, { credentials: 'include' });
+      const response = await fetch(`${apiBase}/api/accounts?${query.toString()}`, {
+        credentials: 'include',
+      });
       if (!response.ok) {
         const message = await response.text();
         throw new Error(message || 'Unable to load accounts.');
@@ -288,7 +300,12 @@ function LoginModal({
   };
 
   useEffect(() => {
-    if (isOpen && modalStage === 'step' && selectedAuth === 'acg' && accountStatus?.isConsentGranted) {
+    if (
+      isOpen &&
+      modalStage === 'step' &&
+      selectedAuth === 'acg' &&
+      accountStatus?.isConsentGranted
+    ) {
       (async () => {
         const result = await fetchStatusAndSettings();
         const consented = result?.status?.isConsentGranted || accountStatus?.isConsentGranted;
@@ -311,37 +328,52 @@ function LoginModal({
       <div className="auth-modal">
         <div className="auth-modal__header">
           <div>
-            <p className="auth-modal__eyebrow">Authentication</p>
+            <p className="auth-modal__eyebrow">{t('Authentication')}</p>
             <h2>
               {modalStage === 'choice'
-                ? 'Choose how to log in'
+                ? t('ChooseHowToLogIn')
                 : modalStage === 'profile'
-                ? 'Step 3: Customer profile'
-                : selectedAuth === 'acg' && accountStatus?.isConsentGranted
-                ? 'Step 2: Connect account'
-                : 'Step 1: Start authorization'}
+                  ? t('Step3')
+                  : selectedAuth === 'acg' && accountStatus?.isConsentGranted
+                    ? t('Step2')
+                    : t('Step1')}
             </h2>
           </div>
-          <button className="auth-modal__close" type="button" onClick={onClose} aria-label="Close">
+          <button
+            className="auth-modal__close"
+            type="button"
+            onClick={onClose}
+            aria-label={t('Close')}
+          >
             ×
           </button>
         </div>
 
         {modalStage === 'choice' && (
           <>
-            <p>Select the authentication path you used in the legacy admin page.</p>
+            <p>{t('SelectAuthPath')}</p>
             <div className="auth-modal__options">
-              <button className="auth-option" type="button" onClick={() => { setSelectedAuth('acg'); setModalStage('step'); }}>
-                <span className="auth-option__title">Connect your DocuSign Account</span>
-                <span className="auth-option__description">
-                  Agreement Cloud Gateway (user account) authorization.
-                </span>
+              <button
+                className="auth-option"
+                type="button"
+                onClick={() => {
+                  setSelectedAuth('acg');
+                  setModalStage('step');
+                }}
+              >
+                <span className="auth-option__title">{t('ConnectDocuSignAccount')}</span>
+                <span className="auth-option__description">{t('ACGDescription')}</span>
               </button>
-              <button className="auth-option" type="button" onClick={() => { setSelectedAuth('jwt'); setModalStage('step'); }}>
-                <span className="auth-option__title">Log in with a test account</span>
-                <span className="auth-option__description">
-                  JWT / test account sign-in from the previous client.
-                </span>
+              <button
+                className="auth-option"
+                type="button"
+                onClick={() => {
+                  setSelectedAuth('jwt');
+                  setModalStage('step');
+                }}
+              >
+                <span className="auth-option__title">{t('LoginWithTestAccount')}</span>
+                <span className="auth-option__description">{t('JWTDescription')}</span>
               </button>
             </div>
           </>
@@ -351,12 +383,10 @@ function LoginModal({
           <div className="auth-step">
             {accountStatus?.isConsentGranted ? (
               <>
-                <p className="auth-step__intro">
-                  Consent granted. Load accounts with your user ID, then connect like the legacy admin step 2.
-                </p>
+                <p className="auth-step__intro">{t('ConsentGranted')}</p>
                 <div className="profile-form">
                   <label>
-                    <span>Base path</span>
+                    <span>{t('BasePath')}</span>
                     <input
                       type="text"
                       value={acgForm.basePath}
@@ -364,7 +394,7 @@ function LoginModal({
                     />
                   </label>
                   <label>
-                    <span>User ID</span>
+                    <span>{t('UserID')}</span>
                     <input
                       type="text"
                       value={acgForm.userId}
@@ -372,32 +402,46 @@ function LoginModal({
                     />
                   </label>
                   <div className="auth-step__actions single">
-                    <button className="secondary-btn" type="button" onClick={loadAccounts} disabled={accountsLoading}>
-                      {accountsLoading ? 'Loading...' : 'Load accounts'}
+                    <button
+                      className="secondary-btn"
+                      type="button"
+                      onClick={loadAccounts}
+                      disabled={accountsLoading}
+                    >
+                      {accountsLoading ? t('Loading') : t('LoadAccounts')}
                     </button>
                   </div>
                   {accounts.length > 0 && (
                     <>
                       <label>
-                        <span>Account</span>
+                        <span>{t('Account')}</span>
                         <select
                           value={acgForm.accountId}
                           onChange={(e) => {
-                            const selected = accounts.find((a) => (a.accountId || a.AccountId) === e.target.value);
+                            const selected = accounts.find(
+                              (a) => (a.accountId || a.AccountId) === e.target.value
+                            );
                             handleAcgFormChange('accountId', e.target.value);
-                            handleAcgFormChange('baseUri', selected?.baseUri || selected?.BaseUri || '');
+                            handleAcgFormChange(
+                              'baseUri',
+                              selected?.baseUri || selected?.BaseUri || ''
+                            );
                           }}
                         >
-                          <option value="">Select an account</option>
+                          <option value="">{t('SelectAnAccount')}</option>
                           {accounts.map((acct) => (
-                            <option key={acct.accountId || acct.AccountId} value={acct.accountId || acct.AccountId}>
-                              {(acct.accountName || acct.AccountName) ?? (acct.accountId || acct.AccountId)}
+                            <option
+                              key={acct.accountId || acct.AccountId}
+                              value={acct.accountId || acct.AccountId}
+                            >
+                              {(acct.accountName || acct.AccountName) ??
+                                (acct.accountId || acct.AccountId)}
                             </option>
                           ))}
                         </select>
                       </label>
                       <label>
-                        <span>Base URI</span>
+                        <span>{t('BaseURI')}</span>
                         <input
                           type="text"
                           value={acgForm.baseUri}
@@ -408,24 +452,29 @@ function LoginModal({
                   )}
                 </div>
                 <div className="auth-step__actions">
-                  <button className="secondary-btn" type="button" onClick={fetchStatusAndSettings} disabled={isLoading}>
-                    Refresh status
+                  <button
+                    className="secondary-btn"
+                    type="button"
+                    onClick={fetchStatusAndSettings}
+                    disabled={isLoading}
+                  >
+                    {t('RefreshStatus')}
                   </button>
                   <button
                     className="primary-btn"
                     type="button"
-                    disabled={isLoading || !acgForm.accountId || !acgForm.baseUri || !acgForm.userId}
+                    disabled={
+                      isLoading || !acgForm.accountId || !acgForm.baseUri || !acgForm.userId
+                    }
                     onClick={connectUserAccount}
                   >
-                    {isLoading ? 'Connecting...' : 'Connect account'}
+                    {isLoading ? t('Connecting') : t('ConnectAccount')}
                   </button>
                 </div>
               </>
             ) : (
               <>
-                <p className="auth-step__intro">
-                  Pick your DocuSign environment, then request consent just like the legacy admin step 1.
-                </p>
+                <p className="auth-step__intro">{t('PickEnvironment')}</p>
                 <div className="environment-picker">
                   {environments.map((env) => (
                     <label key={env.key} className="environment-option">
@@ -451,7 +500,7 @@ function LoginModal({
                     disabled={isLoading}
                     onClick={() => requestConsent('Individual')}
                   >
-                    {isLoading ? 'Starting...' : 'Grant user consent'}
+                    {isLoading ? t('Connecting') : t('GrantUserConsent')}
                   </button>
                   <button
                     className="primary-btn"
@@ -459,7 +508,7 @@ function LoginModal({
                     disabled={isLoading}
                     onClick={() => requestConsent('Admin')}
                   >
-                    {isLoading ? 'Starting...' : 'Grant admin consent'}
+                    {isLoading ? t('Connecting') : t('GrantAdminConsent')}
                   </button>
                 </div>
               </>
@@ -469,12 +518,15 @@ function LoginModal({
 
         {modalStage === 'step' && selectedAuth === 'jwt' && (
           <div className="auth-step">
-            <p className="auth-step__intro">
-              Continue with the JWT / test account flow from the legacy admin page.
-            </p>
+            <p className="auth-step__intro">{t('ContinueWithJWT')}</p>
             <div className="auth-step__actions single">
-              <button className="primary-btn" type="button" disabled={isLoading} onClick={connectTestAccount}>
-                {isLoading ? 'Connecting...' : 'Connect test account'}
+              <button
+                className="primary-btn"
+                type="button"
+                disabled={isLoading}
+                onClick={connectTestAccount}
+              >
+                {isLoading ? t('Connecting') : t('ConnectTestAccount')}
               </button>
             </div>
           </div>
@@ -482,28 +534,32 @@ function LoginModal({
 
         {modalStage === 'profile' && (
           <div className="auth-step">
-            <p className="auth-step__intro">
-              Connected. Review the customer profile details from the legacy admin step and save any updates.
-            </p>
+            <p className="auth-step__intro">{t('Connected')}</p>
             {accountStatus && (
               <div className="connected-summary">
                 <div>
-                  <span className="summary-label">User</span>
-                  <span className="summary-value">{accountStatus.connectedUser?.name || 'Unknown'}</span>
+                  <span className="summary-label">{t('User')}</span>
+                  <span className="summary-value">
+                    {accountStatus.connectedUser?.name || t('Unknown')}
+                  </span>
                 </div>
                 <div>
-                  <span className="summary-label">Email</span>
-                  <span className="summary-value">{accountStatus.connectedUser?.email || 'Unknown'}</span>
+                  <span className="summary-label">{t('Email')}</span>
+                  <span className="summary-value">
+                    {accountStatus.connectedUser?.email || t('Unknown')}
+                  </span>
                 </div>
                 <div>
-                  <span className="summary-label">Account</span>
-                  <span className="summary-value">{accountStatus.connectedUser?.accountName || 'Unknown'}</span>
+                  <span className="summary-label">{t('Account')}</span>
+                  <span className="summary-value">
+                    {accountStatus.connectedUser?.accountName || t('Unknown')}
+                  </span>
                 </div>
               </div>
             )}
             <div className="profile-form">
               <label>
-                <span>Full name</span>
+                <span>{t('FullName')}</span>
                 <input
                   type="text"
                   value={profileForm.fullName}
@@ -511,7 +567,7 @@ function LoginModal({
                 />
               </label>
               <label>
-                <span>Email</span>
+                <span>{t('Email')}</span>
                 <input
                   type="email"
                   value={profileForm.email}
@@ -520,7 +576,7 @@ function LoginModal({
               </label>
               <div className="profile-form__row">
                 <label>
-                  <span>Country code</span>
+                  <span>{t('CountryCode')}</span>
                   <input
                     type="text"
                     value={profileForm.countryCode}
@@ -528,7 +584,7 @@ function LoginModal({
                   />
                 </label>
                 <label>
-                  <span>Phone number</span>
+                  <span>{t('PhoneNumber')}</span>
                   <input
                     type="text"
                     value={profileForm.phoneNumber}
@@ -539,13 +595,18 @@ function LoginModal({
             </div>
             <div className="auth-step__actions">
               <button className="secondary-btn" type="button" onClick={onClose} disabled={saving}>
-                Close
+                {t('Close')}
               </button>
               <button className="secondary-btn" type="button" onClick={onLogout} disabled={saving}>
-                Log out
+                {t('Logout')}
               </button>
-              <button className="primary-btn" type="button" onClick={saveSettings} disabled={saving}>
-                {saving ? 'Saving...' : 'Save settings'}
+              <button
+                className="primary-btn"
+                type="button"
+                onClick={saveSettings}
+                disabled={saving}
+              >
+                {saving ? t('Saving') : t('SaveSettings')}
               </button>
             </div>
           </div>
