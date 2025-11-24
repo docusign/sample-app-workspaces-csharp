@@ -1,0 +1,34 @@
+@font-face {
+  font-family: 'Inter';
+  src: 
+  // url('./assets/fonts/Inter-Italic-VariableFont_opsz\,wght.ttf') format('ttf'),
+    url('./assets/fonts/Inter-VariableFont_opsz\,wght.ttf') format('ttf');
+  font-weight: 400;
+  font-style: normal;
+}
+
+body {
+  margin: 0;
+  font-family:
+    -apple-system,
+    BlinkMacSystemFont,
+    'Segoe UI',
+    'Roboto',
+    'Oxygen',
+    'Inter' 'Ubuntu',
+    'Cantarell',
+    'Fira Sans',
+    'Droid Sans',
+    'Helvetica Neue',
+    sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+code {
+  font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New', monospace;
+}
+
+.content-section {
+  color: #333;
+}
