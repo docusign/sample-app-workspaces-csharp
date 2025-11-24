@@ -1,6 +1,6 @@
 ﻿using DocuSign.Workspaces.Controllers.Common.Models;
 
-namespace DocuSign.Workspaces.Controllers.TermsAndConditions.Model
+namespace DocuSign.Workspaces.Controllers.TermsAndConditions.Models
 {
     public class RequestTermsAndConditionsWithContractEnvelopeModel
     {

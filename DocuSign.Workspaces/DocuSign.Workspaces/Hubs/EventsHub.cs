@@ -1,6 +1,6 @@
-﻿using DocuSign.Workspaces.Infrustructure.Services.Interfaces;
-using Microsoft.AspNetCore.SignalR;
+﻿using Microsoft.AspNetCore.SignalR;
 using System.Threading.Tasks;
+using DocuSign.Workspaces.Infrastructure.Services.Interfaces;
 
 namespace DocuSign.Workspaces.Hubs
 {

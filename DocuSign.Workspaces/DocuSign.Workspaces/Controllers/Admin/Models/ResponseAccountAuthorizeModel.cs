@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace DocuSign.Workspaces.Controllers.Admin.Model
+﻿namespace DocuSign.Workspaces.Controllers.Admin.Models
 {
     public class ResponseAccountAuthorizeModel
     {

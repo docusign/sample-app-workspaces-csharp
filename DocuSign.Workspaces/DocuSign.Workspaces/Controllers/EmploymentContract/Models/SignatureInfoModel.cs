@@ -1,4 +1,4 @@
-﻿namespace DocuSign.Workspaces.Controllers.EmploymentContract.Model
+﻿namespace DocuSign.Workspaces.Controllers.EmploymentContract.Models
 {
     public class SignatureInfoModel
     {

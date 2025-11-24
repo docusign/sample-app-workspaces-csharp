@@ -1,11 +1,11 @@
-﻿using DocuSign.Workspaces.Controllers.Events.Model;
-using DocuSign.Workspaces.Hubs;
-using DocuSign.Workspaces.Infrustructure.Model;
-using DocuSign.Workspaces.Infrustructure.Services.Interfaces;
+﻿using DocuSign.Workspaces.Hubs;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.SignalR;
 using System.Linq;
 using System.Threading.Tasks;
+using DocuSign.Workspaces.Controllers.Events.Models;
+using DocuSign.Workspaces.Infrastructure.Models;
+using DocuSign.Workspaces.Infrastructure.Services.Interfaces;
 
 namespace DocuSign.Workspaces.Controllers.Events
 {

@@ -1,9 +1,9 @@
 ﻿using DocuSign.Workspaces.Controllers.Common.Models;
-using DocuSign.Workspaces.Controllers.CustomQuote.Model;
+using DocuSign.Workspaces.Controllers.CustomQuote.Models;
 using DocuSign.Workspaces.Domain.Common.Models;
 using DocuSign.Workspaces.Domain.CustomerProfile.Services.Interfaces;
 using DocuSign.Workspaces.Domain.CustomQuote.Services.Interfaces;
-using DocuSign.Workspaces.Infrustructure.Services.Interfaces;
+using DocuSign.Workspaces.Infrastructure.Services.Interfaces;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 

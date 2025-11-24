@@ -8,8 +8,8 @@ using DocuSign.eSign.Model;
 using DocuSign.Workspaces.Controllers.Common.Models;
 using DocuSign.Workspaces.Domain.Common.Models;
 using DocuSign.Workspaces.Domain.CustomQuote.Services.Interfaces;
-using DocuSign.Workspaces.Infrustructure.Model;
-using DocuSign.Workspaces.Infrustructure.Services.Interfaces;
+using DocuSign.Workspaces.Infrastructure.Models;
+using DocuSign.Workspaces.Infrastructure.Services.Interfaces;
 using Newtonsoft.Json;
 
 namespace DocuSign.Workspaces.Domain.CustomQuote.Services

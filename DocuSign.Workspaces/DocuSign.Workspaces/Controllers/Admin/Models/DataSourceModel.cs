@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
-using DocuSign.Workspaces.Infrustructure.Model;
+using DocuSign.Workspaces.Infrastructure.Models;
 
-namespace DocuSign.Workspaces.Controllers.Admin.Model
+namespace DocuSign.Workspaces.Controllers.Admin.Models
 {
     public class DataSourceModel
     {

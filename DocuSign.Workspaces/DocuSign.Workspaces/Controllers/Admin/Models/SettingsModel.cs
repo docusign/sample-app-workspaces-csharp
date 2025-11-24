@@ -1,8 +1,6 @@
-﻿using DocuSign.eSign.Model;
-using DocuSign.Workspaces.Domain.Admin.Models;
-using System.Collections.Generic;
+﻿using DocuSign.Workspaces.Domain.Admin.Models;
 
-namespace DocuSign.Workspaces.Controllers.Admin.Model
+namespace DocuSign.Workspaces.Controllers.Admin.Models
 {
     public class SettingsModel
     {

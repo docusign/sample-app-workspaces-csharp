@@ -1,8 +1,8 @@
-﻿using DocuSign.Workspaces.Infrustructure.Extensions;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
+using DocuSign.Workspaces.Infrastructure.Extensions;
 
 namespace DocuSign.Workspaces.Controllers.Common.Models
 {

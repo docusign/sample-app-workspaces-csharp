@@ -1,9 +1,9 @@
 ﻿using DocuSign.Workspaces.Controllers.Common.Models;
-using DocuSign.Workspaces.Controllers.TermsAndConditions.Model;
+using DocuSign.Workspaces.Controllers.TermsAndConditions.Models;
 using DocuSign.Workspaces.Domain.Common.Models;
 using DocuSign.Workspaces.Domain.TermsAndConditions.Models;
 using DocuSign.Workspaces.Domain.TermsAndConditions.Services.Interfaces;
-using DocuSign.Workspaces.Infrustructure.Services.Interfaces;
+using DocuSign.Workspaces.Infrastructure.Services.Interfaces;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 

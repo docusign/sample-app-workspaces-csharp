@@ -1,4 +1,4 @@
-﻿namespace DocuSign.Workspaces.Controllers.TermsAndConditions.Model
+﻿namespace DocuSign.Workspaces.Controllers.TermsAndConditions.Models
 {
     public class CarbonCopyInfoModel
     {
