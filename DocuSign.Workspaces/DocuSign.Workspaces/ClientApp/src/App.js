@@ -68,8 +68,8 @@ function App() {
 
   return (
     <div className="home">
-      <header className="home-hero">
-        <div className="home-hero__overlay" />
+      <header className="home">
+        <div className="home__overlay" />
         <div className="nav">
             <div className="nav__brand">
               <img className="nav__logo" src="/signsphere-logo.png" alt="Signsphere" />
@@ -94,13 +94,13 @@ function App() {
               )}
             </div>
           </div>
-        <div className="home-hero__content">
+        <div className="home__content">
 
-          <div className="home-hero__grid">
-            <div className="home-hero__elipse"></div>
-            <div className="home-hero__copy">
+          <div className="home__grid">
+            <div className="home__elipse"></div>
+            <div className="home__copy">
               <h1 className="home_title">Welcome to the Workspaces Sample App</h1>
-              <p className="home-hero__subtext">
+              <p className="home__subtext">
                 Explore how organizations use Workspaces to manage, share, and approve critical documents across teams
                 and clients
               </p>

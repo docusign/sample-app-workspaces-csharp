@@ -28,7 +28,7 @@ body::before {
     flex-direction: column;
 }
 
-.home-hero {
+.home {
     position: relative;
     color: #fff;
     padding: 0 0 4rem;
@@ -48,7 +48,7 @@ body::before {
     margin: 0;
 }
 
-.home-hero__content {
+.home__content {
     position: relative;
     z-index: 1;
     margin: 0 auto;
@@ -126,21 +126,21 @@ body::before {
     letter-spacing: -0.01em;
 }
 
-.home-hero__grid {
+.home__grid {
     display: flex;
     flex-direction: column;
     gap: 2rem;
     align-items: flex-start;
 }
 
-.home-hero__copy h1 {
+.home__copy h1 {
     max-width: 65%;
     font-size: clamp(2.3rem, 4vw, 4rem);
     line-height: 1.1;
     margin: 4rem 0 1rem;
 }
 
-.home-hero__elipse {
+.home__elipse {
    
     position: absolute;
     width: 1545px;
@@ -153,7 +153,7 @@ body::before {
     z-index: -1;
 }
 
-.home-hero__eyebrow {
+.home__eyebrow {
     text-transform: uppercase;
     letter-spacing: 0.12em;
     font-weight: 700;
@@ -161,7 +161,7 @@ body::before {
     margin: 0 0 0.4rem;
 }
 
-.home-hero__subtext {
+.home__subtext {
     width: 585px;
     height: 64px;
     font-family: 'Inter';
@@ -178,7 +178,7 @@ body::before {
 
 }
 
-.home-hero__cta {
+.home__cta {
     display: flex;
     gap: 0.75rem;
     margin-top: 1.5rem;
@@ -424,7 +424,7 @@ body::before {
         width: calc(100% - 24px);
     }
 
-    .home-hero__content {
+    .home__content {
         padding: 80px 1.75rem 0;
     }
 
@@ -440,19 +440,19 @@ body::before {
 }
 
 @media (max-width: 900px) {
-    .home-hero__grid {
+    .home__grid {
         grid-template-columns: 1fr;
     }
 
-    .home-hero__content {
+    .home__content {
         padding: 80px 3rem 0;
     }
 
-    .home-hero__copy h1 {
+    .home__copy h1 {
         font-size: clamp(2rem, 6vw, 2.6rem);
     }
 
-    .home-hero__subtext {
+    .home__subtext {
         width: 100%;
         font-size: 18px;
     }
@@ -525,12 +525,12 @@ body::before {
         padding-right: 1rem;
     }
 
-    .home-hero__copy h1 {
+    .home__copy h1 {
         padding-top: 2.5rem;
         max-width: 100%;
     }
 
-    .home-hero__copy h1 {
+    .home__copy h1 {
         font-size: 2rem;
         margin-top: 2rem;
     }
