@@ -1,5 +1,5 @@
 import { useEffect, useMemo, useRef, useState } from 'react';
-import './LoginModal.css';
+import './LoginModal.scss';
 
 function LoginModal({
     isOpen,
