@@ -89,6 +89,23 @@
   color: rgba(6, 26, 47, 0.75);
 }
 
+.auth-modal__options--radio .auth-option {
+  display: flex;
+  gap: 0.85rem;
+  align-items: flex-start;
+}
+
+.auth-option--radio input {
+  margin-top: 0.3rem;
+  flex-shrink: 0;
+  accent-color: #1c79c0;
+}
+
+.auth-option--selected {
+  border-color: #1c79c0;
+  background: #eaf4fd;
+}
+
 .environment-picker {
   display: grid;
   gap: 0.75rem;

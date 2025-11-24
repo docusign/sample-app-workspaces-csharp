@@ -1,7 +1,7 @@
 ﻿using DocuSign.Workspaces.Controllers.Common.Models;
 using DocuSign.Workspaces.Domain.EmploymentContract.Models;
 
-namespace DocuSign.Workspaces.Controllers.EmploymentContract.Model
+namespace DocuSign.Workspaces.Controllers.EmploymentContract.Models
 {
     public class RequestEmploymentContractEnvelopeModel
     {

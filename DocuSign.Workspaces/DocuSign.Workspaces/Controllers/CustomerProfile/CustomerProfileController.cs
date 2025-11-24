@@ -3,14 +3,14 @@ using Microsoft.AspNetCore.Mvc;
 using System.Linq.Expressions;
 using System;
 using System.Security.Authentication;
-using DocuSign.Workspaces.Infrustructure.Services.Interfaces;
-using DocuSign.Workspaces.Infrustructure.Model;
 using DocuSign.Workspaces.Domain.Common.Models;
 using DocuSign.Workspaces.Domain.CustomerProfile.Models;
 using DocuSign.Workspaces.Domain.Admin.Services.Interfaces;
 using DocuSign.Workspaces.Domain.CustomerProfile.Services.Interfaces;
-using DocuSign.Workspaces.Controllers.CustomerProfile.Model;
 using DocuSign.Workspaces.Controllers.Common.Models;
+using DocuSign.Workspaces.Controllers.CustomerProfile.Models;
+using DocuSign.Workspaces.Infrastructure.Models;
+using DocuSign.Workspaces.Infrastructure.Services.Interfaces;
 
 namespace DocuSign.Workspaces.Controllers.CustomerProfile
 {

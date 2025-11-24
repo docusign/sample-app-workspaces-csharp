@@ -10,10 +10,11 @@ using DocuSign.Workspaces.Domain.EmploymentContract.Services;
 using DocuSign.Workspaces.Domain.EmploymentContract.Services.Interfaces;
 using DocuSign.Workspaces.Domain.TermsAndConditions.Services;
 using DocuSign.Workspaces.Domain.TermsAndConditions.Services.Interfaces;
+using DocuSign.Workspaces.Domain.Workspaces;
 using DocuSign.Workspaces.Hubs;
-using DocuSign.Workspaces.Infrustructure.Extensions;
-using DocuSign.Workspaces.Infrustructure.Services;
-using DocuSign.Workspaces.Infrustructure.Services.Interfaces;
+using DocuSign.Workspaces.Infrastructure.Extensions;
+using DocuSign.Workspaces.Infrastructure.Services;
+using DocuSign.Workspaces.Infrastructure.Services.Interfaces;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -56,6 +57,8 @@ namespace DocuSign.Workspaces
 
             services.AddScoped<ICustomQuoteEnvelopeService, CustomQuoteEnvelopeService>();
             services.AddScoped<ICustomQuoteEnvelopeBuilder, CustomQuoteEnvelopeBuilder>();
+
+            services.AddScoped<IWorkspacesService, WorkspacesService>();
 
 
 

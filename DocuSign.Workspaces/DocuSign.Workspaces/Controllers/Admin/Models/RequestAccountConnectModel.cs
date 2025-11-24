@@ -1,7 +1,6 @@
-﻿using System;
-using DocuSign.Workspaces.Domain.Admin.Models;
+﻿using DocuSign.Workspaces.Domain.Admin.Models;
 
-namespace DocuSign.Workspaces.Controllers.Admin.Model
+namespace DocuSign.Workspaces.Controllers.Admin.Models
 {
     public class RequestAccountConnectModel
     {
