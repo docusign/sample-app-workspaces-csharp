@@ -8,17 +8,13 @@ function LoginModal({
     currentStatus,
     onStatusChange,
     onClose,
-    onLogout,
     resumeAuthStep,
     onClearAuthStep,
 }) {
     const defaultEnv = useMemo(() => environments?.[0]?.url || '', [environments]);
 
-    const [modalStage, setModalStage] = useState('choice'); // choice | step | profile
     const [selectedAuth, setSelectedAuth] = useState('acg'); // acg | jwt
-    const [environment, setEnvironment] = useState(defaultEnv);
     const [isLoading, setIsLoading] = useState(false);
-    const [saving, setSaving] = useState(false);
     const [error, setError] = useState('');
     const [accountStatus, setAccountStatus] = useState(currentStatus);
     const [settings, setSettings] = useState(null);
@@ -27,14 +23,6 @@ function LoginModal({
         baseUri: '',
         accountId: '',
         userId: '',
-    });
-    const [accounts, setAccounts] = useState([]);
-    const [accountsLoading, setAccountsLoading] = useState(false);
-    const [profileForm, setProfileForm] = useState({
-        fullName: '',
-        email: '',
-        countryCode: '',
-        phoneNumber: '',
     });
 
     const autoConnectTriggered = useRef(false);
@@ -46,17 +34,15 @@ function LoginModal({
             setAccountStatus(currentStatus);
             if (currentStatus?.basePath) {
                 setAcgForm((prev) => ({ ...prev, basePath: currentStatus.basePath }));
-                setEnvironment(currentStatus.basePath);
             }
 
-            setModalStage('choice');
             if (resumeAuthStep === 'jwt') {
                 setSelectedAuth('jwt');
             } else {
                 setSelectedAuth('acg');
             }
         }
-    }, [isOpen, currentStatus, defaultEnv, resumeAuthStep]);
+    }, [isOpen, currentStatus, resumeAuthStep]);
 
     useEffect(() => {
         if (isOpen && resumeAuthStep && accountStatus?.isConnected) {
@@ -129,14 +115,6 @@ function LoginModal({
             accountId: normalizedSettings.accountId || normalizedSettings.AccountId || prev.accountId,
             userId: normalizedSettings.userId || normalizedSettings.UserId || prev.userId,
         }));
-        setProfileForm({
-            fullName: normalizedSettings.userProfile?.fullName || normalizedSettings.userProfile?.FullName || '',
-            email: normalizedSettings.userProfile?.email || normalizedSettings.userProfile?.Email || '',
-            countryCode:
-                normalizedSettings.userProfile?.countryCode || normalizedSettings.userProfile?.CountryCode || '',
-            phoneNumber:
-                normalizedSettings.userProfile?.phoneNumber || normalizedSettings.userProfile?.PhoneNumber || '',
-        });
 
         return { status: normalizedStatus, settings: normalizedSettings };
     };
@@ -145,12 +123,13 @@ function LoginModal({
         setIsLoading(true);
         setError('');
         try {
+            const consentBasePath = acgForm.basePath || defaultEnv;
             const response = await fetch(`${apiBase}/api/account/consent/obtain`, {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 credentials: 'include',
                 body: JSON.stringify({
-                    basePath: environment,
+                    basePath: consentBasePath,
                     redirectUrl: '/',
                     consentType,
                 }),
@@ -200,35 +179,6 @@ function LoginModal({
             setError(err.message);
         } finally {
             setIsLoading(false);
-        }
-    };
-
-    const loadAccounts = async (overrideBasePath, overrideUserId) => {
-        setAccountsLoading(true);
-        setError('');
-        try {
-            const basePath = overrideBasePath || acgForm.basePath;
-            const userId = overrideUserId || acgForm.userId;
-            const query = new URLSearchParams({ basePath, userId });
-            const response = await fetch(`${apiBase}/api/accounts?${query.toString()}`, { credentials: 'include' });
-            if (!response.ok) {
-                const message = await response.text();
-                throw new Error(message || 'Unable to load accounts.');
-            }
-            const payload = await response.json();
-            setAccounts(payload);
-            const defaultAccount = payload.find((a) => a.isDefault || a.IsDefault);
-            if (defaultAccount) {
-                setAcgForm((prev) => ({
-                    ...prev,
-                    accountId: defaultAccount.accountId || defaultAccount.AccountId,
-                    baseUri: defaultAccount.baseUri || defaultAccount.BaseUri,
-                }));
-            }
-        } catch (err) {
-            setError(err.message);
-        } finally {
-            setAccountsLoading(false);
         }
     };
 
@@ -302,7 +252,6 @@ function LoginModal({
                 latestSettings?.basePath ||
                 latestSettings?.BasePath ||
                 acgForm.basePath ||
-                environment ||
                 defaultEnv;
             const userId = latestSettings?.userId || latestSettings?.UserId || acgForm.userId;
 
@@ -340,76 +289,58 @@ function LoginModal({
         }
     };
 
-    useEffect(() => {
-        if (isOpen && modalStage === 'step' && selectedAuth === 'acg' && accountStatus?.isConsentGranted) {
-            (async () => {
-                const result = await fetchStatusAndSettings();
-                const consented = result?.status?.isConsentGranted || accountStatus?.isConsentGranted;
-                const userIdFromStatus = result?.status?.userId || result?.settings?.userId;
-                if (userIdFromStatus && !acgForm.userId) {
-                    setAcgForm((prev) => ({ ...prev, userId: userIdFromStatus }));
-                }
-                const effectiveUserId = acgForm.userId || userIdFromStatus;
-                if (consented && effectiveUserId) {
-                    await loadAccounts(acgForm.basePath, effectiveUserId);
-                }
-            })();
-        }
-    }, [isOpen, modalStage, selectedAuth]);
-
     if (!isOpen) return null;
 
     return (
         <div className="auth-modal__backdrop" role="dialog" aria-modal="true">
             <div className="auth-modal">
+                <button className="auth-modal__close" type="button" onClick={onClose} aria-label="Close">
+                <img src="/close_modal.png" alt="Close modal" />
+            </button>
                 <div className="auth-modal__header">
                     <div>
                         <h2>
                             Log in with Docusign
                         </h2>
                     </div>
-                    <button className="auth-modal__close" type="button" onClick={onClose} aria-label="Close">
-                        ×
-                    </button>
                 </div>
-                <p>Select which authentication option you want to use.</p>
-                <div className="auth-modal__options auth-modal__options--radio">
-                    <label
-                        className={`auth-option auth-option--radio ${selectedAuth === 'acg' ? 'auth-option--selected' : ''}`}
-                    >
-                        <input
-                            type="radio"
-                            name="authType"
-                            value="acg"
-                            checked={selectedAuth === 'acg'}
-                            onChange={() => setSelectedAuth('acg')}
-                        />
-                        <div>
-                            <span className="auth-option__title">Connect your DocuSign Account</span>
-                            <span className="auth-option__description">
-                                Agreement Cloud Gateway (user account) authorization.
-                            </span>
-                        </div>
-                    </label>
-                    <label
-                        className={`auth-option auth-option--radio ${selectedAuth === 'jwt' ? 'auth-option--selected' : ''}`}
-                    >
-                        <input
-                            type="radio"
-                            name="authType"
-                            value="jwt"
-                            checked={selectedAuth === 'jwt'}
-                            onChange={() => setSelectedAuth('jwt')}
-                        />
-                        <div>
-                            <span className="auth-option__title">Log in with a test account</span>
-                            <span className="auth-option__description">
-                                JWT / test account sign-in from the previous client.
-                            </span>
-                        </div>
-                    </label>
+                <div className="auth-modal__content">
+                    <p className="auth-modal__description">Learn more about authentication options with Docusign</p>
+                    <div className="auth-modal__options auth-modal__options--radio">
+                        <label
+                            className={`auth-option auth-option--radio ${selectedAuth === 'acg' ? 'auth-option--selected' : ''}`}
+                        >
+                            <input
+                                type="radio"
+                                name="authType"
+                                value="acg"
+                                checked={selectedAuth === 'acg'}
+                                onChange={() => setSelectedAuth('acg')}
+                            />
+                            <div>
+                                <span className="auth-option__title">Log in with your Docusign developer account</span>
+                            </div>
+                        </label>
+                        <label
+                            className={`auth-option auth-option--radio ${selectedAuth === 'jwt' ? 'auth-option--selected' : ''}`}
+                        >
+                            <input
+                                type="radio"
+                                name="authType"
+                                value="jwt"
+                                checked={selectedAuth === 'jwt'}
+                                onChange={() => setSelectedAuth('jwt')}
+                            />
+                            <div>
+                                <span className="auth-option__title">Continue with a test account</span>
+                            </div>
+                        </label>
+                    </div>
+                    <p className="auth-modal__note">
+                        If you don't have a Docusign developer account, you can get one for free!
+                    </p>
                 </div>
-                <div className="auth-step__actions">
+                <div className="auth-modal__actions">
                     <button className="secondary-btn" type="button" onClick={onClose}>
                         Cancel
                     </button>
@@ -419,7 +350,7 @@ function LoginModal({
                         onClick={goToSelectedAuthStep}
                         disabled={!selectedAuth || isLoading}
                     >
-                        {isLoading ? 'Logging in...' : 'Log in'}
+                        {isLoading ? 'Logging in...' : 'Login'}
                     </button>
                 </div>
                 {error && <div className="auth-error">{error}</div>}
