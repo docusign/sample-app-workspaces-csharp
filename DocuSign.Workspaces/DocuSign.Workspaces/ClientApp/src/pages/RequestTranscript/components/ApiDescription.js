@@ -10,7 +10,7 @@ export const ApiDescription = () => {
   const [open, setOpen] = React.useState(false);
 
   return (
-    <div className="col-lg-4 pt-5 pb-4 ">
+    <div className="col-lg-4 pt-5 pb-4 behind_scenes">
       <div id="accordion">
         <div className="cardCollapse">
           <div className="cardCollapse-header" id="headingOne">

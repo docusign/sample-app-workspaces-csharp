@@ -57,8 +57,12 @@
   "CountryCode": "Код країни",
   "PhoneNumber": "Номер телефону",
   "SaveSettings": "Зберегти налаштування",
+  "AddDocumentsButton": "Add documents",
   "SubmitButton": "Create client workspace",
   "FormTitle": "Configure new client workspace with onboarding documents",
+  "DocumentToSign": "Documents to sign",
+  "UnloadedRequests": "Upload Requests",
+  "AddDocumentsTitle": "Select documents for this client’s package",
   "PrimaryTitle": "Primary Owner details",
   "SecondaryTitle": "Secondary Owner details",
   "Error": {

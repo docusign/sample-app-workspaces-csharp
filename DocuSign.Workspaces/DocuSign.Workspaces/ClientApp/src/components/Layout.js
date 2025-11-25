@@ -77,7 +77,7 @@ export default function Layout() {
   };
 
   return (
-    <div className="home">
+    <div className="app-wrapper">
       <header className="home-hero">
         <div
           className={`nav__overlay ${isNavOpen ? 'nav__overlay--open' : ''}`}
@@ -127,14 +127,17 @@ export default function Layout() {
                 </button>
               )}
             </div>
-            <div className="language_toggle">
+            {/* <div className="language_toggle">
               <button onClick={() => changeLanguage('en')}>EN</button>
               <button onClick={() => changeLanguage('uk')}>UK</button>
-            </div>
+            </div> */}
           </nav>
         </div>
-        <Outlet context={{ openLoginModal }} />
       </header>
+
+      <main className="main-content">
+        <Outlet context={{ openLoginModal }} />
+      </main>
 
       <footer className="footer">
         <div className="footer__copyright">

@@ -1,14 +1,16 @@
 import React, { useState, useReducer, useEffect, useContext } from 'react';
 import { useTranslation } from 'react-i18next';
+import { Toaster, toast } from 'react-hot-toast';
 import { RequestForm } from './components/RequestForm';
 import GoBackArrow from '../../components/GoBackArrow';
 import { ApiDescription } from './components/ApiDescription';
+import StepProgress from './components/StepProgress';
 import { reducer } from './requestReducer';
 import * as studentsAPI from '../../api/studentsAPI';
 import * as Actions from './actionTypes';
 import { download } from '../../api/download';
-// import LoggedUserContext from "../../contexts/logged-user/logged-user.context";
-// import { checkUnlogged } from "../../api/auth";
+import { SelectDocuments } from './components/SelectDocuments';
+import { Onboarding } from './components/Onboarding';
 
 const initialState = {
   errors: [],
@@ -16,6 +18,9 @@ const initialState = {
     firstName: '',
     lastName: '',
     email: '',
+    firstNameOptional: '',
+    lastNameOptional: '',
+    emailOptional: '',
   },
   clickwrap: null,
 };
@@ -26,6 +31,8 @@ export const RequestTranscriptPage = () => {
   const [request, setRequestData] = useState({ ...initialState.request });
   const [requesting, setRequesting] = useState(false);
   const [errors, setErrors] = useState({});
+  //TODO: SET 0
+  const [currentStep, setCurrentStep] = useState(2);
   // const { logged, setLogged, setAuthType } = useContext(LoggedUserContext);
 
   // useEffect(() => {
@@ -60,9 +67,12 @@ export const RequestTranscriptPage = () => {
         (event) => getTranscript(event, response.clickwrap),
         false
       );
+      setCurrentStep(1);
     } catch (error) {
       setRequesting(false);
-      setErrors({ ...errors, onSave: error.message });
+      toast.error(error.message);
+      //TODO: REMOVE setCurrentStep!!!
+      setCurrentStep(1);
     }
   }
 
@@ -83,7 +93,7 @@ export const RequestTranscriptPage = () => {
         window.addEventListener(
           'message',
           (event) => {
-            if (event.data.type == 'DOWNLOADED') {
+            if (event.data.type === 'DOWNLOADED') {
               setTimeout(() => {
                 goToSigningComplete(event);
               }, 10000);
@@ -98,6 +108,17 @@ export const RequestTranscriptPage = () => {
       }
     }
   }
+
+  const onPrevious = () => {
+    if (currentStep >= 1) {
+      setCurrentStep(currentStep - 1);
+    }
+  };
+  const onAddDocuments = () => {
+    if (currentStep <= 1) {
+      setCurrentStep(currentStep + 1);
+    }
+  };
 
   function goToSigningComplete(event) {
     window.top.location.href = process.env.REACT_APP_DS_RETURN_URL + '/signing_complete';
@@ -115,7 +136,7 @@ export const RequestTranscriptPage = () => {
   }
 
   function formIsValid() {
-    const { firstName, lastName, email } = request;
+    const { firstName, lastName, email, emailOptional } = request;
     const errors = {};
     if (!firstName) {
       errors.firstName = t('Error.FirstName');
@@ -123,12 +144,24 @@ export const RequestTranscriptPage = () => {
     if (!lastName) {
       errors.lastName = t('Error.LastName');
     }
+
     if (
       !email ||
-      !/^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/.test(email)
+      !/^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/.test(
+        email
+      )
     ) {
       errors.email = t('Error.Email');
     }
+    if (
+      emailOptional &&
+      !/^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/.test(
+        emailOptional
+      )
+    ) {
+      errors.emailOptional = t('Error.Email');
+    }
+
     setErrors(errors);
     return Object.keys(errors).length === 0;
   }
@@ -136,18 +169,52 @@ export const RequestTranscriptPage = () => {
   return (
     <section className="content-section">
       <GoBackArrow />
-      <h2>Configure new client workspace with onboarding documents</h2>
+      <h2>Onboarding a new wealth management client </h2>
+      <div className="col-lg-11">
+        <StepProgress steps={['STEP 1', 'STEP 2', 'STEP 3']} currentStep={currentStep} />
+      </div>
       <div className="form_and_description_grid">
-        <RequestForm
-          request={request}
-          requesting={requesting}
-          onChange={handleChange}
-          onSave={handleSave}
-          errors={errors}
-          clickwrap={state.clickwrap}
-        />
+        {currentStep === 0 && (
+          <RequestForm
+            request={request}
+            requesting={requesting}
+            onChange={handleChange}
+            onSave={handleSave}
+            errors={errors}
+            clickwrap={state.clickwrap}
+          />
+        )}
+        {currentStep === 1 && (
+          <SelectDocuments onPrevious={onPrevious} onAddDocuments={onAddDocuments} />
+        )}
+
+        {currentStep === 2 && <Onboarding />}
         <ApiDescription />
       </div>
+      <Toaster
+        position="top-center"
+        reverseOrder={false}
+        gutter={8}
+        containerClassName="app-toast-container"
+        toasterId="default"
+        toastOptions={{
+          className: 'app-toast',
+          duration: 5000,
+          removeDelay: 1000,
+          success: {
+            className: 'app-toast-success',
+            duration: 3000,
+            iconTheme: {
+              primary: 'green',
+              secondary: 'black',
+            },
+          },
+          error: {
+            className: 'app-toast-error',
+            duration: 3000,
+          },
+        }}
+      />
     </section>
   );
 };

@@ -197,11 +197,10 @@ input[type='radio'] {
 }
 
 .form-holder {
-  // margin-left: $grid-gutter-width / 2;
-  margin-right: $grid-gutter-width / 2;
   padding-left: $grid-gutter-width / 2;
   padding-right: $grid-gutter-width / 2;
   border-radius: 24px;
+  padding-top: 58px;
 
   @media (min-width: 1441px) {
     min-width: 853px;
@@ -217,6 +216,12 @@ input[type='radio'] {
   }
   .btn {
     margin-bottom: 30px;
+  }
+
+  @media (max-width: 767px) {
+    & {
+      padding-top: 18px;
+    }
   }
 }
 
@@ -254,6 +259,20 @@ input[type='radio'] {
 
 .form-text {
   font-size: 11px;
+}
+.form-second-title {
+  font-size: 16px;
+  font-weight: 500;
+  color: #141414;
+  line-height: 150%;
+  margin-top: 20px;
+}
+.optional-italic {
+  font-size: 14px;
+  font-style: italic;
+  font-weight: 400;
+  color: #141414;
+  opacity: 0.5;
 }
 
 .form-grid {
