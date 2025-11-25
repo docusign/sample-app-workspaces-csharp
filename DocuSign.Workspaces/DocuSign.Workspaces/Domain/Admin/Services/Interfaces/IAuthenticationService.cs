@@ -1,6 +1,6 @@
 using System.Collections.Generic;
 using System.Security.Claims;
-using DocuSign.Workspaces.Controllers.Admin.Model;
+using DocuSign.Workspaces.Controllers.Admin.Models;
 using DocuSign.Workspaces.Domain.Admin.Models;
 
 namespace DocuSign.Workspaces.Domain.Admin.Services.Interfaces

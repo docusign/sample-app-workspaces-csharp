@@ -4,8 +4,8 @@ using DocuSign.eSign.Model;
 using DocuSign.Workspaces.Controllers.Common.Models;
 using DocuSign.Workspaces.Domain.CustomerProfile.Models;
 using DocuSign.Workspaces.Domain.CustomerProfile.Services.Interfaces;
-using DocuSign.Workspaces.Infrustructure.Model;
-using DocuSign.Workspaces.Infrustructure.Services.Interfaces;
+using DocuSign.Workspaces.Infrastructure.Models;
+using DocuSign.Workspaces.Infrastructure.Services.Interfaces;
 
 namespace DocuSign.Workspaces.Domain.CustomerProfile.Services
 {

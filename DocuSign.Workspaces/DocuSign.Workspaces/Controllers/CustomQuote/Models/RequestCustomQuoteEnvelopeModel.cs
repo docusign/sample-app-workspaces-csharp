@@ -1,4 +1,4 @@
-﻿namespace DocuSign.Workspaces.Controllers.CustomQuote.Model
+﻿namespace DocuSign.Workspaces.Controllers.CustomQuote.Models
 {
     public class RequestCustomQuoteEnvelopeModel
     {

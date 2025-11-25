@@ -1,10 +1,10 @@
 ﻿using DocuSign.eSign.Model;
 using System.Collections.Generic;
 using System;
-using DocuSign.Workspaces.Infrustructure.Model;
 using DocuSign.Workspaces.Domain.Common.Models;
 using DocuSign.Workspaces.Domain.EmploymentContract.Models;
 using DocuSign.Workspaces.Domain.EmploymentContract.Services.Interfaces;
+using DocuSign.Workspaces.Infrastructure.Models;
 
 namespace DocuSign.Workspaces.Domain.EmploymentContract.Services
 {

@@ -1,4 +1,4 @@
-﻿namespace DocuSign.Workspaces.Controllers.CustomerProfile.Model
+﻿namespace DocuSign.Workspaces.Controllers.CustomerProfile.Models
 {
     public class CustomerProfileModel
     {

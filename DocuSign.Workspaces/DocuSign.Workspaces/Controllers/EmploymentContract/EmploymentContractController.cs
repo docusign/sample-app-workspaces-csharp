@@ -1,9 +1,9 @@
 ﻿using DocuSign.Workspaces.Controllers.Common.Models;
-using DocuSign.Workspaces.Controllers.EmploymentContract.Model;
+using DocuSign.Workspaces.Controllers.EmploymentContract.Models;
 using DocuSign.Workspaces.Domain.Common.Models;
 using DocuSign.Workspaces.Domain.EmploymentContract.Services.Interfaces;
-using DocuSign.Workspaces.Infrustructure.Model;
-using DocuSign.Workspaces.Infrustructure.Services.Interfaces;
+using DocuSign.Workspaces.Infrastructure.Models;
+using DocuSign.Workspaces.Infrastructure.Services.Interfaces;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 

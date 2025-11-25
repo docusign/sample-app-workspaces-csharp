@@ -1,4 +1,4 @@
-﻿namespace DocuSign.Workspaces.Controllers.Admin.Model
+﻿namespace DocuSign.Workspaces.Controllers.Admin.Models
 {
     public enum ConsentType
     {

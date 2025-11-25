@@ -1,4 +1,4 @@
-﻿namespace DocuSign.Workspaces.Controllers.Events.Model
+﻿namespace DocuSign.Workspaces.Controllers.Events.Models
 {
     public class DocuSignEventDataModel
     {

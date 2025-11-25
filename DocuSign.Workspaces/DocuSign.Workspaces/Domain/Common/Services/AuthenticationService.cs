@@ -6,12 +6,12 @@ using System.Security.Authentication;
 using System.Security.Claims;
 using DocuSign.eSign.Client;
 using DocuSign.eSign.Client.Auth;
-using DocuSign.Workspaces.Controllers.Admin.Model;
+using DocuSign.Workspaces.Controllers.Admin.Models;
 using DocuSign.Workspaces.Domain.Admin.Models;
 using DocuSign.Workspaces.Domain.CustomerProfile.Services.Interfaces;
-using DocuSign.Workspaces.Infrustructure.Exceptions;
-using DocuSign.Workspaces.Infrustructure.Model;
-using DocuSign.Workspaces.Infrustructure.Services.Interfaces;
+using DocuSign.Workspaces.Infrastructure.Exceptions;
+using DocuSign.Workspaces.Infrastructure.Models;
+using DocuSign.Workspaces.Infrastructure.Services.Interfaces;
 using Microsoft.AspNetCore.Authentication.Cookies;
 
 using IAuthenticationService = DocuSign.Workspaces.Domain.Admin.Services.Interfaces.IAuthenticationService;

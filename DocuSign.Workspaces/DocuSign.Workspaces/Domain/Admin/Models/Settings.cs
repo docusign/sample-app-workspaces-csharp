@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
-using DocuSign.Workspaces.Infrustructure.Model;
+using DocuSign.Workspaces.Infrastructure.Models;
 
 namespace DocuSign.Workspaces.Domain.Admin.Models
 {

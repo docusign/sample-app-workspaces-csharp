@@ -1,6 +1,6 @@
 ﻿using DocuSign.Workspaces.Domain.Admin.Models;
 using DocuSign.Workspaces.Domain.Admin.Services.Interfaces;
-using DocuSign.Workspaces.Infrustructure.Services.Interfaces;
+using DocuSign.Workspaces.Infrastructure.Services.Interfaces;
 
 namespace DocuSign.Workspaces.Domain.Admin.Services
 {
