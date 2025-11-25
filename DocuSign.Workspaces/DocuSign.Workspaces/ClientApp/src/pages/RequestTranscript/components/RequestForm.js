@@ -132,7 +132,6 @@ export const RequestForm = ({
           <div className="text-end">
             <button
               className="pill card__cta btn-primary"
-              // type="button"
               type="submit"
               disabled={
                 requesting ||
@@ -141,18 +140,10 @@ export const RequestForm = ({
                 !request.email ||
                 errors.email
               }
-              //  onClick={openLoginModal}
             >
               {t('SubmitButton')}
               <ArrowRightIcon className="arrow_right_icon" />
             </button>
-            {/* <button
-              type="submit"
-              disabled={requesting}
-              className="btn btn-danger"
-            >
-              {requesting ? t("SubmitButtonClicked") : t("SubmitButton")}
-            </button> */}
           </div>
         </form>
       </div>

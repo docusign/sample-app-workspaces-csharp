@@ -72,11 +72,11 @@ body.home-page::before {
   min-height: 100vh;
 
   .main-content {
-    flex: 1; // Розтягне контент на всю доступну висоту
+    flex: 1;
   }
 
   .footer {
-    margin-top: auto; // Прижме футер до низу
+    margin-top: auto;
   }
 }
 
@@ -584,7 +584,6 @@ body.home-page::before {
 }
 .step-line {
   flex-grow: 1;
-  // flex: 1;
   height: 3px;
   margin-left: 10px;
   margin-right: 10px;
@@ -616,7 +615,6 @@ body.home-page::before {
 
 @media (max-width: 1320px) {
   .nav {
-    // width: calc(100% - 24px);
     padding: 12px 1.75rem;
   }
 
@@ -890,7 +888,6 @@ body:not(.home-page) .footer {
     gap: 48px;
   }
   .form_and_description_grid {
-    // background-color: green;
     display: flex;
     flex-direction: column;
   }
@@ -1062,10 +1059,7 @@ body:not(.home-page) .footer {
   }
 
   .nav__actions {
-    /* position: absolute  ;
-        align-self: end; */
     margin-left: 1rem;
-    // padding-right: 1rem;
   }
 
   .home-hero__copy h1 {

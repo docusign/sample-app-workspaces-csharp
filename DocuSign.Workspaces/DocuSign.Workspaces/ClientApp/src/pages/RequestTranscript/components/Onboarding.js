@@ -3,6 +3,9 @@ import PropTypes from 'prop-types';
 import { useTranslation } from 'react-i18next';
 import { ReactComponent as DownloadIcon } from '../../../assets/icons/import.svg';
 import { ReactComponent as EyeIcon } from '../../../assets/icons/eye.svg';
+import { ReactComponent as ArrowTop } from '../../../assets/icons/table-arrow-top.svg';
+import { ReactComponent as ArrowDown } from '../../../assets/icons/table-arrow-down.svg';
+import { ReactComponent as ArrowsBoth } from '../../../assets/icons/table-arrow-both-way.svg';
 
 const MOCK_DATA = [
   { id: 21, label: 'Engagement Agreement', status: 'Signed', previewUrl: '/preview/engagement' },
@@ -49,43 +52,14 @@ export const Onboarding = ({
     if (!isActive) {
       return (
         <span className={className}>
-          <svg
-            width="12"
-            height="12"
-            viewBox="0 0 12 12"
-            fill="none"
-            xmlns="http://www.w3.org/2000/svg"
-          >
-            <path d="M6 3L8 5H4L6 3Z" fill="#393242" />
-            <path d="M6 9L4 7H8L6 9Z" fill="#393242" />
-          </svg>
+          <ArrowsBoth />
         </span>
       );
     }
 
     return (
       <span className={className}>
-        {sortConfig.direction === 'asc' ? (
-          <svg
-            width="12"
-            height="12"
-            viewBox="0 0 12 12"
-            fill="none"
-            xmlns="http://www.w3.org/2000/svg"
-          >
-            <path d="M6 3L8 5H4L6 3Z" fill="#393242" />
-          </svg>
-        ) : (
-          <svg
-            width="12"
-            height="12"
-            viewBox="0 0 12 12"
-            fill="none"
-            xmlns="http://www.w3.org/2000/svg"
-          >
-            <path d="M6 9L4 7H8L6 9Z" fill="#393242" />
-          </svg>
-        )}
+        {sortConfig.direction === 'asc' ? <ArrowTop /> : <ArrowDown />}
       </span>
     );
   };

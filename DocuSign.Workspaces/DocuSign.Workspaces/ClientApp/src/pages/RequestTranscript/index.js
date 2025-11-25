@@ -35,11 +35,6 @@ export const RequestTranscriptPage = () => {
   const [errorOnboarding, setErrorOnboarding] = useState('');
   //TODO: SET 0
   const [currentStep, setCurrentStep] = useState(2);
-  // const { logged, setLogged, setAuthType } = useContext(LoggedUserContext);
-
-  // useEffect(() => {
-  //   checkUnlogged(logged, setLogged, setAuthType);
-  // })
 
   async function handleSave(event) {
     event.preventDefault();

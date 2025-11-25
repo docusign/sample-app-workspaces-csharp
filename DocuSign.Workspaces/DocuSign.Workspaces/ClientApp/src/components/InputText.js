@@ -21,7 +21,6 @@ export const InputText = ({
   return (
     <div className={wrapperClass}>
       <label htmlFor={name}>{label}</label>
-      {/* <div className="field form-group"> */}
       <input
         type={type}
         name={name}
@@ -32,7 +31,6 @@ export const InputText = ({
         required={required}
       />
       <div className="invalid-feedback">{error}</div>
-      {/* </div> */}
     </div>
   );
 };
