@@ -93,7 +93,7 @@ export const Onboarding = ({
   return (
     <div className="col-lg-8">
       <div className="form-holder bg-white pb-5">
-        <h2 className="mb-4">Review & confirm documents</h2>
+        <h2 className="mb-4">{t('Onboarding.Title')}</h2>
 
         <form
           onSubmit={(event) => {
@@ -111,17 +111,17 @@ export const Onboarding = ({
                     <tr>
                       <th onClick={() => handleSort('label')}>
                         <div className="header-content">
-                          Envelope Name
+                          {t('Onboarding.EnvelopeName')}
                           <SortIcon column="label" />
                         </div>
                       </th>
                       <th onClick={() => handleSort('status')}>
                         <div className="header-content">
-                          Status
+                          {t('Onboarding.Status')}
                           <SortIcon column="status" />
                         </div>
                       </th>
-                      <th>Actions</th>
+                      <th>{t('Onboarding.Actions')}</th>
                     </tr>
                   </thead>
                   <tbody>
@@ -135,7 +135,7 @@ export const Onboarding = ({
                               type="button"
                               className="action-button"
                               onClick={() => window.open(doc.previewUrl, '_blank')}
-                              aria-label="Preview"
+                              aria-label={t('Onboarding.Preview')}
                             >
                               <EyeIcon />
                             </button>
@@ -143,7 +143,7 @@ export const Onboarding = ({
                               type="button"
                               className="action-button"
                               onClick={() => console.log('Download', doc.label)}
-                              aria-label="Download"
+                              aria-label={t('Onboarding.Download')}
                             >
                               <DownloadIcon />
                             </button>

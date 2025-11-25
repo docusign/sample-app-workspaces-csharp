@@ -11,6 +11,7 @@ import * as Actions from './actionTypes';
 import { download } from '../../api/download';
 import { SelectDocuments } from './components/SelectDocuments';
 import { Onboarding } from './components/Onboarding';
+import { SomethingWentWrong } from './components/SomethingWentWrong';
 
 const initialState = {
   errors: [],
@@ -31,6 +32,7 @@ export const RequestTranscriptPage = () => {
   const [request, setRequestData] = useState({ ...initialState.request });
   const [requesting, setRequesting] = useState(false);
   const [errors, setErrors] = useState({});
+  const [errorOnboarding, setErrorOnboarding] = useState('');
   //TODO: SET 0
   const [currentStep, setCurrentStep] = useState(2);
   // const { logged, setLogged, setAuthType } = useContext(LoggedUserContext);
@@ -188,7 +190,7 @@ export const RequestTranscriptPage = () => {
           <SelectDocuments onPrevious={onPrevious} onAddDocuments={onAddDocuments} />
         )}
 
-        {currentStep === 2 && <Onboarding />}
+        {currentStep === 2 && (errorOnboarding ? <SomethingWentWrong /> : <Onboarding />)}
         <ApiDescription />
       </div>
       <Toaster

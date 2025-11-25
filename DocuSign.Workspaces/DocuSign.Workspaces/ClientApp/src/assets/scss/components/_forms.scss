@@ -195,12 +195,27 @@ input[type='radio'] {
     }
   }
 }
+.warning-text {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  color: #f52a2a;
+  font-family: Inter;
+  font-size: 24px;
+  font-weight: 600;
+  margin-bottom: 20px;
+}
+.warning_icon_size {
+  width: 32px;
+  height: auto;
+}
 
 .form-holder {
+  margin-top: 30px;
   padding-left: $grid-gutter-width / 2;
   padding-right: $grid-gutter-width / 2;
   border-radius: 24px;
-  padding-top: 58px;
+  padding-top: 50px;
 
   @media (min-width: 1441px) {
     min-width: 853px;

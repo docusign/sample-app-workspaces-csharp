@@ -77,5 +77,14 @@
     "SeeMore": "Behind the scenes",
     "CodeFlow": "<h3>This sample features</h3><ul><li>Branding</li><li>Conditional recipients</li><li>Document visibility</li><li>Embedded signing</li></ul><h3>Code flow</h3><p>See the <strong>Controller</strong> and envelope source code.</p><h5>Step 1</h5><p>After the form is submitted, call the <span className=\"colored_text\">AccountBrands:list</span> method on the account to check if the brand you want to create already exists.</p><p>If it does, find the corresponding brand ID. If not, call the <span className=\"colored_text\">AccountBrands:create</span> method to create a new brand.</p><p>The brand ID is then stored for the next step.</p><p>After the user completes signing the envelope in the embedded signing session, the envelope is redirected to the second signer based on the conditions described in Step 2. After the user completes signing the envelope in the</p>"
   },
-  "Saving": "Saving..."
+  "Saving": "Saving...",
+  "SomethingWent": "Something went wrong, please try again",
+  "Onboarding": {
+    "Title": "Review & confirm documents",
+    "EnvelopeName": "Envelope Name",
+    "Status": "Status",
+    "Actions": "Actions",
+    "Preview": "Preview",
+    "Download": "Download"
+  }
 }
