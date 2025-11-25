@@ -112,26 +112,11 @@
     }
 
     & .active {
-      // &:before {
-      //   content: "";
-      //   width: 3px;
-      //   background-color: $danger;
-      //   position: absolute;
-      //   top: 0;
-      //   bottom: 0;
-
       border-left: 3px solid $danger;
       @include media-breakpoint-up(lg) {
-        // width: auto;
-        // height: 3px;
-        // left: 0;
-        // right: 0;
-        // bottom: 0;
-        // top: auto;
         border-left: 0;
         border-bottom: 3px solid $danger;
       }
-      // }
     }
   }
 

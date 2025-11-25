@@ -57,8 +57,12 @@
   "CountryCode": "Код країни",
   "PhoneNumber": "Номер телефону",
   "SaveSettings": "Зберегти налаштування",
+  "AddDocumentsButton": "Add documents",
   "SubmitButton": "Create client workspace",
   "FormTitle": "Configure new client workspace with onboarding documents",
+  "DocumentToSign": "Documents to sign",
+  "UnloadedRequests": "Upload Requests",
+  "AddDocumentsTitle": "Select documents for this client’s package",
   "PrimaryTitle": "Primary Owner details",
   "SecondaryTitle": "Secondary Owner details",
   "Error": {
@@ -71,5 +75,14 @@
     "SeeMore": "Behind the scenes",
     "CodeFlow": "<h3>This sample features</h3><ul><li>Branding</li><li>Conditional recipients</li><li>Document visibility</li><li>Embedded signing</li></ul><h3>Code flow</h3><p>See the <strong>Controller</strong> and envelope source code.</p><h5>Step 1</h5><p>After the form is submitted, call the <p className=\"colored_text\">AccountBrands:list</p> method on the account to check if the brand you want to create already exists.</p><p>If it does, find the corresponding brand ID. If not, call the <p className=\"colored_text\">AccountBrands:create</p> method to create a new brand.</p><p>The brand ID is then stored for the next step.</p><p>After the user completes signing the envelope in the embedded signing session, the envelope is redirected to the second signer based on the conditions described in Step 2. After the user completes signing the envelope in the</p>"
   },
-  "Saving": "Збереження..."
+  "Saving": "Збереження...",
+  "SomethingWent": "Something went wrong, please try again",
+  "Onboarding": {
+    "Title": "Review & confirm documents",
+    "EnvelopeName": "Envelope Name",
+    "Status": "Status",
+    "Actions": "Actions",
+    "Preview": "Preview",
+    "Download": "Download"
+  }
 }

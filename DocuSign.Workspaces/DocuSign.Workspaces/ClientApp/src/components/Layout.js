@@ -11,14 +11,10 @@ const ENVIRONMENTS = [
 const API_BASE = 'https://localhost:5001';
 
 export default function Layout() {
-  const { t, i18n } = useTranslation();
+  const { t } = useTranslation();
   const [accountStatus, setAccountStatus] = useState(null);
   const [isLoginOpen, setIsLoginOpen] = useState(false);
   const [isNavOpen, setIsNavOpen] = useState(false);
-
-  const changeLanguage = (lng) => {
-    i18n.changeLanguage(lng);
-  };
 
   const getCookie = (name) => {
     const match = document.cookie.match(new RegExp('(^| )' + name + '=([^;]+)'));
@@ -77,7 +73,7 @@ export default function Layout() {
   };
 
   return (
-    <div className="home">
+    <div className="app-wrapper">
       <header className="home-hero">
         <div
           className={`nav__overlay ${isNavOpen ? 'nav__overlay--open' : ''}`}
@@ -127,14 +123,13 @@ export default function Layout() {
                 </button>
               )}
             </div>
-            <div className="language_toggle">
-              <button onClick={() => changeLanguage('en')}>EN</button>
-              <button onClick={() => changeLanguage('uk')}>UK</button>
-            </div>
           </nav>
         </div>
-        <Outlet context={{ openLoginModal }} />
       </header>
+
+      <main className="main-content">
+        <Outlet context={{ openLoginModal }} />
+      </main>
 
       <footer className="footer">
         <div className="footer__copyright">
