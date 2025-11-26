@@ -91,7 +91,7 @@ export default function Layout() {
             <span />
           </button>
           <nav className={`nav__links ${isNavOpen ? 'nav__links--open' : ''}`}>
-            <Link to="/workspaces" className="nav__link">
+            <Link to="/use-case2" className="nav__link">
               {t('WorkspacesAPI')}{' '}
               <span className="nav__arrow">
                 <ChevronRightIcon />

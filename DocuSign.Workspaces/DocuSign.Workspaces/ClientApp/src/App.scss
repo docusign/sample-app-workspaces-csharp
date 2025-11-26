@@ -613,6 +613,13 @@ body.home-page::before {
   margin-left: 48px;
 }
 
+.second_title {
+  font-family: Inter;
+  font-size: 20px;
+  font-weight: 500;
+  color: #151515;
+}
+
 @media (max-width: 1320px) {
   .nav {
     padding: 12px 1.75rem;
@@ -658,6 +665,12 @@ body.home-page::before {
   justify-content: space-between;
   padding: 8px 0;
 }
+.doctor-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 8px 0;
+}
 
 .agreement-row__label {
   display: flex;
@@ -673,6 +686,47 @@ body.home-page::before {
   cursor: pointer;
   text-decoration: none;
   margin-left: 20px;
+}
+
+.doctor-row__label {
+  display: flex;
+  align-items: center;
+  cursor: pointer;
+
+  &__radio {
+    appearance: none;
+    -webkit-appearance: none;
+    margin-right: 8px;
+    cursor: pointer;
+
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    border: 2px solid #9e9d9f;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+
+    &:hover {
+      border-color: #6e47cc;
+    }
+
+    &:checked {
+      border-color: #6e47cc;
+      background-color: white;
+    }
+
+    &:checked::after {
+      content: '';
+      width: 10px;
+      height: 10px;
+      background-color: #6e47cc;
+      border-radius: 50%;
+      display: block;
+    }
+  }
 }
 
 .agreement-row__checkbox {

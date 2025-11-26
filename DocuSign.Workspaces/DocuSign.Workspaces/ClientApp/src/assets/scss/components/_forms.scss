@@ -295,3 +295,19 @@ input[type='radio'] {
     gap: 0 20px;
   }
 }
+
+.btn-upload-document {
+  border-width: 0px;
+  background-color: transparent;
+  font-family: 'Inter';
+  font-style: normal;
+  font-weight: 500;
+  font-size: 14px;
+  line-height: 150%;
+  display: flex;
+  align-items: center;
+  color: #6e47cc;
+  flex: none;
+  order: 1;
+  flex-grow: 0;
+}
