@@ -1,5 +1,7 @@
 ﻿using System.Net.Http;
 using DocuSign.eSign.Api;
+using DocuSign.eSign.Client;
+using Docusign.IAM.SDK;
 
 namespace DocuSign.Workspaces.Infrastructure.Services.Interfaces
 {
@@ -9,7 +11,9 @@ namespace DocuSign.Workspaces.Infrastructure.Services.Interfaces
         ITemplatesApi TemplatesApi { get; }
         IAccountsApi AccountsApi { get; }
         IWorkspacesApi WorkspacesApi { get; }
-
+        DocuSignClient ApiClient { get; }
         HttpClient DocuSignHttpClient { get; }
+        IWorkspaces2 Workspace2 { get; }
+        IWorkspaceUploadRequest WorkspaceUploadRequest { get; }
     }
 }

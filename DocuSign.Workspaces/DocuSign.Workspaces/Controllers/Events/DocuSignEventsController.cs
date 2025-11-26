@@ -21,6 +21,7 @@ namespace DocuSign.Workspaces.Controllers.Events
         }
 
         [Route("/api/callback/event")]
+        [HttpGet]
         public async Task<IActionResult> ReceiveEvent([FromBody] DocuSignEventModel docusignEvent)
         {
             string evnvelopId = docusignEvent?.Data?.EnvelopeId;
@@ -30,6 +31,7 @@ namespace DocuSign.Workspaces.Controllers.Events
                 var eventModel = CreateEventModel(useCaseType, docusignEvent);
                 await _hubContext.Clients.Client(connectionId).SendAsync("ReceivedEvent", eventModel);
             }
+
             return Ok();
         }
 

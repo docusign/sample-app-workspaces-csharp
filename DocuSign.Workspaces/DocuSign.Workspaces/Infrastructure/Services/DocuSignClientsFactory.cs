@@ -1,8 +1,15 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Net.Http;
 using System.Net.Http.Headers;
+using System.Threading.Tasks;
 using DocuSign.eSign.Client;
+using Docusign.IAM.SDK;
+using Docusign.IAM.SDK.Hooks;
+using Docusign.IAM.SDK.Models.Components;
+using Docusign.IAM.SDK.Utils;
 using DocuSign.Workspaces.Infrastructure.Services.Interfaces;
+using Newtonsoft.Json;
 
 namespace DocuSign.Workspaces.Infrastructure.Services
 {
@@ -25,6 +32,23 @@ namespace DocuSign.Workspaces.Infrastructure.Services
             var apiClient = new DocuSignClient(docuSignConfig);
             apiClient.SetBasePath(docuSignConfig.BasePath);
             return apiClient;
+        }
+
+        public async Task<SDKConfig> BuildSdkConfig()
+        {
+            
+            var config = new SDKConfig
+            {
+                SecuritySource = () => new Security
+                {
+                    AccessToken = _accountRepository.AccessToken ?? ""
+                },
+                Client = new SpeakeasyHttpClient(),
+                ServerUrl = SDKConfig.ServerMap[0],
+                UserAgent = "MyCompany-Integration/1.0",
+                Hooks = new SDKHooks()
+            };
+            return config;
         }
 
         public DocuSignClient BuildDocuSignAuthClient(string authServer)
