@@ -128,7 +128,7 @@ export default function Layout() {
       </header>
 
       <main className="main-content">
-        <Outlet context={{ openLoginModal }} />
+        <Outlet context={{ openLoginModal, accountStatus }} />
       </main>
 
       <footer className="footer">

@@ -185,7 +185,16 @@ export const UseCaseOnePage = () => {
           <SelectDocuments onPrevious={onPrevious} onAddDocuments={onAddDocuments} />
         )}
 
-        {currentStep === 2 && (errorOnboarding ? <SomethingWentWrong /> : <Onboarding />)}
+        {currentStep === 2 &&
+          (errorOnboarding ? (
+            <SomethingWentWrong
+              tryAgain={() => {
+                setCurrentStep(0);
+              }}
+            />
+          ) : (
+            <Onboarding />
+          ))}
         <ApiDescription />
       </div>
       <Toaster

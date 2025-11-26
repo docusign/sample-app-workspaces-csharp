@@ -1,0 +1,249 @@
+.uploaded-files-container {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  margin-bottom: 16px;
+}
+
+.uploaded-file-item {
+  display: flex;
+  flex: 1;
+  gap: 12px;
+  padding: 16px;
+  background: #ffffff;
+  border: 1px solid #e9eaee;
+  border-radius: 12px;
+  transition: all 0.2s ease;
+  align-items: center;
+  justify-content: center;
+
+  &:hover {
+    border-color: #d0d1d9;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+  }
+}
+
+.uploaded-file-icon {
+  flex-shrink: 0;
+}
+
+.file-badge {
+  width: 40px;
+  height: 40px;
+  border-radius: 6px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: 'Inter', sans-serif;
+  font-weight: 700;
+  font-size: 10px;
+  color: #ffffff;
+
+  &--pdf {
+    background: #e74c3c;
+  }
+
+  &--doc {
+    background: #2980b9;
+  }
+
+  &--file {
+    background: #95a5a6;
+  }
+}
+
+.uploaded-file-content {
+  flex: 1;
+  min-width: 0;
+}
+
+.uploaded-file-header {
+  display: flex;
+  align-items: center;
+}
+
+.uploaded-file-name {
+  font-family: 'Inter', sans-serif;
+  font-weight: 500;
+  font-size: 16px;
+  color: #151515;
+  letter-spacing: 0px;
+  flex: 1;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.uploaded-file-preview {
+  font-family: 'Inter', sans-serif;
+  font-size: 12px;
+  color: #666bfa;
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 0;
+  flex-shrink: 0;
+  margin-left: 10px;
+
+  &:hover {
+    text-decoration: underline;
+  }
+}
+
+.uploaded-file-remove {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 20px;
+  height: 20px;
+  background: none;
+  border: none;
+  cursor: pointer;
+  color: #9e9d9f;
+  flex-shrink: 0;
+  padding: 0;
+
+  svg {
+    width: 16px;
+    height: 16px;
+  }
+
+  &:hover {
+    color: #e74c3c;
+  }
+}
+
+.uploaded-file-progress {
+  margin-top: 8px;
+}
+
+.uploaded-file-progress-info {
+  display: flex;
+  font-family: Inter;
+  font-weight: 500;
+  justify-content: space-between;
+  font-family: 'Inter', sans-serif;
+  font-size: 16px;
+  color: #101111;
+}
+
+.progress-bar-container {
+  height: 4px;
+  background: #e9eaee;
+  border-radius: 2px;
+  overflow: hidden;
+}
+
+.progress-bar-fill {
+  height: 100%;
+  background: #6e47cc;
+  border-radius: 2px;
+  transition: width 0.3s ease;
+}
+
+// Помилка
+.uploaded-file-error {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  margin-top: 2px;
+  font-family: 'Inter', sans-serif;
+  font-size: 12px;
+  color: #e74c3c;
+}
+.warning_file {
+  width: 24px;
+  min-width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  background-color: #e74c3c;
+  color: #ffffff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 14px;
+  font-weight: bold;
+}
+
+.uploaded-file-signature {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+
+  margin-top: 2px;
+  cursor: pointer;
+  font-family: 'Inter', sans-serif;
+  font-size: 13px;
+  color: #151515;
+
+  input[type='checkbox'] {
+    appearance: none;
+    width: 18px;
+    height: 18px;
+    border: 2px solid #9e9d9f;
+    border-radius: 4px;
+    cursor: pointer;
+    position: relative;
+    flex-shrink: 0;
+    transition: all 0.2s ease;
+
+    &:checked {
+      background: #6e47cc;
+      border-color: #6e47cc;
+
+      &::after {
+        content: '';
+        position: absolute;
+        left: 5px;
+        top: 2px;
+        width: 4px;
+        height: 8px;
+        border: solid white;
+        border-width: 0 2px 2px 0;
+        transform: rotate(45deg);
+      }
+    }
+
+    &:hover:not(:checked) {
+      border-color: #6e47cc;
+    }
+  }
+}
+
+.btn-upload-document {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 12px 20px;
+  background: transparent;
+  border: none;
+  color: #6e47cc;
+  font-family: 'Inter', sans-serif;
+  font-weight: 500;
+  font-size: 16px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+
+  .plus {
+    width: 20px;
+    height: 20px;
+  }
+
+  &:hover {
+    color: #5d3ab3;
+  }
+}
+
+@media (max-width: 768px) {
+  .uploaded-file-item {
+    padding: 12px;
+  }
+
+  .uploaded-file-name {
+    font-size: 13px;
+  }
+
+  .uploaded-file-preview {
+    font-size: 11px;
+  }
+}

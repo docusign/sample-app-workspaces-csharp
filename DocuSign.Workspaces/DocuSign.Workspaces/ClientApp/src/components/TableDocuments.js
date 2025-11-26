@@ -5,15 +5,16 @@ import { ReactComponent as DownloadIcon } from '../assets/icons/import.svg';
 import { ReactComponent as EyeIcon } from '../assets/icons/eye.svg';
 import { SortIcon } from '../components/SortIcon';
 
-const MOCK_DATA = [
-  { id: 21, label: 'Engagement Agreement', status: 'Signed', previewUrl: '/preview/engagement' },
-  { id: 22, label: 'IRA Products Agreement', status: 'Draft', previewUrl: '/preview/ira' },
-  { id: 23, label: 'ETF Products Agreement', status: 'Not signed', previewUrl: '/preview/etf' },
-];
+// const MOCK_DATA = [
+//   { id: 21, label: 'Engagement Agreement', status: 'Signed', previewUrl: '/preview/engagement' },
+//   { id: 22, label: 'IRA Products Agreement', status: 'Draft', previewUrl: '/preview/ira' },
+//   { id: 23, label: 'ETF Products Agreement', status: 'Not signed', previewUrl: '/preview/etf' },
+// ];
 
-export const Onboarding = ({
+export const TableDocuments = ({
   request,
   onSave,
+  listFiles,
   onChange,
   requesting = false,
   errors = {},
@@ -21,7 +22,7 @@ export const Onboarding = ({
 }) => {
   const { t } = useTranslation();
   const [submitted, setSubmitted] = useState(false);
-  const [listToSign, setListToSign] = useState(MOCK_DATA);
+  const [listPending, setListPending] = useState(listFiles);
   const [sortConfig, setSortConfig] = useState({ key: null, direction: 'asc' });
 
   const handleSort = (key) => {
@@ -31,7 +32,7 @@ export const Onboarding = ({
     }
     setSortConfig({ key, direction });
 
-    const sorted = [...listToSign].sort((a, b) => {
+    const sorted = [...listPending].sort((a, b) => {
       const aVal = a[key].toLowerCase();
       const bVal = b[key].toLowerCase();
 
@@ -40,7 +41,7 @@ export const Onboarding = ({
       return 0;
     });
 
-    setListToSign(sorted);
+    setListPending(sorted);
   };
 
   return (
@@ -86,9 +87,9 @@ export const Onboarding = ({
                     </tr>
                   </thead>
                   <tbody>
-                    {listToSign.map((doc) => (
+                    {listPending.map((doc) => (
                       <tr key={doc.id}>
-                        <td>{doc.label}</td>
+                        <td>{doc.name}</td>
                         <td>{doc.status}</td>
                         <td>
                           <div className="actions-container">
@@ -123,7 +124,7 @@ export const Onboarding = ({
   );
 };
 
-Onboarding.propTypes = {
+TableDocuments.propTypes = {
   request: PropTypes.object.isRequired,
   errors: PropTypes.object,
   onSave: PropTypes.func.isRequired,

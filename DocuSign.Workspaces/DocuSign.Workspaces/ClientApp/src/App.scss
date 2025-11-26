@@ -1,7 +1,7 @@
 .back-link {
   color: #6e47cc;
-  text-decoration: none;
-  font-size: 1.2rem;
+  font-weight: 700;
+  font-size: 14px;
   margin-bottom: 1rem;
   display: inline-block;
   align-items: center;
@@ -12,8 +12,8 @@
 }
 
 .back-link__icon {
-  width: 26px;
-  height: 26px;
+  width: 16px;
+  height: 16px;
   margin-bottom: 2px;
   margin-right: 5px;
 }
@@ -773,8 +773,8 @@ body.home-page::before {
         tr {
           th {
             text-align: left;
-            padding: 16px 24px;
-            font-size: 11px;
+            padding: 16px 12px;
+            font-size: 10px;
             font-weight: 600;
             color: #6b7280;
             text-transform: uppercase;
@@ -822,7 +822,9 @@ body.home-page::before {
           }
 
           td {
-            padding: 16px 24px;
+            padding: 10px 12px;
+            font-weight: 400;
+            font-family: Inter;
             font-size: 14px;
 
             &:first-child {

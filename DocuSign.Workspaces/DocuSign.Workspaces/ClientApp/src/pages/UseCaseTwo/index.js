@@ -10,18 +10,14 @@ import * as studentsAPI from '../../api/studentsAPI';
 import * as Actions from './actionTypes';
 import { download } from '../../api/download';
 import { SelectDocuments } from '../../components/SelectDocuments';
-import { Onboarding } from '../../components/Onboarding';
+import { TableDocuments } from '../../components/TableDocuments';
 import { SomethingWentWrong } from '../../components/SomethingWentWrong';
 
 const initialState = {
   errors: [],
   request: {
-    firstName: '',
-    lastName: '',
     email: '',
-    firstNameOptional: '',
-    lastNameOptional: '',
-    emailOptional: '',
+    files: [],
   },
   clickwrap: null,
 };
@@ -33,37 +29,40 @@ export const UseCaseTwoPage = () => {
   const [requesting, setRequesting] = useState(false);
   const [errors, setErrors] = useState({});
   const [errorOnboarding, setErrorOnboarding] = useState('');
+  // const { accountStatus } = useOutletContext();
   //TODO: SET 0
   const [currentStep, setCurrentStep] = useState(0);
 
   async function handleSave(event) {
-    event.preventDefault();
+    // event.preventDefault();
     if (!formIsValid()) {
       return;
     }
 
-    const body = {
-      'callback-url': process.env.REACT_APP_DS_RETURN_URL + '/signing_complete',
-      'terms-name': t('Transcript.TermsName'),
-      'terms-transcript': t('Transcript.DisplayName'),
-      'display-name': t('Transcript.TermsTranscript'),
-    };
+    // const body = {
+    //   'callback-url': process.env.REACT_APP_DS_RETURN_URL + '/signing_complete',
+    //   'terms-name': t('Transcript.TermsName'),
+    //   'terms-transcript': t('Transcript.DisplayName'),
+    //   'display-name': t('Transcript.TermsTranscript'),
+    // };
     setRequesting(true);
     try {
-      const response = await studentsAPI.getCliwrapForRequestTranscript(body);
-      dispatch({
-        type: Actions.GET_CLICKWRAP_SUCCESS,
-        payload: {
-          clickwrap: response.clickwrap,
-          envelopeId: response.envelope_id,
-          redirectUrl: response.redirect_url,
-        },
-      });
+      // const response = await studentsAPI.getCliwrapForRequestTranscript(body);
+      // dispatch({
+      //   type: Actions.GET_CLICKWRAP_SUCCESS,
+      //   payload: {
+      //     clickwrap: response.clickwrap,
+      //     envelopeId: response.envelope_id,
+      //     redirectUrl: response.redirect_url,
+      //   },
+      // });
       // window.addEventListener(
       //   'message',
       //   (event) => getTranscript(event, response.clickwrap),
       //   false
       // );
+      setRequestData(event);
+
       setCurrentStep(1);
     } catch (error) {
       setRequesting(false);
@@ -104,16 +103,16 @@ export const UseCaseTwoPage = () => {
     }
   }
 
-  const onPrevious = () => {
-    if (currentStep >= 1) {
-      setCurrentStep(currentStep - 1);
-    }
-  };
-  const onAddDocuments = () => {
-    if (currentStep <= 1) {
-      setCurrentStep(currentStep + 1);
-    }
-  };
+  // const onPrevious = () => {
+  //   if (currentStep >= 1) {
+  //     setCurrentStep(currentStep - 1);
+  //   }
+  // };
+  // const onAddDocuments = () => {
+  //   if (currentStep <= 1) {
+  //     setCurrentStep(currentStep + 1);
+  //   }
+  // };
 
   function goToSigningComplete(event) {
     window.top.location.href = process.env.REACT_APP_DS_RETURN_URL + '/signing_complete';
@@ -131,14 +130,8 @@ export const UseCaseTwoPage = () => {
   }
 
   function formIsValid() {
-    const { firstName, lastName, email, emailOptional } = request;
+    const { email } = request;
     const errors = {};
-    if (!firstName) {
-      errors.firstName = t('Error.FirstName');
-    }
-    if (!lastName) {
-      errors.lastName = t('Error.LastName');
-    }
 
     if (
       !email ||
@@ -147,14 +140,6 @@ export const UseCaseTwoPage = () => {
       )
     ) {
       errors.email = t('Error.Email');
-    }
-    if (
-      emailOptional &&
-      !/^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/.test(
-        emailOptional
-      )
-    ) {
-      errors.emailOptional = t('Error.Email');
     }
 
     setErrors(errors);
@@ -180,11 +165,17 @@ export const UseCaseTwoPage = () => {
             clickwrap={state.clickwrap}
           />
         )}
-        {currentStep === 1 && (
-          <SelectDocuments onPrevious={onPrevious} onAddDocuments={onAddDocuments} />
-        )}
 
-        {currentStep === 2 && (errorOnboarding ? <SomethingWentWrong /> : <Onboarding />)}
+        {currentStep === 1 &&
+          (!errorOnboarding ? (
+            <SomethingWentWrong
+              tryAgain={() => {
+                setCurrentStep(0);
+              }}
+            />
+          ) : (
+            <TableDocuments listFiles={request.files} />
+          ))}
         <ApiDescription />
       </div>
       <Toaster

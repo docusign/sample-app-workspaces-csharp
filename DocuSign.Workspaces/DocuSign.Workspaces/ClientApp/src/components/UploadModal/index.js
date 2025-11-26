@@ -1,23 +1,41 @@
-import { useEffect, useMemo, useRef, useState } from 'react';
+import { useState, useCallback } from 'react';
 import './UploadModal.scss';
 import { ReactComponent as UploadIcon } from '../../assets/icons/upload.svg';
 
-function UploadModal({
-  isOpen,
-  //   apiBase,
-  //   environments,
-  //   currentStatus,
-  //   onStatusChange,
-  onClose,
-  //   resumeAuthStep,
-  //   onClearAuthStep,
-}) {
-  const [selectedAuth, setSelectedAuth] = useState('acg'); // acg | jwt
-  const [isLoading, setIsLoading] = useState(false);
-  const [error, setError] = useState('');
+function UploadModal({ isOpen, onClose, onFilesChange }) {
+  const [dragActive, setDragActive] = useState(false);
 
-  const onFileSelect = (event) => {
-    console.log('<<<< UPLOAD FILE');
+  const handleDrag = useCallback(
+    (e) => {
+      e.preventDefault();
+      e.stopPropagation();
+      if (e.type === 'dragenter' || e.type === 'dragover') {
+        setDragActive(true);
+      } else if (e.type === 'dragleave') {
+        setDragActive(false);
+      }
+    },
+    [setDragActive]
+  );
+
+  const handleDrop = useCallback(
+    (e) => {
+      e.preventDefault();
+      e.stopPropagation();
+      setDragActive(false);
+
+      if (e.dataTransfer.files && e.dataTransfer.files.length > 0) {
+        onFilesChange(e.dataTransfer.files);
+      }
+    },
+    [onFilesChange, setDragActive]
+  );
+
+  const handleFileInput = (e) => {
+    if (e.target.files && e.target.files.length > 0) {
+      onFilesChange(e.target.files);
+      onClose();
+    }
   };
 
   if (!isOpen) return null;
@@ -28,32 +46,20 @@ function UploadModal({
         <button className="upload-modal__close" type="button" onClick={onClose} aria-label="Close">
           <img src="/close_modal.png" alt="Close modal" />
         </button>
+
         <div className="upload-modal__header">
-          <div>
-            <p className="upload-modal__description">Upload care plan or other document</p>
-          </div>
+          <h2>Upload care plan or other document</h2>
         </div>
+
+        {/* Drag and Drop зона */}
         <div
-          className="upload-container"
-          //   style={{
-          //     width: '200px',
-          //     height: '150px',
-          //     borderRadius: '12px',
-          //     padding: '20px',
-          //     position: 'relative',
-          //     background: 'white',
-          //   }}
+          className={`upload-container ${dragActive ? 'upload-container--active' : ''}`}
+          onDragEnter={handleDrag}
+          onDragLeave={handleDrag}
+          onDragOver={handleDrag}
+          onDrop={handleDrop}
         >
-          <svg
-            style={{
-              position: 'absolute',
-              top: 0,
-              left: 0,
-              width: '100%',
-              height: '100%',
-              pointerEvents: 'none',
-            }}
-          >
+          <svg className="upload-container__border">
             <rect
               x="0.5"
               y="0.5"
@@ -61,14 +67,14 @@ function UploadModal({
               height="calc(100% - 1px)"
               rx="12"
               fill="none"
-              stroke="#9e9d9f"
-              strokeWidth="1"
+              stroke={dragActive ? '#6e47cc' : '#9e9d9f'}
+              strokeWidth="2"
               strokeDasharray="30 25"
             />
           </svg>
+
           <div className="upload-icon-container">
-            <UploadIcon />
-            {/* <div className="upload-icon"></div> */}
+            <UploadIcon className="upload_icon" />
           </div>
 
           <div className="upload-text-container">
@@ -77,21 +83,16 @@ function UploadModal({
           </div>
 
           <label className="upload-button">
+            Choose File
             <input
               type="file"
               multiple
               accept=".pdf,.doc,.docx"
-              //   onChange={handleFileInput}
-              className="hidden"
+              onChange={handleFileInput}
+              className="upload-input-hidden"
             />
-            Choose File
-            <input type="file" onChange={onFileSelect} className="upload-input-hidden" />
           </label>
         </div>
-        {/* <div className="upload-container">
-        
-        </div> */}
-        {error && <div className="auth-error">{error}</div>}
       </div>
     </div>
   );
