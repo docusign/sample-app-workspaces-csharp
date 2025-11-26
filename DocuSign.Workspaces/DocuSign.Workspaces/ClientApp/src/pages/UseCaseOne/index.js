@@ -1,17 +1,17 @@
 import React, { useState, useReducer, useEffect, useContext } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Toaster, toast } from 'react-hot-toast';
-import { RequestForm } from './components/RequestForm';
+import { RequestForm } from '../../components/RequestForm';
 import GoBackArrow from '../../components/GoBackArrow';
-import { ApiDescription } from './components/ApiDescription';
-import StepProgress from './components/StepProgress';
+import { ApiDescription } from '../../components/ApiDescription';
+import StepProgress from '../../components/StepProgress';
 import { reducer } from './requestReducer';
 import * as studentsAPI from '../../api/studentsAPI';
 import * as Actions from './actionTypes';
 import { download } from '../../api/download';
-import { SelectDocuments } from './components/SelectDocuments';
-import { Onboarding } from './components/Onboarding';
-import { SomethingWentWrong } from './components/SomethingWentWrong';
+import { SelectDocuments } from '../../components/SelectDocuments';
+import { Onboarding } from '../../components/Onboarding';
+import { SomethingWentWrong } from '../../components/SomethingWentWrong';
 
 const initialState = {
   errors: [],
@@ -26,7 +26,7 @@ const initialState = {
   clickwrap: null,
 };
 
-export const RequestTranscriptPage = () => {
+export const UseCaseOnePage = () => {
   const { t } = useTranslation();
   const [state, dispatch] = useReducer(reducer, initialState);
   const [request, setRequestData] = useState({ ...initialState.request });
@@ -34,7 +34,7 @@ export const RequestTranscriptPage = () => {
   const [errors, setErrors] = useState({});
   const [errorOnboarding, setErrorOnboarding] = useState('');
   //TODO: SET 0
-  const [currentStep, setCurrentStep] = useState(2);
+  const [currentStep, setCurrentStep] = useState(1);
 
   async function handleSave(event) {
     event.preventDefault();
