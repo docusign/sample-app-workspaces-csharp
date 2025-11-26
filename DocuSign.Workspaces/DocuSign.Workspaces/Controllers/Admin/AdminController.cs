@@ -1,12 +1,10 @@
-﻿using DocumentFormat.OpenXml.EMMA;
-using DocuSign.eSign.Model;
+﻿using DocuSign.eSign.Model;
 using DocuSign.Workspaces.Controllers.Common.Models;
 using DocuSign.Workspaces.Domain.Admin.Models;
 using DocuSign.Workspaces.Domain.Admin.Services.Interfaces;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System.Collections.Generic;
 using System.Linq;
