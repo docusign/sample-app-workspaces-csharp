@@ -15,6 +15,9 @@ import { SomethingWentWrong } from '../../components/SomethingWentWrong';
 import { API_BASE } from '../../components/Layout';
 import { showToast } from '../../components/CustomToaster';
 
+const urlCreate = `${API_BASE}/api/workspaces/create`;
+const urlAddDocuments = `${API_BASE}/api/workspaces/add-selected-documents`;
+
 const initialState = {
   errors: [],
   request: {
@@ -50,7 +53,7 @@ export const UseCaseOnePage = () => {
         // accountId: Date.now().toString(),
       };
       console.log('<<<< payload', payload);
-      const res = await fetch(`${API_BASE}/api/workspaces/create`, {
+      const res = await fetch(urlCreate, {
         method: 'POST',
         credentials: 'include',
         headers: {
@@ -69,6 +72,46 @@ export const UseCaseOnePage = () => {
       console.log('<< RESPONSE create workspace', data);
       showToast('Workspace successfully created');
       setCurrentStep(1);
+    } catch (error) {
+      setRequesting(false);
+      toast.error(error.message);
+      // //TODO: REMOVE setCurrentStep!!!
+      // setCurrentStep(1);
+    }
+  }
+
+  async function onAddDocuments(event) {
+    event.preventDefault();
+    if (!formIsValid()) {
+      return;
+    }
+    setRequesting(true);
+    try {
+      const payload = {
+        workspacesName: request.firstName + request.lastName,
+        // ownerEmail: request.email,
+        // accountId: Date.now().toString(),
+      };
+      console.log('<<<< payload', payload);
+      const res = await fetch(urlAddDocuments, {
+        method: 'POST',
+        credentials: 'include',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(payload),
+      });
+      console.log('<<<< res', res);
+      if (!res.ok) {
+        console.log('<<<< res', res);
+        toast.error(`Server error: ${res.status}`);
+        throw new Error(`Server error: ${res.status}`);
+      }
+
+      const data = await res.json();
+      console.log('<< RESPONSE create workspace', data);
+      // showToast('Workspace successfully created');
+      setCurrentStep(2);
     } catch (error) {
       setRequesting(false);
       toast.error(error.message);
@@ -113,11 +156,6 @@ export const UseCaseOnePage = () => {
   const onPrevious = () => {
     if (currentStep >= 1) {
       setCurrentStep(currentStep - 1);
-    }
-  };
-  const onAddDocuments = () => {
-    if (currentStep <= 1) {
-      setCurrentStep(currentStep + 1);
     }
   };
 
