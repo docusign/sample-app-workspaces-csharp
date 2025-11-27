@@ -58,9 +58,7 @@ namespace DocuSign.Workspaces
             services.AddScoped<ICustomQuoteEnvelopeService, CustomQuoteEnvelopeService>();
             services.AddScoped<ICustomQuoteEnvelopeBuilder, CustomQuoteEnvelopeBuilder>();
 
-            services.AddScoped<IWorkspacesService, WorkspacesService>();
-
-
+            services.AddScoped<IWealthManagementClient, WealthManagementClient>();
 
             // In production, the SPA assets will be served from this directory
             services.AddSpaStaticFiles(configuration =>
@@ -85,6 +83,9 @@ namespace DocuSign.Workspaces
 
             services.AddControllers().AddNewtonsoftJson();
 
+            services.AddSwaggerGen();
+            services.AddEndpointsApiExplorer();
+
             services.ConfigureApplicationCookie(options =>
             {
                 options.Events.OnRedirectToLogin = context =>
@@ -107,10 +108,17 @@ namespace DocuSign.Workspaces
             app.UseHttpsRedirection();
             app.UseStaticFiles();
 
+            if (env.IsDevelopment())
+            {
+                app.UseSwagger();
+                app.UseSwaggerUI();
+            }
+
             if (!env.IsDevelopment())
             {
                 app.UseSpaStaticFiles();
             }
+
             app.UseRouting();
             app.UseAuthentication();
             app.UseAuthorization();

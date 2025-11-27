@@ -48,6 +48,7 @@ namespace DocuSign.Workspaces.Domain.Common.Services
                 authToken = apiClient.GenerateAccessToken(_appConfiguration.DocuSign.IntegrationKey, _appConfiguration.DocuSign.SecretKeyProd, code);
             }
             var userInfo = apiClient.GetUserInfo(authToken.access_token);
+
             return userInfo.Sub;
         }
 
@@ -95,7 +96,7 @@ namespace DocuSign.Workspaces.Domain.Common.Services
                     authServer,
                     File.ReadAllBytes(_appConfiguration.DocuSign.RSAPrivateKeyFile),
                     _appConfiguration.DocuSign.JWTLifeTime,
-                    new List<string> { "impersonation", "signature" });
+                    new List<string> { "signature", "dtr.company.read", "dtr.rooms.read", "dtr.rooms.write", "dtr.documents.write" });
             }
             catch (ApiException ex)
             {

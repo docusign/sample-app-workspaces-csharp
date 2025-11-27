@@ -9,9 +9,11 @@ import { reducer } from './requestReducer';
 import * as studentsAPI from '../../api/studentsAPI';
 import * as Actions from './actionTypes';
 import { download } from '../../api/download';
-import { SelectDocuments } from '../../components/SelectDocuments';
-import { Onboarding } from '../../components/Onboarding';
-import { SomethingWentWrong } from '../../components/SomethingWentWrong';
+import { SelectDocuments } from './components/SelectDocuments';
+import { Onboarding } from './components/Onboarding';
+import { SomethingWentWrong } from './components/SomethingWentWrong';
+import { API_BASE } from '../../components/Layout';
+import { showToast } from '../../components/CustomToaster';
 
 const initialState = {
   errors: [],
@@ -33,43 +35,45 @@ export const UseCaseOnePage = () => {
   const [requesting, setRequesting] = useState(false);
   const [errors, setErrors] = useState({});
   const [errorOnboarding, setErrorOnboarding] = useState('');
-  //TODO: SET 0
-  const [currentStep, setCurrentStep] = useState(1);
+  const [currentStep, setCurrentStep] = useState(0);
 
   async function handleSave(event) {
     event.preventDefault();
     if (!formIsValid()) {
       return;
     }
-
-    const body = {
-      'callback-url': process.env.REACT_APP_DS_RETURN_URL + '/signing_complete',
-      'terms-name': t('Transcript.TermsName'),
-      'terms-transcript': t('Transcript.DisplayName'),
-      'display-name': t('Transcript.TermsTranscript'),
-    };
     setRequesting(true);
     try {
-      const response = await studentsAPI.getCliwrapForRequestTranscript(body);
-      dispatch({
-        type: Actions.GET_CLICKWRAP_SUCCESS,
-        payload: {
-          clickwrap: response.clickwrap,
-          envelopeId: response.envelope_id,
-          redirectUrl: response.redirect_url,
+      const payload = {
+        workspacesName: request.firstName + request.lastName,
+        // ownerEmail: request.email,
+        // accountId: Date.now().toString(),
+      };
+      console.log('<<<< payload', payload);
+      const res = await fetch(`${API_BASE}/api/workspaces/create`, {
+        method: 'POST',
+        credentials: 'include',
+        headers: {
+          'Content-Type': 'application/json',
         },
+        body: JSON.stringify(payload),
       });
-      window.addEventListener(
-        'message',
-        (event) => getTranscript(event, response.clickwrap),
-        false
-      );
+      console.log('<<<< res', res);
+      if (!res.ok) {
+        console.log('<<<< res', res);
+        toast.error(`Server error: ${res.status}`);
+        throw new Error(`Server error: ${res.status}`);
+      }
+
+      const data = await res.json();
+      console.log('<< RESPONSE create workspace', data);
+      showToast('Workspace successfully created');
       setCurrentStep(1);
     } catch (error) {
       setRequesting(false);
       toast.error(error.message);
-      //TODO: REMOVE setCurrentStep!!!
-      setCurrentStep(1);
+      // //TODO: REMOVE setCurrentStep!!!
+      // setCurrentStep(1);
     }
   }
 
@@ -197,30 +201,7 @@ export const UseCaseOnePage = () => {
           ))}
         <ApiDescription />
       </div>
-      <Toaster
-        position="top-center"
-        reverseOrder={false}
-        gutter={8}
-        containerClassName="app-toast-container"
-        toasterId="default"
-        toastOptions={{
-          className: 'app-toast',
-          duration: 5000,
-          removeDelay: 1000,
-          success: {
-            className: 'app-toast-success',
-            duration: 3000,
-            iconTheme: {
-              primary: 'green',
-              secondary: 'black',
-            },
-          },
-          error: {
-            className: 'app-toast-error',
-            duration: 3000,
-          },
-        }}
-      />
+      <Toaster position="top-center" />
     </section>
   );
 };
