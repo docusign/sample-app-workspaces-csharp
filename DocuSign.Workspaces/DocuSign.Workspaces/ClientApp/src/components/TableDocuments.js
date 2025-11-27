@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import PropTypes from 'prop-types';
 import { useTranslation } from 'react-i18next';
+import { useOutletContext } from 'react-router-dom';
 import { ReactComponent as DownloadIcon } from '../assets/icons/import.svg';
 import { ReactComponent as EyeIcon } from '../assets/icons/eye.svg';
 import { SortIcon } from '../components/SortIcon';
@@ -21,6 +22,7 @@ export const TableDocuments = ({
   onPrevious,
 }) => {
   const { t } = useTranslation();
+  const { accountStatus } = useOutletContext();
   const [submitted, setSubmitted] = useState(false);
   const [listPending, setListPending] = useState(listFiles);
   const [sortConfig, setSortConfig] = useState({ key: null, direction: 'asc' });
@@ -65,7 +67,9 @@ export const TableDocuments = ({
                     <tr>
                       <th onClick={() => handleSort('label')}>
                         <div className="header-content">
-                          {t('Onboarding.EnvelopeName')}
+                          {accountStatus?.isConnected
+                            ? t('Onboarding.EnvelopeName')
+                            : 'Document Name'}
                           <SortIcon
                             column="label"
                             key={sortConfig.key}
@@ -73,6 +77,18 @@ export const TableDocuments = ({
                           />
                         </div>
                       </th>
+                      {!accountStatus?.isConnected && (
+                        <th onClick={() => handleSort('status')}>
+                          <div className="header-content">
+                            Requires Signature
+                            <SortIcon
+                              column="status"
+                              key={sortConfig.key}
+                              direction={sortConfig.direction}
+                            />
+                          </div>
+                        </th>
+                      )}
                       <th onClick={() => handleSort('status')}>
                         <div className="header-content">
                           {t('Onboarding.Status')}
@@ -90,6 +106,7 @@ export const TableDocuments = ({
                     {listPending.map((doc) => (
                       <tr key={doc.id}>
                         <td>{doc.name}</td>
+                        {!accountStatus?.isConnected && <td>{doc.isRequires ? 'Yes' : 'No'}</td>}
                         <td>{doc.status}</td>
                         <td>
                           <div className="actions-container">

@@ -223,16 +223,15 @@ export const RequestFormPhysician = ({
 
                     <div className="uploaded-file-content">
                       <div className="uploaded-file-header">
-                        <span className="uploaded-file-name">
-                          {file.name}
-                          <button
-                            type="button"
-                            className="uploaded-file-preview"
-                            onClick={() => handlePreview(file)}
-                          >
-                            Preview
-                          </button>
-                        </span>
+                        <span className="uploaded-file-name">{file.name}</span>
+
+                        <button
+                          type="button"
+                          className="uploaded-file-preview"
+                          onClick={() => handlePreview(file)}
+                        >
+                          Preview
+                        </button>
                       </div>
 
                       {file.status === 'uploading' && (
@@ -266,7 +265,7 @@ export const RequestFormPhysician = ({
                       )}
                     </div>
 
-                    {!accountStatus?.isConnected &&
+                    {accountStatus?.isConnected &&
                       (file.status === 'uploading' ? (
                         <div className="uploaded-file-progress">
                           <div className="uploaded-file-progress-info">

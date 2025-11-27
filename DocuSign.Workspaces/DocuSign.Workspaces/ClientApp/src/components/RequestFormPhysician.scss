@@ -16,7 +16,8 @@
   transition: all 0.2s ease;
   align-items: center;
   justify-content: center;
-
+  max-width: 100%;
+  min-width: 0;
   &:hover {
     border-color: #d0d1d9;
     box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
@@ -60,6 +61,7 @@
 .uploaded-file-header {
   display: flex;
   align-items: center;
+  justify-content: flex-start;
 }
 
 .uploaded-file-name {
@@ -68,7 +70,6 @@
   font-size: 16px;
   color: #151515;
   letter-spacing: 0px;
-  flex: 1;
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
@@ -141,7 +142,6 @@
   transition: width 0.3s ease;
 }
 
-// Помилка
 .uploaded-file-error {
   display: flex;
   align-items: center;
@@ -237,6 +237,13 @@
 @media (max-width: 768px) {
   .uploaded-file-item {
     padding: 12px;
+  }
+
+  .uploaded-file-header {
+    flex-wrap: wrap;
+  }
+  .uploaded-file-name {
+    flex-wrap: wrap;
   }
 
   .uploaded-file-name {

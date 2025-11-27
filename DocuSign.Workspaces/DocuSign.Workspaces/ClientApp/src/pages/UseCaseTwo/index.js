@@ -4,12 +4,9 @@ import { Toaster, toast } from 'react-hot-toast';
 import { RequestFormPhysician } from '../../components/RequestFormPhysician';
 import GoBackArrow from '../../components/GoBackArrow';
 import { ApiDescription } from '../../components/ApiDescription';
-import StepProgress from '../../components/StepProgress';
 import { reducer } from './requestReducer';
 import * as studentsAPI from '../../api/studentsAPI';
-import * as Actions from './actionTypes';
 import { download } from '../../api/download';
-import { SelectDocuments } from '../../components/SelectDocuments';
 import { TableDocuments } from '../../components/TableDocuments';
 import { SomethingWentWrong } from '../../components/SomethingWentWrong';
 
@@ -167,7 +164,7 @@ export const UseCaseTwoPage = () => {
         )}
 
         {currentStep === 1 &&
-          (!errorOnboarding ? (
+          (errorOnboarding ? (
             <SomethingWentWrong
               tryAgain={() => {
                 setCurrentStep(0);
