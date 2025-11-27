@@ -21,11 +21,6 @@ public class WealthManagementClientController(IWealthManagementClient wealthMana
     [Route("/api/workspaces/add-selected-documents")]
     public async Task<List<EnvelopeModel>> AddSelectedDocuments([FromBody] WorkspaceAddDocumentsModel model)
     {
-        var bytes = await System.IO.File.ReadAllBytesAsync("./Docs/World_Wide_Corp_lorem.pdf");
-        model.Documents = [
-            new Document(){Base64String = Convert.ToBase64String(bytes), Name = "Test1"},
-            new Document(){Base64String = Convert.ToBase64String(bytes), Name = "Test2"}];
-
         var envelopes = await wealthManagementClient.AddSelectedDocumentsForClientPackage(model);
         return envelopes;
     }
