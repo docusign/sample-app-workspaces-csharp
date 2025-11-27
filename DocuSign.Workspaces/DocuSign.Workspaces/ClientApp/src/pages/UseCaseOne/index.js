@@ -9,9 +9,9 @@ import { reducer } from './requestReducer';
 import * as studentsAPI from '../../api/studentsAPI';
 import * as Actions from './actionTypes';
 import { download } from '../../api/download';
-import { SelectDocuments } from './components/SelectDocuments';
-import { Onboarding } from './components/Onboarding';
-import { SomethingWentWrong } from './components/SomethingWentWrong';
+import { SelectDocuments } from '../../components/SelectDocuments';
+import { Onboarding } from '../../components/Onboarding';
+import { SomethingWentWrong } from '../../components/SomethingWentWrong';
 import { API_BASE } from '../../components/Layout';
 import { showToast } from '../../components/CustomToaster';
 

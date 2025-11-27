@@ -31,14 +31,14 @@ export default function HomePage() {
                 icon: '/wm_card_icon.png',
                 title: t('WealthManagement'),
                 cta: t('GetStarted'),
-                url: '/workspaces',
+                url: '/use-case1',
                 features: [t('RemoteSigning'), t('Templates'), t('BrandingIntegration')],
               },
               {
                 icon: '/cp_card_icon.png',
                 title: t('CarePlans'),
                 cta: t('GetStarted'),
-                url: '/workspaces',
+                url: '/use-case2',
                 features: [t('PersistentWorkspaces'), t('DocumentAggregation'), t('SignAndAssign')],
               },
             ].map((card) => (
