@@ -27,7 +27,7 @@ export const RequestForm = ({
 
   return (
     <div className="col-lg-8">
-      <div className="form-holder bg-white pt-5 pb-5">
+      <div className="form-holder bg-white pb-5">
         <h2 className="mb-4">{t('FormTitle')}</h2>
 
         <form
@@ -38,8 +38,7 @@ export const RequestForm = ({
           className={submitted ? 'was-validated' : ''}
           noValidate
         >
-          {errors.onSave && <div className="alert alert-danger mt-2">{errors.onSave}</div>}
-          <h4 className="mb-4">{t('PrimaryTitle')}</h4>
+          <p className="form-second-title">{t('PrimaryTitle')}</p>
           <div className="form-grid">
             <InputText
               name="firstName"
@@ -76,11 +75,14 @@ export const RequestForm = ({
               error={errors.email}
             />
           </div>
-          <h4 className="mb-4">{t('SecondaryTitle')}</h4>
+          <p className="form-second-title">
+            {t('SecondaryTitle')}
+            <span className="optional-italic"> (optional)</span>
+          </p>
 
           <div className="form-grid">
             <InputText
-              name="firstNameSecond"
+              name="firstNameOptional"
               label={
                 <>
                   <UserIcon className="form_icon" />
@@ -88,20 +90,22 @@ export const RequestForm = ({
                 </>
               }
               placeholder={t('FirstName')}
-              value={request.firstName}
+              value={request.firstNameOptional}
               onChange={onChange}
-              error={errors.firstName}
+              error={errors.firstNameOptional}
+              required={false}
             />
             <InputText
-              name="lastNameSecond"
+              name="lastNameOptional"
               label=""
               placeholder={t('LastName')}
-              value={request.lastName}
+              value={request.lastNameOptional}
               onChange={onChange}
-              error={errors.lastName}
+              error={errors.lastNameOptional}
+              required={false}
             />
             <InputText
-              name="emailSecond"
+              name="emailOptional"
               placeholder={t('Email')}
               label={
                 <>
@@ -109,9 +113,10 @@ export const RequestForm = ({
                   {t('Email')}
                 </>
               }
-              value={request.email}
+              value={request.emailOptional}
               onChange={onChange}
-              error={errors.email}
+              error={errors.emailOptional}
+              required={false}
             />
           </div>
           <div id="ds-clickwrap"></div>
@@ -127,21 +132,18 @@ export const RequestForm = ({
           <div className="text-end">
             <button
               className="pill card__cta btn-primary"
-              // type="button"
               type="submit"
-              disabled={requesting}
-              //  onClick={openLoginModal}
+              disabled={
+                requesting ||
+                !request.firstName ||
+                !request.lastName ||
+                !request.email ||
+                errors.email
+              }
             >
               {t('SubmitButton')}
               <ArrowRightIcon className="arrow_right_icon" />
             </button>
-            {/* <button
-              type="submit"
-              disabled={requesting}
-              className="btn btn-danger"
-            >
-              {requesting ? t("SubmitButtonClicked") : t("SubmitButton")}
-            </button> */}
           </div>
         </form>
       </div>
