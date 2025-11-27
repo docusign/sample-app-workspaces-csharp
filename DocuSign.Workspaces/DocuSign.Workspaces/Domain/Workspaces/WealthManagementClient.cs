@@ -8,20 +8,19 @@ using DocuSign.eSign.Model;
 using Docusign.IAM.SDK.Models.Components;
 using DocuSign.Workspaces.Domain.Workspaces.Models;
 using DocuSign.Workspaces.Infrastructure.Services.Interfaces;
-using Document = DocuSign.eSign.Model.Document;
+using Document = DocuSign.Workspaces.Domain.Workspaces.Models.Document;
 
 namespace DocuSign.Workspaces.Domain.Workspaces;
 
-public class WealthManagementClient(IDocuSignApiProvider docuSignApiProvider) : IWealthManagementClient
+public class WealthManagementClient(IDocuSignApiProvider docuSignApiProvider, IAccountRepository accountRepository) : IWealthManagementClient
 {
     public async Task<string> CreateWorkspaces(CreateWorkspacesModel createWorkspacesModel)
     {
         var workspaceBody = new CreateWorkspaceBody
         {
-            Name = "Test Workspace"
+            Name = createWorkspacesModel.WorkspacesName,
         };
-
-        var workspace = await docuSignApiProvider.Workspace2.CreateWorkspaceAsync(createWorkspacesModel.AccountId, workspaceBody);
+        var workspace = await docuSignApiProvider.Workspace2.CreateWorkspaceAsync(accountRepository.AccountId, workspaceBody);
 
         return workspace.WorkspaceId;
     }
@@ -31,12 +30,11 @@ public class WealthManagementClient(IDocuSignApiProvider docuSignApiProvider) : 
         var envelopes = new List<EnvelopeModel>();
         foreach (var document in createModel.Documents)
         {
-            var envelopeId = await ProcessDocument(createModel);
+            var envelopeId = await ProcessDocument(createModel, document.Name);
 
             var envelopeModel = await UpdateEachEnvelopWithDocument(
-                accountId: createModel.AccountId,
                 envelopeId: envelopeId,
-                documentBytes: Convert.FromBase64String(document));
+                document: document);
 
             envelopes.Add(envelopeModel);
         }
@@ -44,23 +42,23 @@ public class WealthManagementClient(IDocuSignApiProvider docuSignApiProvider) : 
         return envelopes;
     }
 
-    private async Task<string> ProcessDocument(WorkspaceAddDocumentsModel createModel)
+    private async Task<string> ProcessDocument(WorkspaceAddDocumentsModel createModel, string envelopeName)
     {
+        var workspace = await docuSignApiProvider.Workspace2.GetWorkspaceAsync(accountRepository.AccountId, createModel.WorkspaceId);
+
         var workspaceEnvelopeForCreate = new WorkspaceEnvelopeForCreate
         {
-            EnvelopeName = "Test Envelope"
+            EnvelopeName = envelopeName
         };
 
-        var workspace = await docuSignApiProvider.Workspace2.GetWorkspaceAsync(createModel.AccountId, createModel.WorkspaceId);
-
         var envelopeResponse = await docuSignApiProvider.Workspace2.CreateWorkspaceEnvelopeAsync(
-            createModel.AccountId,
+            accountRepository.AccountId,
             createModel.WorkspaceId,
             workspaceEnvelopeForCreate);
 
         var uploadRequestBody = new CreateWorkspaceUploadRequestBody
         {
-            Name = "Test upload",
+            Name = envelopeName + " Upload",
             Description = "Description Test",
             DueDate = DateTime.Now,
             Status = WorkspaceUploadRequestStatus.Draft,
@@ -68,9 +66,9 @@ public class WealthManagementClient(IDocuSignApiProvider docuSignApiProvider) : 
             [
                 new CreateWorkspaceUploadRequestAssignment
                 {
-                    Email = "test@mail.com",
-                    FirstName = "FirstName",
-                    LastName = "LastName",
+                    Email = createModel.PrimaryOwnerEmail,
+                    FirstName = createModel.PrimaryOwnerFirstName,
+                    LastName = createModel.PrimaryOwnerLastName,
                     UploadRequestResponsibilityTypeId = WorkspaceUploadRequestResponsibilityType.Assignee
                 },
                 new CreateWorkspaceUploadRequestAssignment
@@ -81,17 +79,17 @@ public class WealthManagementClient(IDocuSignApiProvider docuSignApiProvider) : 
             ]
         };
         await docuSignApiProvider.WorkspaceUploadRequest.CreateWorkspaceUploadRequestAsync(
-            createModel.AccountId,
+            accountRepository.AccountId,
             createModel.WorkspaceId,
             uploadRequestBody);
 
         return envelopeResponse.EnvelopeId;
     }
 
-    private async Task<EnvelopeModel> UpdateEachEnvelopWithDocument(string accountId, string envelopeId, byte[] documentBytes)
+    private async Task<EnvelopeModel> UpdateEachEnvelopWithDocument(string envelopeId, Document document)
     {
         var accountsApi = new AccountsApi(docuSignApiProvider.ApiClient);
-        var response = await accountsApi.GetAccountIdentityVerificationAsync(accountId);
+        var response = await accountsApi.GetAccountIdentityVerificationAsync(accountRepository.AccountId);
 
         var workflow = response.IdentityVerification.FirstOrDefault();
         if (workflow == null)
@@ -109,11 +107,11 @@ public class WealthManagementClient(IDocuSignApiProvider docuSignApiProvider) : 
             Status = "Sent",
         };
 
-        var doc1 = new Document
+        var doc1 = new eSign.Model.Document
         {
             DocumentId = "1",
-            Name = "Lorem",
-            DocumentBase64 = Convert.ToBase64String(documentBytes),
+            Name = document.Name,
+            DocumentBase64 = document.Base64String
         };
 
         env.Documents = [doc1];
@@ -169,8 +167,8 @@ public class WealthManagementClient(IDocuSignApiProvider docuSignApiProvider) : 
         };
         env.Recipients = recipients;
 
-        await docuSignApiProvider.EnvelopApi.UpdateDocumentsAsync(accountId, envelopeId, env);
+        await docuSignApiProvider.EnvelopApi.UpdateDocumentsAsync(accountRepository.AccountId, envelopeId, env);
 
-        return new EnvelopeModel(envelopeId, env.Status);
+        return new EnvelopeModel(document.Name, env.Status);
     }
 }
