@@ -40,7 +40,7 @@ const listFiles = [
     forSignature: false,
     type: 'pdf',
     name: 'Specialized home care plan doc TEST.pdf',
-    path: 'Specialized home care plan doc TEST.pdf',
+    path: '/Specialized home care plan doc TEST.pdf',
   },
 ];
 

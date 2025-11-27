@@ -5,15 +5,10 @@ import { ReactComponent as DownloadIcon } from '../assets/icons/import.svg';
 import { ReactComponent as EyeIcon } from '../assets/icons/eye.svg';
 import { SortIcon } from '../components/SortIcon';
 
-const MOCK_DATA = [
-  { id: 21, label: 'Engagement Agreement', status: 'Signed', previewUrl: '/preview/engagement' },
-  { id: 22, label: 'IRA Products Agreement', status: 'Draft', previewUrl: '/preview/ira' },
-  { id: 23, label: 'ETF Products Agreement', status: 'Not signed', previewUrl: '/preview/etf' },
-];
-
 export const Onboarding = ({
   request,
   onSave,
+  filesList,
   onChange,
   requesting = false,
   errors = {},
@@ -21,7 +16,7 @@ export const Onboarding = ({
 }) => {
   const { t } = useTranslation();
   const [submitted, setSubmitted] = useState(false);
-  const [listToSign, setListToSign] = useState(MOCK_DATA);
+  const [listToSign, setListToSign] = useState(filesList);
   const [sortConfig, setSortConfig] = useState({ key: null, direction: 'asc' });
 
   const handleSort = (key) => {
@@ -92,14 +87,16 @@ export const Onboarding = ({
                         <td>{doc.status}</td>
                         <td>
                           <div className="actions-container">
-                            <button
-                              type="button"
-                              className="action-button"
-                              onClick={() => window.open(doc.previewUrl, '_blank')}
-                              aria-label={t('Onboarding.Preview')}
-                            >
-                              <EyeIcon />
-                            </button>
+                            {doc.path && (
+                              <button
+                                type="button"
+                                className="action-button"
+                                onClick={() => window.open(doc.path, '_blank')}
+                                aria-label={t('Onboarding.Preview')}
+                              >
+                                <EyeIcon />
+                              </button>
+                            )}
                             <button
                               type="button"
                               className="action-button"

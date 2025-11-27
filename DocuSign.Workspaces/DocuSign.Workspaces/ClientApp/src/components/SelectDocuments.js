@@ -4,15 +4,26 @@ import { useTranslation } from 'react-i18next';
 import { AgreementRow } from './AgreementRow';
 import { ReactComponent as ArrowRightIcon } from '../assets/icons/arrow-right.svg';
 import { ReactComponent as ArrowLeftIcon } from '../assets/icons/arrow-left.svg';
-
 const listToSign = [
-  { id: 21, label: 'Engagement Agreement', previewUrl: '/preview/engagement' },
-  { id: 22, label: 'IRA Products Agreement', previewUrl: '/preview/ira' },
-  { id: 23, label: 'ETF Products Agreement', previewUrl: '/preview/etf' },
+  {
+    id: 21,
+    label: '2Engagement Agreement.pdf',
+    path: '/Engagement Agreement placeholder.pdf',
+  },
+  {
+    id: 22,
+    label: '2IRA Products Agreement.pdf',
+    path: '/IRA Products Agreement.pdf',
+  },
+  {
+    id: 23,
+    label: '2ETF Products Agreement.pdf',
+    path: '/ETF PRODUCTS AGREEMENT.pdf',
+  },
 ];
 const uploadRequest = [
-  { id: 11, label: 'Pay Stub', previewUrl: '/preview/paystub' },
-  { id: 12, label: 'Tax Return', previewUrl: '/preview/taxreturn' },
+  { id: 11, label: '2Pay Stub.pdf', path: '/Tax Return.pdf' },
+  { id: 12, label: '2Tax Return.pdf', path: '/Pay Statement.pdf' },
 ];
 
 export const SelectDocuments = ({
@@ -25,11 +36,23 @@ export const SelectDocuments = ({
   onPrevious,
 }) => {
   const [checkedMap, setCheckedMap] = useState(
-    Object.fromEntries([...listToSign, ...uploadRequest].map((item) => [item.id, false]))
+    Object.fromEntries(
+      [...listToSign, ...uploadRequest].map((item) => [item.id, { ...item, isChecked: false }])
+    )
   );
-
+  const handlePreview = (file) => {
+    if (file && file.file) {
+      const fileURL = URL.createObjectURL(file.file);
+      window.open(fileURL, '_blank');
+    } else if (file && file.path) {
+      window.open(file.path, '_blank', 'noopener,noreferrer');
+    }
+  };
   const toggle = (id) => {
-    setCheckedMap((prev) => ({ ...prev, [id]: !prev[id] }));
+    setCheckedMap((prev) => ({
+      ...prev,
+      [id]: { ...prev[id], isChecked: !prev[id].isChecked },
+    }));
   };
   const { t } = useTranslation();
   return (
@@ -43,10 +66,10 @@ export const SelectDocuments = ({
             <AgreementRow
               key={item.id}
               label={item.label}
-              checked={checkedMap[item.id]}
+              checked={checkedMap[item.id].isChecked}
               onToggle={() => toggle(item.id)}
               onPreview={() => {
-                console.log('Preview:', item.previewUrl);
+                handlePreview(item);
               }}
             />
           ))}
@@ -58,10 +81,10 @@ export const SelectDocuments = ({
             <AgreementRow
               key={item.id}
               label={item.label}
-              checked={checkedMap[item.id]}
+              checked={checkedMap[item.id].isChecked}
               onToggle={() => toggle(item.id)}
               onPreview={() => {
-                console.log('Preview:', item.previewUrl);
+                handlePreview(item);
               }}
             />
           ))}
@@ -75,8 +98,14 @@ export const SelectDocuments = ({
           <button
             className="pill card__cta btn-primary"
             type="button"
-            onClick={onAddDocuments}
-            disabled={!Object.values(checkedMap).some((item) => item)}
+            onClick={() => {
+              const filteredCheckedDocuments = Object.values(checkedMap).filter(
+                (item) => item.isChecked
+              );
+              console.log('<<< filteredCheckedDocuments', filteredCheckedDocuments);
+              onAddDocuments(filteredCheckedDocuments);
+            }}
+            disabled={!Object.values(checkedMap).some((item) => item.isChecked)}
           >
             {t('AddDocumentsButton')}
             <ArrowRightIcon className="arrow_right_icon" />

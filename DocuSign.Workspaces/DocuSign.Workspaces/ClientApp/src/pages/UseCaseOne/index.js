@@ -35,10 +35,12 @@ export const UseCaseOnePage = () => {
   const { t } = useTranslation();
   const [state, dispatch] = useReducer(reducer, initialState);
   const [request, setRequestData] = useState({ ...initialState.request });
+  const [workspaceId, setWorkspaceId] = useState('');
   const [requesting, setRequesting] = useState(false);
   const [errors, setErrors] = useState({});
   const [errorOnboarding, setErrorOnboarding] = useState('');
   const [currentStep, setCurrentStep] = useState(0);
+  const [respFiles, setRespFiles] = useState([]);
 
   async function handleSave(event) {
     event.preventDefault();
@@ -49,10 +51,7 @@ export const UseCaseOnePage = () => {
     try {
       const payload = {
         workspacesName: request.firstName + request.lastName,
-        // ownerEmail: request.email,
-        // accountId: Date.now().toString(),
       };
-      console.log('<<<< payload', payload);
       const res = await fetch(urlCreate, {
         method: 'POST',
         credentials: 'include',
@@ -61,38 +60,72 @@ export const UseCaseOnePage = () => {
         },
         body: JSON.stringify(payload),
       });
-      console.log('<<<< res', res);
       if (!res.ok) {
         console.log('<<<< res', res);
         toast.error(`Server error: ${res.status}`);
         throw new Error(`Server error: ${res.status}`);
       }
+      const workspaceId = await res.text();
 
-      const data = await res.json();
-      console.log('<< RESPONSE create workspace', data);
+      setWorkspaceId(workspaceId);
       showToast('Workspace successfully created');
       setCurrentStep(1);
     } catch (error) {
       setRequesting(false);
       toast.error(error.message);
-      // //TODO: REMOVE setCurrentStep!!!
-      // setCurrentStep(1);
     }
+  }
+  async function fetchPublicFileAsBase64(path) {
+    const res = await fetch(path);
+    if (!res.ok) throw new Error(`Cannot load file: ${path}`);
+
+    const blob = await res.blob();
+
+    return new Promise((resolve, reject) => {
+      const reader = new FileReader();
+
+      reader.onloadend = () => {
+        const dataUrl = reader.result;
+        const base64String = dataUrl.split(',')[1];
+        resolve(base64String);
+      };
+      reader.onerror = reject;
+      reader.readAsDataURL(blob);
+    });
+  }
+
+  async function prepareDocuments(list) {
+    const docs = [];
+
+    for (const item of list) {
+      const base64 = await fetchPublicFileAsBase64(item.path);
+      docs.push({
+        base64String: base64,
+        name: item.label,
+      });
+    }
+
+    return docs;
   }
 
   async function onAddDocuments(event) {
-    event.preventDefault();
     if (!formIsValid()) {
       return;
     }
     setRequesting(true);
+    const documents = await prepareDocuments(event);
     try {
       const payload = {
-        workspacesName: request.firstName + request.lastName,
-        // ownerEmail: request.email,
-        // accountId: Date.now().toString(),
+        workspaceId: workspaceId,
+        documents,
+        primaryOwnerFirstName: request.firstName,
+        primaryOwnerLastName: request.lastName,
+        primaryOwnerEmail: request.email,
+        secondaryOwnerFirstName: request.firstNameOptional,
+        secondaryOwnerLastName: request.lastNameOptional,
+        secondaryOwnerEmail: request.emailOptional,
       };
-      console.log('<<<< payload', payload);
+      console.log('<<<< 22 payload', payload);
       const res = await fetch(urlAddDocuments, {
         method: 'POST',
         credentials: 'include',
@@ -101,18 +134,19 @@ export const UseCaseOnePage = () => {
         },
         body: JSON.stringify(payload),
       });
-      console.log('<<<< res', res);
+      console.log('<<<< 22 res', res);
       if (!res.ok) {
-        console.log('<<<< res', res);
         toast.error(`Server error: ${res.status}`);
         throw new Error(`Server error: ${res.status}`);
       }
 
       const data = await res.json();
-      console.log('<< RESPONSE create workspace', data);
+      console.log('<< 22 RESPONSE create data', data);
+      setRespFiles(data);
       // showToast('Workspace successfully created');
       setCurrentStep(2);
     } catch (error) {
+      console.log('<< 22 ERROR', error);
       setRequesting(false);
       toast.error(error.message);
       // //TODO: REMOVE setCurrentStep!!!
@@ -235,7 +269,7 @@ export const UseCaseOnePage = () => {
               }}
             />
           ) : (
-            <Onboarding />
+            <Onboarding filesList={respFiles} />
           ))}
         <ApiDescription />
       </div>
