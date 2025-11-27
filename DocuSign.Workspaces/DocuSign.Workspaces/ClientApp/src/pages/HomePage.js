@@ -1,11 +1,12 @@
 import { useEffect } from 'react';
-import { useOutletContext } from 'react-router-dom';
+import { useOutletContext, useNavigate } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import { ReactComponent as ArrowRightIcon } from '../assets/icons/arrow-right.svg';
 
 export default function HomePage() {
   const { t } = useTranslation();
   const { openLoginModal } = useOutletContext();
+  const navigate = useNavigate();
 
   useEffect(() => {
     document.body.classList.add('home-page');
@@ -30,12 +31,14 @@ export default function HomePage() {
                 icon: '/wm_card_icon.png',
                 title: t('WealthManagement'),
                 cta: t('GetStarted'),
+                url: '/workspaces',
                 features: [t('RemoteSigning'), t('Templates'), t('BrandingIntegration')],
               },
               {
                 icon: '/cp_card_icon.png',
                 title: t('CarePlans'),
                 cta: t('GetStarted'),
+                url: '/workspaces',
                 features: [t('PersistentWorkspaces'), t('DocumentAggregation'), t('SignAndAssign')],
               },
             ].map((card) => (
@@ -44,7 +47,13 @@ export default function HomePage() {
                   <img src={card.icon} alt="" />
                 </div>
                 <div className="card__title">{card.title}</div>
-                <button className="pill card__cta" type="button" onClick={openLoginModal}>
+                <button
+                  className="pill card__cta"
+                  type="button"
+                  onClick={() => {
+                    navigate(card.url);
+                  }}
+                >
                   {card.cta}
                   <ArrowRightIcon className="arrow_right_icon" />
                 </button>

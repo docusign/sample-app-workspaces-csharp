@@ -199,7 +199,7 @@ body.home-page::before {
   transition: all 0.1s ease 0s;
 }
 .nav__link:hover {
-  color: #c8c7c7;
+  color: #e0e0f2;
 }
 
 .nav__actions {
@@ -342,6 +342,16 @@ body.home-page::before {
   border: none;
   box-shadow: none;
   letter-spacing: -0.01em;
+
+  &:hover {
+    background-color: #4e2ca0;
+  }
+
+  &:focus {
+    background: #4e2ca0;
+    border: 3px solid #b3b8ff;
+    border-radius: 240px;
+  }
 }
 .btn-primary {
   width: auto;
@@ -485,6 +495,16 @@ body.home-page::before {
   letter-spacing: -0.01em;
   box-shadow: none;
   border: none;
+
+  &:hover {
+    background-color: #4e2ca0;
+  }
+
+  &:focus {
+    background: #4e2ca0;
+    border: 3px solid #b3b8ff;
+    border-radius: 240px;
+  }
 }
 
 .footer__link {

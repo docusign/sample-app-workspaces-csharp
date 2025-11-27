@@ -8,7 +8,7 @@ const ENVIRONMENTS = [
   { key: 'demo', label: 'Demo', url: 'https://account-d.docusign.com' },
   { key: 'production', label: 'Production', url: 'https://account.docusign.com' },
 ];
-const API_BASE = 'https://localhost:5001';
+export const API_BASE = 'https://localhost:5001';
 
 export default function Layout() {
   const { t } = useTranslation();
