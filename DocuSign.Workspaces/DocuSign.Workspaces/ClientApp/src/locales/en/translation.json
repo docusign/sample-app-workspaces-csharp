@@ -87,5 +87,30 @@
     "Actions": "Actions",
     "Preview": "Preview",
     "Download": "Download"
+  },
+  "RequestFormPhysician": {
+    "PhysicianInformation": "Physician information",
+    "InvitationMessage": "To see the physician's experience, provide your email address to receive the Workspace invitation",
+    "SelectPhysician": "Select physician",
+    "IncomingDocuments": "Incoming documents",
+    "FileSizeLimitExceeded": "File size exceeds 50 MB limit",
+    "SubmitToPhysician": "Submit to Physician"
+  },
+  "Common": {
+    "Preview": "Preview",
+    "ForSignature": "For signature",
+    "UploadDocument": "Upload Document",
+    "RemoveFile": "Remove file",
+    "Yes": "Yes",
+    "No": "No",
+    "Error": "Error"
+  },
+  "TableDocuments": {
+    "Title": "Documents Submitted",
+    "RequiresSignature": "Requires Signature"
+  },
+  "UseCaseOne": {
+    "Title": "Onboarding a new wealth management client",
+    "WorkspaceCreatedSuccess": "Workspace successfully created"
   }
 }

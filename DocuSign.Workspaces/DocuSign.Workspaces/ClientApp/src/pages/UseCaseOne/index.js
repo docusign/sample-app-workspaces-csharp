@@ -62,7 +62,7 @@ export const UseCaseOnePage = () => {
       const workspaceId = await res.text();
 
       setWorkspaceId(workspaceId);
-      showToast('Workspace successfully created');
+      showToast(t('UseCaseOne.WorkspaceCreatedSuccess'));
       setCurrentStep(1);
     } catch (error) {
       toast.error(error.message);
@@ -137,7 +137,7 @@ export const UseCaseOnePage = () => {
       // showToast('Workspace successfully created');
     } catch (error) {
       console.log('<< 22 ERROR', error);
-      setErrorOnboarding('Error');
+      setErrorOnboarding(t('Common.Error'));
       // setRequesting(false);
     } finally {
       setRequesting(false);
@@ -196,7 +196,7 @@ export const UseCaseOnePage = () => {
   return (
     <section className="content-section">
       <GoBackArrow />
-      <h2>Onboarding a new wealth management client </h2>
+      <h2>{t('UseCaseOne.Title')}</h2>
       <div className="col-lg-11">
         <StepProgress steps={['STEP 1', 'STEP 2', 'STEP 3']} currentStep={currentStep} />
       </div>

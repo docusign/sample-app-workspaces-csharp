@@ -14,9 +14,18 @@ import { ReactComponent as PdfType } from '../assets/icons/pdf.svg';
 import { ReactComponent as DocType } from '../assets/icons/doc.svg';
 
 const listToSign = [
-  { id: 21, name: 'Dr. Max Payne' },
-  { id: 22, name: 'Dr. Angela Kerr' },
-  { id: 23, name: 'Dr. Luke Heer' },
+  {
+    id: 21,
+    name: 'Dr. Max Payne',
+  },
+  {
+    id: 22,
+    name: 'Dr. Angela Kerr',
+  },
+  {
+    id: 23,
+    name: 'Dr. Luke Heer',
+  },
 ];
 const listFiles = [
   {
@@ -115,7 +124,7 @@ export const RequestFormPhysician = ({
         status: isOverLimit ? 'error' : 'uploading',
         progress: 0,
         forSignature: false,
-        errorMessage: isOverLimit ? 'File size exceeds 50 MB limit' : null,
+        errorMessage: isOverLimit ? t('RequestFormPhysician.FileSizeLimitExceeded') : null,
         file: file,
       };
 
@@ -178,13 +187,10 @@ export const RequestFormPhysician = ({
   return (
     <div className="col-lg-8">
       <div className="form-holder bg-white pb-5">
-        <div className="mb-2 subtitle1">Physician information</div>
+        <div className="mb-2 subtitle1">{t('RequestFormPhysician.PhysicianInformation')}</div>
 
         <form onSubmit={handleSubmit} className={submitted ? 'was-validated' : ''} noValidate>
-          <div className="subtitle2 mb-4">
-            To see the physician's experience, provide your email address to receive the Workspace
-            invitation
-          </div>
+          <div className="subtitle2 mb-4">{t('RequestFormPhysician.InvitationMessage')}</div>
           <div className="form-grid col-lg-8 mb-4">
             <InputText
               name="email"
@@ -201,7 +207,7 @@ export const RequestFormPhysician = ({
             />
           </div>
 
-          <div className="subtitle1 mb-4 mt-5 ">Select physician</div>
+          <div className="subtitle1 mb-4 mt-5 ">{t('RequestFormPhysician.SelectPhysician')}</div>
           <div className=" mb-5 subtitle2">
             {listToSign.map((item) => (
               <DoctorRow
@@ -213,7 +219,7 @@ export const RequestFormPhysician = ({
             ))}
           </div>
 
-          <div className="mb-4 mt-4 subtitle1">Incoming documents</div>
+          <div className="mb-4 mt-4 subtitle1">{t('RequestFormPhysician.IncomingDocuments')}</div>
 
           {uploadedFiles.length > 0 && (
             <div className="uploaded-files-container mb-3">
@@ -242,7 +248,7 @@ export const RequestFormPhysician = ({
                           className="uploaded-file-preview"
                           onClick={() => handlePreview(file)}
                         >
-                          Preview
+                          {t('Common.Preview')}
                         </button>
                       </div>
 
@@ -271,7 +277,7 @@ export const RequestFormPhysician = ({
                             checked={file.forSignature}
                             onChange={() => toggleSignature(file.id)}
                           />
-                          <span>For signature</span>
+                          <span>{t('Common.ForSignature')}</span>
                         </label>
                       )}
                     </div>
@@ -288,7 +294,7 @@ export const RequestFormPhysician = ({
                           type="button"
                           className="uploaded-file-remove"
                           onClick={() => removeFile(file.id)}
-                          aria-label="Remove file"
+                          aria-label={t('Common.RemoveFile')}
                         >
                           <TrashIcon style={file.status === 'error' ? { color: '#CA5048' } : {}} />
                         </button>
@@ -302,7 +308,7 @@ export const RequestFormPhysician = ({
           {accountStatus?.isConnected && (
             <button className="btn-upload-document" type="button" onClick={openModal}>
               <PlusIcon className="plus" />
-              Upload Document
+              {t('Common.UploadDocument')}
             </button>
           )}
 
@@ -318,7 +324,7 @@ export const RequestFormPhysician = ({
                 errors.email
               }
             >
-              Submit to Physician
+              {t('RequestFormPhysician.SubmitToPhysician')}
             </button>
           </div>
         </form>

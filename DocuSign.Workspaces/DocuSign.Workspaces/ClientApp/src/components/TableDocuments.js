@@ -43,7 +43,7 @@ export const TableDocuments = ({
   return (
     <div className="col-lg-8">
       <div className="form-holder bg-white pb-5">
-        <div className="title_in_container">Documents Submitted</div>
+        <div className="title_in_container">{t('TableDocuments.Title')}</div>
 
         <form
           onSubmit={(event) => {
@@ -72,7 +72,7 @@ export const TableDocuments = ({
                       {!accountStatus?.isConnected && (
                         <th onClick={() => handleSort('status')}>
                           <div className="header-content">
-                            Requires Signature
+                            {t('TableDocuments.RequiresSignature')}
                             <SortIcon
                               column="status"
                               key={sortConfig.key}
@@ -98,7 +98,9 @@ export const TableDocuments = ({
                     {listPending.map((doc) => (
                       <tr key={doc.id}>
                         <td>{doc.name}</td>
-                        {!accountStatus?.isConnected && <td>{doc.isNeedSign ? 'Yes' : 'No'}</td>}
+                        {!accountStatus?.isConnected && (
+                          <td>{doc.isNeedSign ? t('Common.Yes') : t('Common.No')}</td>
+                        )}
                         <td>{doc.status}</td>
                         <td>
                           <div className="actions-container">
