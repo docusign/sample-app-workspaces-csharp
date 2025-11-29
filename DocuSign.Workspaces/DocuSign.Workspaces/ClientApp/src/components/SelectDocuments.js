@@ -85,12 +85,12 @@ export const SelectDocuments = ({
         </div>
         <div className="subtitle1  mb-2">
           {t('UnloadedRequests')}
-          <span className="optional-italic"> (optional)</span>
+          <span className="optional-italic">{t('Common.Optional')}</span>
         </div>
 
         {!accountStatus?.isConnected && (
           <div className="attention_block mb-4">
-            <Warning2Icon /> Document selection is available only for personal accounts
+            <Warning2Icon /> {t('SelectDocuments.PersonalAccountsOnly')}
           </div>
         )}
 
@@ -111,7 +111,7 @@ export const SelectDocuments = ({
         <div className="text-end">
           <button className="card__cta btn_previous" type="button" onClick={onPrevious}>
             <ArrowLeftIcon className="previous_icon" />
-            Previous
+            {t('Common.Previous')}
           </button>
           <button
             className="pill card__cta btn-primary"

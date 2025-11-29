@@ -70,10 +70,9 @@ export const UseCaseTwoPage = () => {
   return (
     <section className="content-section">
       <GoBackArrow />
-      <h2>Care Plans approval inbox </h2>
+      <h2>{t('UseCaseTwo.Title')}</h2>
       <div className="col-lg-6 body1">
-        As a staff member you will assign care plans and other documents for review by a specific
-        physician
+        {t('UseCaseTwo.Description')}
       </div>
       <div className="form_and_description_grid">
         {currentStep === 0 && (

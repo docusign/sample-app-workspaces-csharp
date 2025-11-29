@@ -86,7 +86,8 @@
     "Status": "Status",
     "Actions": "Actions",
     "Preview": "Preview",
-    "Download": "Download"
+    "Download": "Download",
+    "Signed": "Signed"
   },
   "RequestFormPhysician": {
     "PhysicianInformation": "Physician information",
@@ -103,7 +104,14 @@
     "RemoveFile": "Remove file",
     "Yes": "Yes",
     "No": "No",
-    "Error": "Error"
+    "Error": "Error",
+    "Close": "Close",
+    "Cancel": "Cancel",
+    "Login": "Login",
+    "ServerError": "Server error: ",
+    "CannotLoadFile": "Cannot load file: ",
+    "Optional": " (optional)",
+    "Previous": "Previous"
   },
   "TableDocuments": {
     "Title": "Documents Submitted",
@@ -111,6 +119,47 @@
   },
   "UseCaseOne": {
     "Title": "Onboarding a new wealth management client",
-    "WorkspaceCreatedSuccess": "Workspace successfully created"
+    "WorkspaceCreatedSuccess": "Workspace successfully created",
+    "Step1": "STEP 1",
+    "Step2": "STEP 2",
+    "Step3": "STEP 3"
+  },
+  "LoginModal": {
+    "CloseModal": "Close modal",
+    "Title": "Log in with Docusign",
+    "Description": "Learn more about authentication options with Docusign",
+    "LoginWithDevAccount": "Log in with your Docusign developer account",
+    "ContinueWithTestAccount": "Continue with a test account",
+    "GetFreeAccount": "If you don't have a Docusign developer account, you can get one for free!",
+    "LoggingIn": "Logging in...",
+    "Error": {
+      "UnableToLoadAccountStatus": "Unable to load account status.",
+      "UnableToLoadSettings": "Unable to load settings.",
+      "UnableToStartConsentFlow": "Unable to start consent flow.",
+      "UnableToLoginWithTestAccount": "Unable to log in with test account.",
+      "UnableToLoadAccounts": "Unable to load accounts.",
+      "NoAccounts": "No accounts available for this user.",
+      "UnableToConnectAccount": "Unable to connect account.",
+      "IncompleteConsent": "Consent information is incomplete. Please grant consent again."
+    }
+  },
+  "Layout": {
+    "Demo": "Demo",
+    "Production": "Production",
+    "SignsphereAlt": "Signsphere"
+  },
+  "SelectDocuments": {
+    "PersonalAccountsOnly": "Document selection is available only for personal accounts"
+  },
+  "UseCaseTwo": {
+    "Title": "Care Plans approval inbox",
+    "Description": "As a staff member you will assign care plans and other documents for review by a specific physician"
+  },
+  "UploadModal": {
+    "CloseModal": "Close modal",
+    "Title": "Upload care plan or other document",
+    "UploadDocuments": "Upload Documents",
+    "AcceptedFormats": "Accepted formats: PDF, DOCX. Max file size: 50MB",
+    "ChooseFile": "Choose File"
   }
 }

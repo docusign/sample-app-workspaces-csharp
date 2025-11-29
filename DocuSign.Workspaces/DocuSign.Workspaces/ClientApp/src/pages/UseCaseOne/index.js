@@ -56,8 +56,8 @@ export const UseCaseOnePage = () => {
       });
       if (!res.ok) {
         console.log('<<<< res', res);
-        toast.error(`Server error: ${res.status}`);
-        throw new Error(`Server error: ${res.status}`);
+        toast.error(`${t('Common.ServerError')}${res.status}`);
+        throw new Error(`${t('Common.ServerError')}${res.status}`);
       }
       const workspaceId = await res.text();
 
@@ -72,7 +72,7 @@ export const UseCaseOnePage = () => {
   }
   async function fetchPublicFileAsBase64(path) {
     const res = await fetch(path);
-    if (!res.ok) throw new Error(`Cannot load file: ${path}`);
+    if (!res.ok) throw new Error(`${t('Common.CannotLoadFile')}${path}`);
 
     const blob = await res.blob();
 
@@ -128,7 +128,7 @@ export const UseCaseOnePage = () => {
       });
       console.log('<<<< 22 res', res);
       if (!res.ok) {
-        throw new Error(`Server error: ${res.status}`);
+        throw new Error(`${t('Common.ServerError')}${res.status}`);
       }
 
       const data = await res.json();
@@ -198,7 +198,10 @@ export const UseCaseOnePage = () => {
       <GoBackArrow />
       <h2>{t('UseCaseOne.Title')}</h2>
       <div className="col-lg-11">
-        <StepProgress steps={['STEP 1', 'STEP 2', 'STEP 3']} currentStep={currentStep} />
+        <StepProgress
+          steps={[t('UseCaseOne.Step1'), t('UseCaseOne.Step2'), t('UseCaseOne.Step3')]}
+          currentStep={currentStep}
+        />
       </div>
       <div className="form_and_description_grid">
         {currentStep === 0 && (

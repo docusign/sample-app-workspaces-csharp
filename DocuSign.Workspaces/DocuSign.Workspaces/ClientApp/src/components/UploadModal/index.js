@@ -1,8 +1,10 @@
 import { useState, useCallback } from 'react';
+import { useTranslation } from 'react-i18next';
 import './UploadModal.scss';
 import { ReactComponent as UploadIcon } from '../../assets/icons/upload.svg';
 
 function UploadModal({ isOpen, onClose, onFilesChange }) {
+  const { t } = useTranslation();
   const [dragActive, setDragActive] = useState(false);
 
   const handleDrag = useCallback(
@@ -43,15 +45,19 @@ function UploadModal({ isOpen, onClose, onFilesChange }) {
   return (
     <div className="upload-modal__backdrop" role="dialog" aria-modal="true">
       <div className="upload-modal">
-        <button className="upload-modal__close" type="button" onClick={onClose} aria-label="Close">
-          <img src="/close_modal.png" alt="Close modal" />
+        <button
+          className="upload-modal__close"
+          type="button"
+          onClick={onClose}
+          aria-label={t('Common.Close')}
+        >
+          <img src="/close_modal.png" alt={t('UploadModal.CloseModal')} />
         </button>
 
         <div className="upload-modal__header">
-          <h2>Upload care plan or other document</h2>
+          <h2>{t('UploadModal.Title')}</h2>
         </div>
 
-        {/* Drag and Drop зона */}
         <div
           className={`upload-container ${dragActive ? 'upload-container--active' : ''}`}
           onDragEnter={handleDrag}
@@ -78,12 +84,12 @@ function UploadModal({ isOpen, onClose, onFilesChange }) {
           </div>
 
           <div className="upload-text-container">
-            <div className="upload-title">Upload Documents</div>
-            <div className="upload-desc">Accepted formats: PDF, DOCX. Max file size: 50MB</div>
+            <div className="upload-title">{t('UploadModal.UploadDocuments')}</div>
+            <div className="upload-desc">{t('UploadModal.AcceptedFormats')}</div>
           </div>
 
           <label className="upload-button">
-            Choose File
+            {t('UploadModal.ChooseFile')}
             <input
               type="file"
               multiple

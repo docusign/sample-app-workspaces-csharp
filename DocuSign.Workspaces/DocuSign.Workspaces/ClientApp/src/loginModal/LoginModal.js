@@ -1,4 +1,5 @@
 import { useEffect, useMemo, useRef, useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import './LoginModal.scss';
 
 function LoginModal({
@@ -11,6 +12,7 @@ function LoginModal({
   resumeAuthStep,
   onClearAuthStep,
 }) {
+  const { t } = useTranslation();
   const defaultEnv = useMemo(() => environments?.[0]?.url || '', [environments]);
 
   const [selectedAuth, setSelectedAuth] = useState('acg'); // acg | jwt
@@ -101,11 +103,11 @@ function LoginModal({
 
     if (!statusRes.ok) {
       const message = await statusRes.text();
-      throw new Error(message || 'Unable to load account status.');
+      throw new Error(message || t('LoginModal.Error.UnableToLoadAccountStatus'));
     }
     if (!settingsRes.ok) {
       const message = await settingsRes.text();
-      throw new Error(message || 'Unable to load settings.');
+      throw new Error(message || t('LoginModal.Error.UnableToLoadSettings'));
     }
 
     const statusJson = await statusRes.json();
@@ -146,7 +148,7 @@ function LoginModal({
 
       if (!response.ok) {
         const message = await response.text();
-        throw new Error(message || 'Unable to start consent flow.');
+        throw new Error(message || t('LoginModal.Error.UnableToStartConsentFlow'));
       }
 
       const payload = await response.json();
@@ -179,7 +181,7 @@ function LoginModal({
 
       if (!response.ok) {
         const message = await response.text();
-        throw new Error(message || 'Unable to log in with test account.');
+        throw new Error(message || t('LoginModal.Error.UnableToLoginWithTestAccount'));
       }
 
       await fetchStatusAndSettings();
@@ -198,11 +200,11 @@ function LoginModal({
     });
     if (!response.ok) {
       const message = await response.text();
-      throw new Error(message || 'Unable to load accounts.');
+      throw new Error(message || t('LoginModal.Error.UnableToLoadAccounts'));
     }
     const payload = await response.json();
     if (!Array.isArray(payload) || payload.length === 0) {
-      throw new Error('No accounts available for this user.');
+      throw new Error(t('LoginModal.Error.NoAccounts'));
     }
     const defaultAccount = payload.find((acct) => acct.isDefault || acct.IsDefault) ?? payload[0];
     return {
@@ -227,7 +229,7 @@ function LoginModal({
 
     if (!response.ok) {
       const message = await response.text();
-      throw new Error(message || 'Unable to connect account.');
+      throw new Error(message || t('LoginModal.Error.UnableToConnectAccount'));
     }
 
     await fetchStatusAndSettings();
@@ -263,7 +265,7 @@ function LoginModal({
       const userId = latestSettings?.userId || latestSettings?.UserId || acgForm.userId;
 
       if (!basePath || !userId) {
-        throw new Error('Consent information is incomplete. Please grant consent again.');
+        throw new Error(t('LoginModal.Error.IncompleteConsent'));
       }
 
       const { accountId, baseUri } = await fetchDefaultAccountDetails(basePath, userId);
@@ -301,17 +303,17 @@ function LoginModal({
   return (
     <div className="auth-modal__backdrop" role="dialog" aria-modal="true">
       <div className="auth-modal">
-        <button className="auth-modal__close" type="button" onClick={onClose} aria-label="Close">
-          <img src="/close_modal.png" alt="Close modal" />
+        <button className="auth-modal__close" type="button" onClick={onClose} aria-label={t('Common.Close')}>
+          <img src="/close_modal.png" alt={t('LoginModal.CloseModal')} />
         </button>
         <div className="auth-modal__header">
           <div>
-            <h2>Log in with Docusign</h2>
+            <h2>{t('LoginModal.Title')}</h2>
           </div>
         </div>
         <div className="auth-modal__content">
           <p className="auth-modal__description">
-            Learn more about authentication options with Docusign
+            {t('LoginModal.Description')}
           </p>
           <div className="auth-modal__options auth-modal__options--radio">
             <label
@@ -326,7 +328,7 @@ function LoginModal({
               />
               <div>
                 <span className="auth-option__title">
-                  Log in with your Docusign developer account
+                  {t('LoginModal.LoginWithDevAccount')}
                 </span>
               </div>
             </label>
@@ -341,17 +343,17 @@ function LoginModal({
                 onChange={() => setSelectedAuth('jwt')}
               />
               <div>
-                <span className="auth-option__title">Continue with a test account</span>
+                <span className="auth-option__title">{t('LoginModal.ContinueWithTestAccount')}</span>
               </div>
             </label>
           </div>
           <p className="auth-modal__note">
-            If you don't have a Docusign developer account, you can get one for free!
+            {t('LoginModal.GetFreeAccount')}
           </p>
         </div>
         <div className="auth-modal__actions">
           <button className="secondary-btn" type="button" onClick={onClose}>
-            Cancel
+            {t('Common.Cancel')}
           </button>
           <button
             className="primary-btn"
@@ -359,7 +361,7 @@ function LoginModal({
             onClick={goToSelectedAuthStep}
             disabled={!selectedAuth || isLoading}
           >
-            {isLoading ? 'Logging in...' : 'Login'}
+            {isLoading ? t('LoginModal.LoggingIn') : t('Common.Login')}
           </button>
         </div>
         {error && <div className="auth-error">{error}</div>}

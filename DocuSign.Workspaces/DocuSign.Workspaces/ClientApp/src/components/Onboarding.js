@@ -109,7 +109,7 @@ export const Onboarding = ({
                     {listFiles.map((doc) => (
                       <tr key={doc.id}>
                         <td>{doc.name}</td>
-                        <td>{doc.status}</td>
+                        <td>{t(`Onboarding.${doc.status}`, doc.status)}</td>
                       </tr>
                     ))}
                   </tbody>

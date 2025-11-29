@@ -4,14 +4,15 @@ import { useTranslation } from 'react-i18next';
 import LoginModal from '../loginModal/LoginModal';
 import { ReactComponent as ChevronRightIcon } from '../assets/icons/chevron-right.svg';
 
-const ENVIRONMENTS = [
-  { key: 'demo', label: 'Demo', url: 'https://account-d.docusign.com' },
-  { key: 'production', label: 'Production', url: 'https://account.docusign.com' },
-];
 export const API_BASE = 'https://localhost:5001';
 
 export default function Layout() {
   const { t } = useTranslation();
+
+  const ENVIRONMENTS = [
+    { key: 'demo', label: t('Layout.Demo'), url: 'https://account-d.docusign.com' },
+    { key: 'production', label: t('Layout.Production'), url: 'https://account.docusign.com' },
+  ];
   const [accountStatus, setAccountStatus] = useState(null);
   const [isLoginOpen, setIsLoginOpen] = useState(false);
   const [isNavOpen, setIsNavOpen] = useState(false);
@@ -82,7 +83,11 @@ export default function Layout() {
         <div className={`nav ${isNavOpen ? 'nav--open' : ''}`}>
           <div className="nav__brand">
             <Link to="/">
-              <img className="nav__logo" src="/signsphere-logo.png" alt="Signsphere" />
+              <img
+                className="nav__logo"
+                src="/signsphere-logo.png"
+                alt={t('Layout.SignsphereAlt')}
+              />
             </Link>
           </div>
           <button className="nav__toggle" type="button" onClick={() => setIsNavOpen(!isNavOpen)}>

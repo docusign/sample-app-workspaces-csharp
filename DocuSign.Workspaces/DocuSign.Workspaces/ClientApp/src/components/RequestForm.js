@@ -69,7 +69,7 @@ export const RequestForm = ({
           </div>
           <div className="subtitle1  mb-4">
             {t('SecondaryTitle')}
-            <span className="optional-italic"> (optional)</span>
+            <span className="optional-italic">{t('Common.Optional')}</span>
           </div>
 
           <div className="form-grid">
