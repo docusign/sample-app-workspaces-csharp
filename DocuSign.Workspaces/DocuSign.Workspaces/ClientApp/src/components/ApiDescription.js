@@ -14,7 +14,7 @@ export const ApiDescription = () => {
       <div id="accordion">
         <div className="cardCollapse">
           <div className="cardCollapse-header" id="headingOne">
-            <h5 className="mb-0">
+            <h5 className="mb-0  flex-fill">
               <button
                 className="btn-see-more"
                 data-toggle="collapse"
@@ -25,14 +25,14 @@ export const ApiDescription = () => {
                   setOpen(!open);
                 }}
               >
-                <h3>
-                  {t('ApiDescription.SeeMore')}{' '}
+                <div className="collapsed_button">
+                  <h4>{t('ApiDescription.SeeMore')} </h4>
                   {open ? (
                     <MinusIcon className="plus_minus" />
                   ) : (
                     <PlusIcon className="plus_minus" />
                   )}
-                </h3>
+                </div>
               </button>
             </h5>
           </div>

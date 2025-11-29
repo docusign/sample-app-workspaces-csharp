@@ -1,14 +1,10 @@
-import React, { useState, useReducer, useEffect, useContext } from 'react';
+import React, { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Toaster, toast } from 'react-hot-toast';
 import { RequestForm } from '../../components/RequestForm';
 import GoBackArrow from '../../components/GoBackArrow';
 import { ApiDescription } from '../../components/ApiDescription';
 import StepProgress from '../../components/StepProgress';
-import { reducer } from './requestReducer';
-import * as studentsAPI from '../../api/studentsAPI';
-import * as Actions from './actionTypes';
-import { download } from '../../api/download';
 import { SelectDocuments } from '../../components/SelectDocuments';
 import { Onboarding } from '../../components/Onboarding';
 import { SomethingWentWrong } from '../../components/SomethingWentWrong';
@@ -28,12 +24,10 @@ const initialState = {
     lastNameOptional: '',
     emailOptional: '',
   },
-  clickwrap: null,
 };
 
 export const UseCaseOnePage = () => {
   const { t } = useTranslation();
-  const [state, dispatch] = useReducer(reducer, initialState);
   const [request, setRequestData] = useState({ ...initialState.request });
   const [workspaceId, setWorkspaceId] = useState('');
   const [requesting, setRequesting] = useState(false);
@@ -71,8 +65,9 @@ export const UseCaseOnePage = () => {
       showToast('Workspace successfully created');
       setCurrentStep(1);
     } catch (error) {
-      setRequesting(false);
       toast.error(error.message);
+    } finally {
+      setRequesting(false);
     }
   }
   async function fetchPublicFileAsBase64(path) {
@@ -101,7 +96,7 @@ export const UseCaseOnePage = () => {
       const base64 = await fetchPublicFileAsBase64(item.path);
       docs.push({
         base64String: base64,
-        name: item.label,
+        name: item.name,
       });
     }
 
@@ -109,9 +104,6 @@ export const UseCaseOnePage = () => {
   }
 
   async function onAddDocuments(event) {
-    if (!formIsValid()) {
-      return;
-    }
     setRequesting(true);
     const documents = await prepareDocuments(event);
     try {
@@ -136,7 +128,6 @@ export const UseCaseOnePage = () => {
       });
       console.log('<<<< 22 res', res);
       if (!res.ok) {
-        toast.error(`Server error: ${res.status}`);
         throw new Error(`Server error: ${res.status}`);
       }
 
@@ -144,46 +135,13 @@ export const UseCaseOnePage = () => {
       console.log('<< 22 RESPONSE create data', data);
       setRespFiles(data);
       // showToast('Workspace successfully created');
-      setCurrentStep(2);
     } catch (error) {
       console.log('<< 22 ERROR', error);
+      setErrorOnboarding('Error');
+      // setRequesting(false);
+    } finally {
       setRequesting(false);
-      toast.error(error.message);
-      // //TODO: REMOVE setCurrentStep!!!
-      // setCurrentStep(1);
-    }
-  }
-
-  async function getTranscript(event, clickwrap) {
-    if (event.data.type === 'HAS_AGREED') {
-      const body = {
-        clickwrap_id: clickwrap.clickwrapId,
-        client_user_id: request.email,
-        student: {
-          first_name: request.firstName,
-          last_name: request.lastName,
-        },
-      };
-      try {
-        const response = await studentsAPI.requestTranscript(body);
-        download(response, 'transcript', 'html', 'text/html');
-
-        window.addEventListener(
-          'message',
-          (event) => {
-            if (event.data.type === 'DOWNLOADED') {
-              setTimeout(() => {
-                goToSigningComplete(event);
-              }, 10000);
-            } else {
-              goToSigningComplete(event);
-            }
-          },
-          false
-        );
-      } catch (error) {
-        throw error;
-      }
+      setCurrentStep(2);
     }
   }
 
@@ -192,10 +150,6 @@ export const UseCaseOnePage = () => {
       setCurrentStep(currentStep - 1);
     }
   };
-
-  function goToSigningComplete(event) {
-    window.top.location.href = process.env.REACT_APP_DS_RETURN_URL + '/signing_complete';
-  }
 
   function handleChange(event) {
     const { name } = event.target;
@@ -254,11 +208,14 @@ export const UseCaseOnePage = () => {
             onChange={handleChange}
             onSave={handleSave}
             errors={errors}
-            clickwrap={state.clickwrap}
           />
         )}
         {currentStep === 1 && (
-          <SelectDocuments onPrevious={onPrevious} onAddDocuments={onAddDocuments} />
+          <SelectDocuments
+            onPrevious={onPrevious}
+            requesting={requesting}
+            onAddDocuments={onAddDocuments}
+          />
         )}
 
         {currentStep === 2 &&

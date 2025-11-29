@@ -91,12 +91,17 @@ export default function Layout() {
             <span />
           </button>
           <nav className={`nav__links ${isNavOpen ? 'nav__links--open' : ''}`}>
-            <Link to="/use-case2" className="nav__link">
+            <a
+              className="nav__link"
+              href="https://developers.docusign.com/docs/workspaces-api/"
+              target="_blank"
+              rel="noreferrer"
+            >
               {t('WorkspacesAPI')}{' '}
               <span className="nav__arrow">
                 <ChevronRightIcon />
               </span>
-            </Link>
+            </a>
             <a
               className="nav__link"
               href="https://github.com/docusign/code-examples-csharp/tree/master/Workspaces"

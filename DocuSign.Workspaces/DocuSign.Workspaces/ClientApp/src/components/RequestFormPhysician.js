@@ -4,8 +4,6 @@ import PropTypes from 'prop-types';
 import { useTranslation } from 'react-i18next';
 import { useOutletContext } from 'react-router-dom';
 
-import { ClickWrap } from './Clickwrap';
-import { LoadClickwrapApi } from './LoadClickwrapApi';
 import './RequestFormPhysician.scss';
 import { DoctorRow } from './DoctorRow';
 import UploadModal from './UploadModal';
@@ -16,9 +14,9 @@ import { ReactComponent as PdfType } from '../assets/icons/pdf.svg';
 import { ReactComponent as DocType } from '../assets/icons/doc.svg';
 
 const listToSign = [
-  { id: 21, label: 'Dr. Max Payne' },
-  { id: 22, label: 'Dr. Angela Kerr' },
-  { id: 23, label: 'Dr. Luke Heer' },
+  { id: 21, name: 'Dr. Max Payne' },
+  { id: 22, name: 'Dr. Angela Kerr' },
+  { id: 23, name: 'Dr. Luke Heer' },
 ];
 const listFiles = [
   {
@@ -27,6 +25,9 @@ const listFiles = [
     type: 'pdf',
     name: 'Patient progress report TEST.pdf',
     path: '/Patient progress report TEST.pdf',
+    isNeedSign: true,
+    isSubmitted: true,
+    status: 'success',
   },
   {
     id: 212,
@@ -34,6 +35,9 @@ const listFiles = [
     type: 'pdf',
     name: 'Physical therapy plan TEST.pdf',
     path: '/Physical therapy plan TEST.pdf',
+    isNeedSign: true,
+    isSubmitted: true,
+    status: 'success',
   },
   {
     id: 213,
@@ -41,6 +45,9 @@ const listFiles = [
     type: 'pdf',
     name: 'Specialized home care plan doc TEST.pdf',
     path: '/Specialized home care plan doc TEST.pdf',
+    isNeedSign: false,
+    isSubmitted: true,
+    status: 'success',
   },
 ];
 
@@ -54,18 +61,16 @@ export const RequestFormPhysician = ({
 }) => {
   const { accountStatus } = useOutletContext();
   const [isUploadOpen, setIsUploadOpen] = useState(false);
-  const [clickApiReady, setClickApiReady] = useState(false);
-  // const [uploadedFiles, setUploadedFiles] = useState([]);
-  const [uploadedFiles, setUploadedFiles] = useState(listFiles);
+  const [uploadedFiles, setUploadedFiles] = useState([]);
 
   const openModal = () => setIsUploadOpen(true);
   const closeModal = () => setIsUploadOpen(false);
-
   useEffect(() => {
-    LoadClickwrapApi(() => {
-      setClickApiReady(true);
-    });
-  }, []);
+    console.log('<<<< RequestFormPhysician accountStatus', accountStatus);
+    if (!accountStatus?.isConnected) {
+      setUploadedFiles(listFiles);
+    }
+  }, [accountStatus]);
 
   const { t } = useTranslation();
   const [submitted, setSubmitted] = useState(false);
@@ -130,6 +135,11 @@ export const RequestFormPhysician = ({
     setUploadedFiles((prev) => prev.filter((f) => f.id !== fileId));
   };
 
+  const forSend = (fileId) => {
+    setUploadedFiles((prev) =>
+      prev.map((f) => (f.id === fileId ? { ...f, forSend: !f.forSend } : f))
+    );
+  };
   const toggleSignature = (fileId) => {
     setUploadedFiles((prev) =>
       prev.map((f) => (f.id === fileId ? { ...f, forSignature: !f.forSignature } : f))
@@ -143,11 +153,13 @@ export const RequestFormPhysician = ({
   };
 
   const handleSubmit = (event) => {
-    // event.preventDefault();
-
     const requestWithFiles = {
       ...request,
-      files: uploadedFiles.filter((f) => f.forSignature),
+      files: uploadedFiles.filter((f) =>
+        accountStatus?.isConnected
+          ? f.forSignature
+          : f.forSend && (f.isNeedSign ? f.forSignature : true)
+      ),
     };
 
     onSave(requestWithFiles);
@@ -166,22 +178,22 @@ export const RequestFormPhysician = ({
   return (
     <div className="col-lg-8">
       <div className="form-holder bg-white pb-5">
-        <h3 className="mb-4">Physician information</h3>
+        <div className="mb-2 subtitle1">Physician information</div>
 
         <form onSubmit={handleSubmit} className={submitted ? 'was-validated' : ''} noValidate>
-          <p className="form-second-title">
+          <div className="subtitle2 mb-4">
             To see the physician's experience, provide your email address to receive the Workspace
             invitation
-          </p>
-          <div className="form-grid col-lg-8">
+          </div>
+          <div className="form-grid col-lg-8 mb-4">
             <InputText
               name="email"
               placeholder={t('Email')}
               label={
-                <>
+                <div className="label_input">
                   <SmsIcon className="form_icon" />
                   {t('Email')}
-                </>
+                </div>
               }
               value={request.email}
               onChange={onChange}
@@ -189,19 +201,19 @@ export const RequestFormPhysician = ({
             />
           </div>
 
-          <h3 className="mb-4 mt-4">Select physician</h3>
-          <div>
+          <div className="subtitle1 mb-4 mt-5 ">Select physician</div>
+          <div className=" mb-5 subtitle2">
             {listToSign.map((item) => (
               <DoctorRow
                 key={item.id}
-                label={item.label}
+                label={item.name}
                 checked={checkedMap[item.id]}
                 onToggle={() => toggle(item.id)}
               />
             ))}
           </div>
 
-          <h3 className="mb-4 mt-4">Upload care plan or other documents</h3>
+          <div className="mb-4 mt-4 subtitle1">Incoming documents</div>
 
           {uploadedFiles.length > 0 && (
             <div className="uploaded-files-container mb-3">
@@ -211,8 +223,8 @@ export const RequestFormPhysician = ({
                     <label className="uploaded-file-signature me-3">
                       <input
                         type="checkbox"
-                        checked={file.forSignature}
-                        onChange={() => toggleSignature(file.id)}
+                        checked={file.forSend}
+                        onChange={() => forSend(file.id)}
                       />
                     </label>
                   )}
@@ -252,11 +264,10 @@ export const RequestFormPhysician = ({
                         </div>
                       )}
 
-                      {accountStatus?.isConnected && file.status === 'success' && (
+                      {file.isNeedSign && (
                         <label className="uploaded-file-signature">
                           <input
                             type="checkbox"
-                            // checked={true}
                             checked={file.forSignature}
                             onChange={() => toggleSignature(file.id)}
                           />

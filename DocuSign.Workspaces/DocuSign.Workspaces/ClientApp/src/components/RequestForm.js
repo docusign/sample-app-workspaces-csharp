@@ -1,9 +1,7 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { InputText } from './InputText';
 import PropTypes from 'prop-types';
 import { useTranslation } from 'react-i18next';
-import { ClickWrap } from './Clickwrap';
-// import { LoadClickwrapApi } from './LoadClickwrapApi';
 import { ReactComponent as ArrowRightIcon } from '../assets/icons/arrow-right.svg';
 import { ReactComponent as UserIcon } from '../assets/icons/user.svg';
 import { ReactComponent as SmsIcon } from '../assets/icons/sms.svg';
@@ -16,19 +14,13 @@ export const RequestForm = ({
   requesting = false,
   errors = {},
 }) => {
-  const [clickApiReady, setClickApiReady] = useState(false);
-  // useEffect(() => {
-  //   LoadClickwrapApi(() => {
-  //     setClickApiReady(true);
-  //   });
-  // }, []);
   const { t } = useTranslation();
   const [submitted, setSubmitted] = useState(false);
 
   return (
     <div className="col-lg-8">
       <div className="form-holder bg-white pb-5">
-        <h2 className="mb-4">{t('FormTitle')}</h2>
+        <h4 className="mb-5">{t('FormTitle')}</h4>
 
         <form
           onSubmit={(event) => {
@@ -38,8 +30,8 @@ export const RequestForm = ({
           className={submitted ? 'was-validated' : ''}
           noValidate
         >
-          <p className="form-second-title">{t('PrimaryTitle')}</p>
-          <div className="form-grid">
+          <div className="subtitle1 mb-4">{t('PrimaryTitle')}</div>
+          <div className="form-grid  mb-5">
             <InputText
               name="firstName"
               label={
@@ -75,10 +67,10 @@ export const RequestForm = ({
               error={errors.email}
             />
           </div>
-          <p className="form-second-title">
+          <div className="subtitle1  mb-4">
             {t('SecondaryTitle')}
             <span className="optional-italic"> (optional)</span>
-          </p>
+          </div>
 
           <div className="form-grid">
             <InputText
@@ -119,16 +111,6 @@ export const RequestForm = ({
               required={false}
             />
           </div>
-          <div id="ds-clickwrap"></div>
-          {clickwrap && clickApiReady && request.email ? (
-            <ClickWrap
-              accountId={clickwrap.accountId}
-              clickwrapId={clickwrap.clickwrapId}
-              clientUserId={request.email}
-            />
-          ) : null}
-          <div id="ds-clickwrap-preview"></div>
-
           <div className="text-end">
             <button
               className="pill card__cta btn-primary"

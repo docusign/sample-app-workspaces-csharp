@@ -5,6 +5,10 @@ input:-webkit-autofill:active {
   -webkit-box-shadow: 0 0 0 30px white inset !important;
 }
 
+.label_input {
+  margin-bottom: 4px;
+}
+
 .form-control::-webkit-input-placeholder,
 .form-control::-moz-placeholder,
 .form-control:-ms-input-placeholder,
@@ -251,6 +255,8 @@ input[type='radio'] {
 }
 
 .form-control {
+  background-color: #ffffff;
+  border-color: #9e9d9f;
   background-image: none !important;
   border-radius: 4px;
   &:invalid,
@@ -284,8 +290,28 @@ input[type='radio'] {
   font-size: 14px;
   font-style: italic;
   font-weight: 400;
-  color: #141414;
+  color: #ababab;
   opacity: 0.5;
+  font-family: 'Inter';
+  line-height: 150%;
+}
+
+.attention_block {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  padding: 8px 12px;
+  gap: 8px;
+  background: #f9f9f9;
+  color: #565454;
+  border-radius: 4px;
+  width: fit-content;
+}
+
+.disabled-block {
+  opacity: 0.5;
+  pointer-events: none;
+  user-select: none;
 }
 
 .form-grid {

@@ -1,9 +1,34 @@
 import React, { useState } from 'react';
 import PropTypes from 'prop-types';
 import { useTranslation } from 'react-i18next';
-import { ReactComponent as DownloadIcon } from '../assets/icons/import.svg';
-import { ReactComponent as EyeIcon } from '../assets/icons/eye.svg';
 import { SortIcon } from '../components/SortIcon';
+
+const listFiles = [
+  {
+    id: 211,
+    forSignature: false,
+    type: 'pdf',
+    name: 'Patient progress report TEST.pdf',
+    path: '/Patient progress report TEST.pdf',
+    status: 'Signed',
+  },
+  {
+    id: 212,
+    forSignature: false,
+    type: 'pdf',
+    name: 'Physical therapy plan TEST.pdf',
+    path: '/Physical therapy plan TEST.pdf',
+    status: 'Signed',
+  },
+  {
+    id: 213,
+    forSignature: false,
+    type: 'pdf',
+    name: 'Specialized home care plan doc TEST.pdf',
+    path: '/Specialized home care plan doc TEST.pdf',
+    status: 'Signed',
+  },
+];
 
 export const Onboarding = ({
   request,
@@ -41,7 +66,7 @@ export const Onboarding = ({
   return (
     <div className="col-lg-8">
       <div className="form-holder bg-white pb-5">
-        <h2 className="mb-4">{t('Onboarding.Title')}</h2>
+        <div className="title_in_container">{t('Onboarding.Title')}</div>
 
         <form
           onSubmit={(event) => {
@@ -77,36 +102,14 @@ export const Onboarding = ({
                           />
                         </div>
                       </th>
-                      <th>{t('Onboarding.Actions')}</th>
                     </tr>
                   </thead>
                   <tbody>
-                    {listToSign.map((doc) => (
+                    {/* {listToSign.map((doc) => ( */}
+                    {listFiles.map((doc) => (
                       <tr key={doc.id}>
-                        <td>{doc.label}</td>
+                        <td>{doc.name}</td>
                         <td>{doc.status}</td>
-                        <td>
-                          <div className="actions-container">
-                            {doc.path && (
-                              <button
-                                type="button"
-                                className="action-button"
-                                onClick={() => window.open(doc.path, '_blank')}
-                                aria-label={t('Onboarding.Preview')}
-                              >
-                                <EyeIcon />
-                              </button>
-                            )}
-                            <button
-                              type="button"
-                              className="action-button"
-                              onClick={() => console.log('Download', doc.label)}
-                              aria-label={t('Onboarding.Download')}
-                            >
-                              <DownloadIcon />
-                            </button>
-                          </div>
-                        </td>
                       </tr>
                     ))}
                   </tbody>

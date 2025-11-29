@@ -6,12 +6,6 @@ import { ReactComponent as DownloadIcon } from '../assets/icons/import.svg';
 import { ReactComponent as EyeIcon } from '../assets/icons/eye.svg';
 import { SortIcon } from '../components/SortIcon';
 
-// const MOCK_DATA = [
-//   { id: 21, label: 'Engagement Agreement', status: 'Signed', previewUrl: '/preview/engagement' },
-//   { id: 22, label: 'IRA Products Agreement', status: 'Draft', previewUrl: '/preview/ira' },
-//   { id: 23, label: 'ETF Products Agreement', status: 'Not signed', previewUrl: '/preview/etf' },
-// ];
-
 export const TableDocuments = ({
   request,
   onSave,
@@ -49,7 +43,7 @@ export const TableDocuments = ({
   return (
     <div className="col-lg-8">
       <div className="form-holder bg-white pb-5">
-        <h2 className="mb-4">{t('Onboarding.Title')}</h2>
+        <div className="title_in_container">Documents Submitted</div>
 
         <form
           onSubmit={(event) => {
@@ -67,9 +61,7 @@ export const TableDocuments = ({
                     <tr>
                       <th onClick={() => handleSort('label')}>
                         <div className="header-content">
-                          {accountStatus?.isConnected
-                            ? t('Onboarding.EnvelopeName')
-                            : 'Document Name'}
+                          {t('Onboarding.EnvelopeName')}
                           <SortIcon
                             column="label"
                             key={sortConfig.key}
@@ -106,7 +98,7 @@ export const TableDocuments = ({
                     {listPending.map((doc) => (
                       <tr key={doc.id}>
                         <td>{doc.name}</td>
-                        {!accountStatus?.isConnected && <td>{doc.isRequires ? 'Yes' : 'No'}</td>}
+                        {!accountStatus?.isConnected && <td>{doc.isNeedSign ? 'Yes' : 'No'}</td>}
                         <td>{doc.status}</td>
                         <td>
                           <div className="actions-container">
@@ -121,7 +113,7 @@ export const TableDocuments = ({
                             <button
                               type="button"
                               className="action-button"
-                              onClick={() => console.log('Download', doc.label)}
+                              onClick={() => console.log('Download', doc.name)}
                               aria-label={t('Onboarding.Download')}
                             >
                               <DownloadIcon />

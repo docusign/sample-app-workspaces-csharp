@@ -25,6 +25,16 @@
   color: #141414;
   background: transparent;
   border: 0px solid #ccc;
+  &:hover {
+    background-color: transparent;
+    border-width: 1px;
+    border-color: #141414;
+  }
+
+  &:focus {
+    background-color: transparent;
+    border: 3px solid #b3b8ff;
+  }
 }
 .previous_icon {
   width: 26px;
@@ -37,6 +47,7 @@
   width: 26px;
   height: 26px;
   margin-left: 8px;
+  color: #ffffff;
 }
 .form_icon {
   width: 14px;
@@ -662,7 +673,11 @@ body.home-page::before {
 
 .btn-primary:disabled,
 .btn-primary[disabled] {
-  background-color: #b7a3e6;
+  background-color: #fafafa;
+  color: #9e9d9f;
+  .arrow_right_icon {
+    color: #9e9d9f;
+  }
 }
 
 .app-toast {
@@ -771,6 +786,13 @@ body.home-page::before {
   background-color: #6e47cc;
   background-image: url("data:image/svg+xml,%3Csvg width='12' height='10' viewBox='0 0 12 10' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M4 9.4L0 5.4L1.4 4L4 6.6L10.6 0L12 1.4L4 9.4Z' fill='white'/%3E%3C/svg%3E");
 }
+.title_in_container {
+  font-size: 18px;
+  font-family: Inter;
+  font-weight: 600;
+  color: #141414;
+  margin-bottom: 32px;
+}
 
 .documents-table-wrapper {
   width: 100%;
@@ -796,7 +818,7 @@ body.home-page::before {
             padding: 16px 12px;
             font-size: 10px;
             font-weight: 600;
-            color: #6b7280;
+            color: #565454;
             text-transform: uppercase;
             letter-spacing: 0.05em;
             cursor: pointer;
@@ -843,21 +865,17 @@ body.home-page::before {
 
           td {
             padding: 10px 12px;
-            font-weight: 400;
+            font-weight: 500;
             font-family: Inter;
             font-size: 14px;
 
             &:first-child {
-              color: #111827;
-              font-weight: 400;
+              color: #141414;
+              font-weight: 500;
             }
 
             &:nth-child(2) {
-              color: #374151;
-            }
-
-            &:last-child {
-              text-align: right;
+              color: #141414;
             }
 
             .actions-container {
@@ -897,7 +915,7 @@ body.home-page::before {
         }
 
         tr:nth-child(odd) {
-          background-color: #f9f8fc;
+          background-color: #f9f9f9;
 
           &:hover {
             background-color: #f4f2f9;
