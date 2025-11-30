@@ -19,6 +19,8 @@ namespace DocuSign.Workspaces.Infrastructure.Services
         private Lazy<IAccountsApi> _accountsApi => new (() => new AccountsApi(_apiClient.Value));
         private Lazy<IWorkspaces2> _workspace2;
         private Lazy<IWorkspaceUploadRequest> _workspaceUploadRequest;
+        private Lazy<IWorkspaceDocuments> _workspaceDocuments;
+        private Lazy<IWorkspaceUsers> _workspaceUsers;
 
         private Lazy<DocuSignClient> _apiClient => new (() => _docuSignClientsFactory.BuildDocuSignApiClient());
         private Lazy<HttpClient> _docuSignHttpClient => new (() => _docuSignClientsFactory.BuildHttpClient());
@@ -28,6 +30,8 @@ namespace DocuSign.Workspaces.Infrastructure.Services
         {
             _workspace2 = new Lazy<IWorkspaces2>(() => new Workspaces2(_docusingSdkConfig.Value));
             _workspaceUploadRequest = new Lazy<IWorkspaceUploadRequest>(() => new WorkspaceUploadRequest(_docusingSdkConfig.Value));
+            _workspaceDocuments = new Lazy<IWorkspaceDocuments>(() => new WorkspaceDocuments(_docusingSdkConfig.Value));
+            _workspaceUsers = new Lazy<IWorkspaceUsers>(() => new WorkspaceUsers(_docusingSdkConfig.Value));
             _docuSignClientsFactory = docuSignClientsFactory;
         }
 
@@ -38,6 +42,8 @@ namespace DocuSign.Workspaces.Infrastructure.Services
         public DocuSignClient ApiClient => _apiClient.Value;
         public IWorkspaces2 Workspace2 => _workspace2.Value;
         public IWorkspaceUploadRequest WorkspaceUploadRequest => _workspaceUploadRequest.Value;
+        public IWorkspaceDocuments WorkspaceDocuments => _workspaceDocuments.Value;
+        public IWorkspaceUsers WorkspaceUsers => _workspaceUsers.Value;
 
         public HttpClient DocuSignHttpClient => _docuSignHttpClient.Value;
     }
