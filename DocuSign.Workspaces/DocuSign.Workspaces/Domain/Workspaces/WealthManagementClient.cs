@@ -58,7 +58,7 @@ public class WealthManagementClient(IDocuSignApiProvider docuSignApiProvider, IA
 
         var uploadRequestBody = new CreateWorkspaceUploadRequestBody
         {
-            Name = envelopeName + " Upload",
+            Name = envelopeName + " Upload " + Guid.NewGuid(),
             Description = "Description Test",
             DueDate = DateTime.Now,
             Status = WorkspaceUploadRequestStatus.Draft,

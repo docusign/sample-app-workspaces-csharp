@@ -1,6 +1,7 @@
 using System.Threading.Tasks;
 using DocuSign.Workspaces.Domain.Admin.Services;
 using DocuSign.Workspaces.Domain.Admin.Services.Interfaces;
+using DocuSign.Workspaces.Domain.CarePlans;
 using DocuSign.Workspaces.Domain.Common.Services;
 using DocuSign.Workspaces.Domain.CustomerProfile.Services;
 using DocuSign.Workspaces.Domain.CustomerProfile.Services.Interfaces;
@@ -59,6 +60,7 @@ namespace DocuSign.Workspaces
             services.AddScoped<ICustomQuoteEnvelopeBuilder, CustomQuoteEnvelopeBuilder>();
 
             services.AddScoped<IWealthManagementClient, WealthManagementClient>();
+            services.AddScoped<ICarePlansService, CarePlansService>();
 
             // In production, the SPA assets will be served from this directory
             services.AddSpaStaticFiles(configuration =>

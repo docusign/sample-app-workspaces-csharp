@@ -15,5 +15,7 @@ namespace DocuSign.Workspaces.Infrastructure.Services.Interfaces
         HttpClient DocuSignHttpClient { get; }
         IWorkspaces2 Workspace2 { get; }
         IWorkspaceUploadRequest WorkspaceUploadRequest { get; }
+        IWorkspaceDocuments WorkspaceDocuments { get; }
+        IWorkspaceUsers WorkspaceUsers { get; }
     }
 }
