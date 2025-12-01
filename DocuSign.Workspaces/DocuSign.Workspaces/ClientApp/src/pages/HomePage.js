@@ -2,6 +2,7 @@ import { useEffect } from 'react';
 import { useOutletContext, useNavigate } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import { ReactComponent as ArrowRightIcon } from '../assets/icons/arrow-right.svg';
+import { ReactComponent as CheckHomeIcon } from '../assets/icons/check_home.svg';
 
 export default function HomePage() {
   const { t } = useTranslation();
@@ -19,7 +20,7 @@ export default function HomePage() {
     <>
       <div className="home-hero__content">
         <div className="home-hero__grid">
-          <div className="home-hero__elipse"></div>
+          {/* <div className="home-hero__elipse"></div> */}
           <div className="home-hero__copy">
             <h1 className="home_title">{t('Welcome')}</h1>
             <p className="home-hero__subtext">{t('Explore')}</p>
@@ -61,7 +62,9 @@ export default function HomePage() {
                   <span className="card__features-title">{t('DocuSignFeatures')}</span>
                   <ul>
                     {card.features.map((f) => (
-                      <li key={f}>✓ {f}</li>
+                      <li key={f}>
+                        <CheckHomeIcon /> {f}
+                      </li>
                     ))}
                   </ul>
                 </div>
@@ -72,7 +75,7 @@ export default function HomePage() {
       </div>
       <div className="footer__main">
         <div className="footer__content">
-          <h2 className="footer__title">{t('AgreeBetter')}</h2>
+          <h3 className="footer__title">{t('AgreeBetter')}</h3>
           <div className="footer__description">
             <p className="footer__text">{t('AgreeBetterDescription')}</p>
             <div className="footer__actions">
