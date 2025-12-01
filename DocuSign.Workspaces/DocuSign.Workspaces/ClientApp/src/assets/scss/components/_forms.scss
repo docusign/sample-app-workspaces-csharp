@@ -256,6 +256,12 @@ input[type='radio'] {
   display: inline-block;
 }
 
+.has-error {
+  .invalid-feedback {
+    display: block;
+  }
+}
+
 .form-group {
   position: relative;
   margin-bottom: 15px;

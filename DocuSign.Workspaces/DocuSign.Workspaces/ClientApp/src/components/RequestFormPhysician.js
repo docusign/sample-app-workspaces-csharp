@@ -7,26 +7,13 @@ import { useOutletContext } from 'react-router-dom';
 import './RequestFormPhysician.scss';
 import { DoctorRow } from './DoctorRow';
 import UploadModal from './UploadModal';
+import { SkeletonDoctors } from './SkeletonDoctors';
 import { ReactComponent as PlusIcon } from '../assets/icons/add.svg';
 import { ReactComponent as SmsIcon } from '../assets/icons/sms.svg';
 import { ReactComponent as TrashIcon } from '../assets/icons/trash.svg';
 import { ReactComponent as PdfType } from '../assets/icons/pdf.svg';
 import { ReactComponent as DocType } from '../assets/icons/doc.svg';
 
-const listToSign = [
-  {
-    id: 21,
-    name: 'Dr. Max Payne',
-  },
-  {
-    id: 22,
-    name: 'Dr. Angela Kerr',
-  },
-  {
-    id: 23,
-    name: 'Dr. Luke Heer',
-  },
-];
 const listFiles = [
   {
     id: 211,
@@ -64,9 +51,12 @@ export const RequestFormPhysician = ({
   request,
   onSave,
   onChange,
-  clickwrap,
   requesting = false,
   errors = {},
+  listPhysician = [],
+  isLoadingPhysician,
+  selectedPhysician,
+  setSelectedPhysician,
 }) => {
   const { accountStatus } = useOutletContext();
   const [isUploadOpen, setIsUploadOpen] = useState(false);
@@ -74,22 +64,20 @@ export const RequestFormPhysician = ({
 
   const openModal = () => setIsUploadOpen(true);
   const closeModal = () => setIsUploadOpen(false);
+
   useEffect(() => {
-    console.log('<<<< RequestFormPhysician accountStatus', accountStatus);
-    if (!accountStatus?.isConnected) {
+    if (accountStatus?.isConnected === false) {
       setUploadedFiles(listFiles);
+    } else if (accountStatus?.isConnected) {
+      setUploadedFiles([]);
     }
   }, [accountStatus]);
 
   const { t } = useTranslation();
   const [submitted, setSubmitted] = useState(false);
 
-  const [checkedMap, setCheckedMap] = useState(
-    Object.fromEntries(listToSign.map((item) => [item.id, false]))
-  );
-
-  const toggle = (id) => {
-    setCheckedMap((prev) => ({ ...prev, [id]: !prev[id] }));
+  const toggle = (item) => {
+    setSelectedPhysician(item);
   };
 
   const simulateUpload = (fileId) => {
@@ -104,7 +92,9 @@ export const RequestFormPhysician = ({
       if (progress >= 100) {
         clearInterval(interval);
         setUploadedFiles((prev) =>
-          prev.map((f) => (f.id === fileId ? { ...f, status: 'success', progress: 100 } : f))
+          prev.map((f) =>
+            f.id === fileId ? { ...f, status: 'success', isNeedSign: true, progress: 100 } : f
+          )
         );
       }
     }, 300);
@@ -209,14 +199,18 @@ export const RequestFormPhysician = ({
 
           <div className="subtitle1 mb-4 mt-5 ">{t('RequestFormPhysician.SelectPhysician')}</div>
           <div className=" mb-5 subtitle2">
-            {listToSign.map((item) => (
-              <DoctorRow
-                key={item.id}
-                label={item.name}
-                checked={checkedMap[item.id]}
-                onToggle={() => toggle(item.id)}
-              />
-            ))}
+            {isLoadingPhysician ? (
+              <SkeletonDoctors count={3} />
+            ) : (
+              listPhysician.map((item) => (
+                <DoctorRow
+                  key={item?.workspaceId}
+                  label={item.name}
+                  checked={selectedPhysician?.workspaceId === item?.workspaceId}
+                  onToggle={() => toggle(item)}
+                />
+              ))
+            )}
           </div>
 
           <div className="mb-4 mt-4 subtitle1">{t('RequestFormPhysician.IncomingDocuments')}</div>
@@ -318,7 +312,8 @@ export const RequestFormPhysician = ({
               type="button"
               onClick={handleSubmit}
               disabled={
-                !Object.values(checkedMap).some((item) => item) ||
+                requesting ||
+                !selectedPhysician ||
                 !uploadedFiles.some((f) => f.forSignature) ||
                 !request.email ||
                 errors.email

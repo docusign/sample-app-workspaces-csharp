@@ -711,6 +711,11 @@ body.home-page::before {
   justify-content: space-between;
   padding: 8px 0;
 }
+.skeleton-row {
+  margin-top: 25px;
+  margin-bottom: 30px;
+  padding-bottom: 3px;
+}
 
 .agreement-row__label {
   display: flex;

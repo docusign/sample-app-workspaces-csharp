@@ -6,14 +6,7 @@ import { ReactComponent as ArrowRightIcon } from '../assets/icons/arrow-right.sv
 import { ReactComponent as UserIcon } from '../assets/icons/user.svg';
 import { ReactComponent as SmsIcon } from '../assets/icons/sms.svg';
 
-export const RequestForm = ({
-  request,
-  onSave,
-  onChange,
-  clickwrap,
-  requesting = false,
-  errors = {},
-}) => {
+export const RequestForm = ({ request, onSave, onChange, requesting = false, errors = {} }) => {
   const { t } = useTranslation();
   const [submitted, setSubmitted] = useState(false);
 

@@ -124,7 +124,6 @@ export const SelectDocuments = ({
               const filteredCheckedDocuments = Object.values(checkedMap).filter(
                 (item) => item.isChecked
               );
-              console.log('<<< filteredCheckedDocuments', filteredCheckedDocuments);
               onAddDocuments(filteredCheckedDocuments);
             }}
             disabled={requesting || !Object.values(checkedMap).some((item) => item.isChecked)}

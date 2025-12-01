@@ -10,6 +10,7 @@ import { Onboarding } from '../../components/Onboarding';
 import { SomethingWentWrong } from '../../components/SomethingWentWrong';
 import { API_BASE } from '../../components/Layout';
 import { showToast } from '../../components/CustomToaster';
+import { prepareDocuments } from '../../components/helper/filesConverter';
 
 const urlCreate = `${API_BASE}/api/workspaces/create`;
 const urlAddDocuments = `${API_BASE}/api/workspaces/add-selected-documents`;
@@ -69,38 +70,6 @@ export const UseCaseOnePage = () => {
     } finally {
       setRequesting(false);
     }
-  }
-  async function fetchPublicFileAsBase64(path) {
-    const res = await fetch(path);
-    if (!res.ok) throw new Error(`${t('Common.CannotLoadFile')}${path}`);
-
-    const blob = await res.blob();
-
-    return new Promise((resolve, reject) => {
-      const reader = new FileReader();
-
-      reader.onloadend = () => {
-        const dataUrl = reader.result;
-        const base64String = dataUrl.split(',')[1];
-        resolve(base64String);
-      };
-      reader.onerror = reject;
-      reader.readAsDataURL(blob);
-    });
-  }
-
-  async function prepareDocuments(list) {
-    const docs = [];
-
-    for (const item of list) {
-      const base64 = await fetchPublicFileAsBase64(item.path);
-      docs.push({
-        base64String: base64,
-        name: item.name,
-      });
-    }
-
-    return docs;
   }
 
   async function onAddDocuments(event) {
@@ -165,12 +134,12 @@ export const UseCaseOnePage = () => {
   function formIsValid() {
     const { firstName, lastName, email, emailOptional } = request;
     const errors = {};
-    if (!firstName) {
-      errors.firstName = t('Error.FirstName');
-    }
-    if (!lastName) {
-      errors.lastName = t('Error.LastName');
-    }
+    // if (!firstName) {
+    //   errors.firstName = t('Error.FirstName');
+    // }
+    // if (!lastName) {
+    //   errors.lastName = t('Error.LastName');
+    // }
 
     if (
       !email ||

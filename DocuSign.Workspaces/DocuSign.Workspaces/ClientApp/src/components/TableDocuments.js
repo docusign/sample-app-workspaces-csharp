@@ -91,7 +91,6 @@ export const TableDocuments = ({
                           />
                         </div>
                       </th>
-                      <th>{t('Onboarding.Actions')}</th>
                     </tr>
                   </thead>
                   <tbody>
@@ -102,26 +101,6 @@ export const TableDocuments = ({
                           <td>{doc.isNeedSign ? t('Common.Yes') : t('Common.No')}</td>
                         )}
                         <td>{doc.status}</td>
-                        <td>
-                          <div className="actions-container">
-                            <button
-                              type="button"
-                              className="action-button"
-                              onClick={() => window.open(doc.previewUrl, '_blank')}
-                              aria-label={t('Onboarding.Preview')}
-                            >
-                              <EyeIcon />
-                            </button>
-                            <button
-                              type="button"
-                              className="action-button"
-                              onClick={() => console.log('Download', doc.name)}
-                              aria-label={t('Onboarding.Download')}
-                            >
-                              <DownloadIcon />
-                            </button>
-                          </div>
-                        </td>
                       </tr>
                     ))}
                   </tbody>
