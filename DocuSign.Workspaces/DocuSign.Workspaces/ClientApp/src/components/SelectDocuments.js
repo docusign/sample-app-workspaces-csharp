@@ -9,23 +9,23 @@ import { ReactComponent as Warning2Icon } from '../assets/icons/warning-2.svg';
 const listToSign = [
   {
     id: 21,
-    name: '4Engagement Agreement.pdf',
+    name: 'Engagement Agreement.pdf',
     path: '/Engagement Agreement placeholder.pdf',
   },
   {
     id: 22,
-    name: '4IRA Products Agreement.pdf',
+    name: 'IRA Products Agreement.pdf',
     path: '/IRA Products Agreement.pdf',
   },
   {
     id: 23,
-    name: '4ETF Products Agreement.pdf',
+    name: 'ETF Products Agreement.pdf',
     path: '/ETF PRODUCTS AGREEMENT.pdf',
   },
 ];
 const uploadRequest = [
-  { id: 11, name: '4Pay Stub.pdf', path: '/Tax Return.pdf' },
-  { id: 12, name: '4Tax Return.pdf', path: '/Pay Statement.pdf' },
+  { id: 11, name: 'Pay Stub.pdf', path: '/Tax Return.pdf' },
+  { id: 12, name: 'Tax Return.pdf', path: '/Pay Statement.pdf' },
 ];
 
 export const SelectDocuments = ({
@@ -66,7 +66,7 @@ export const SelectDocuments = ({
   const { t } = useTranslation();
   return (
     <div className="col-lg-8">
-      <div className="form-holder bg-white pb-5">
+      <div className="form-holder bg-white">
         <h4 className="mb-5">{t('AddDocumentsTitle')}</h4>
 
         <div className="subtitle1 mb-4">{t('DocumentToSign')}</div>
@@ -108,10 +108,10 @@ export const SelectDocuments = ({
           ))}
         </div>
 
-        <div className="text-end">
-          <button className="card__cta btn_previous" type="button" onClick={onPrevious}>
+        <div className="text-end double_btn">
+          <button className="card__cta btn_previous " type="button" onClick={onPrevious}>
             <ArrowLeftIcon className="previous_icon" />
-            {t('Common.Previous')}
+            <span className="btn_previous_text">{t('Common.Previous')}</span>
           </button>
           <button
             className="pill card__cta btn-primary"

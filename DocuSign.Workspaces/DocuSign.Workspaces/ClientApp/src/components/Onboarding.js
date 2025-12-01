@@ -66,7 +66,7 @@ export const Onboarding = ({
   return (
     <div className="col-lg-8">
       <div className="form-holder bg-white pb-5">
-        <div className="title_in_container">{t('Onboarding.Title')}</div>
+        <div className="subtitle1 title_in_container">{t('Onboarding.Title')}</div>
 
         <form
           onSubmit={(event) => {
