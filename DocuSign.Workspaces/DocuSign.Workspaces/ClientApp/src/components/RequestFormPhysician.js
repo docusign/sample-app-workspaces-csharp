@@ -186,7 +186,7 @@ export const RequestFormPhysician = ({
 
   return (
     <div className="col-lg-8">
-      <div className="form-holder bg-white pb-5">
+      <div className="form-holder bg-white">
         <div className="mb-2 subtitle1">{t('RequestFormPhysician.PhysicianInformation')}</div>
 
         <form onSubmit={handleSubmit} className={submitted ? 'was-validated' : ''} noValidate>

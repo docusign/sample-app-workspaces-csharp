@@ -19,7 +19,7 @@ export const RequestForm = ({
 
   return (
     <div className="col-lg-8">
-      <div className="form-holder bg-white pb-5">
+      <div className="form-holder bg-white">
         <h4 className="mb-5">{t('FormTitle')}</h4>
 
         <form
