@@ -1212,8 +1212,6 @@ body:not(.home-page) .footer {
   .footer__main {
     gap: 32px;
   }
-}
-@media (max-width: 600px) {
   .text-end {
     margin-top: 48px;
     display: flex;
@@ -1232,5 +1230,13 @@ body:not(.home-page) .footer {
   }
   .previous_icon {
     margin-left: 18px;
+  }
+  .shield_icon {
+    width: 24px;
+    height: 24px;
+  }
+  .form-holder_warning {
+    padding-top: 24px !important;
+    padding-bottom: 24px !important;
   }
 }

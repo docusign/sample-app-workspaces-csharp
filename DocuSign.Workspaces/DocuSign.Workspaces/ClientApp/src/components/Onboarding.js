@@ -3,33 +3,6 @@ import PropTypes from 'prop-types';
 import { useTranslation } from 'react-i18next';
 import { SortIcon } from '../components/SortIcon';
 
-const listFiles = [
-  {
-    id: 211,
-    forSignature: false,
-    type: 'pdf',
-    name: 'Patient progress report TEST.pdf',
-    path: '/Patient progress report TEST.pdf',
-    status: 'Signed',
-  },
-  {
-    id: 212,
-    forSignature: false,
-    type: 'pdf',
-    name: 'Physical therapy plan TEST.pdf',
-    path: '/Physical therapy plan TEST.pdf',
-    status: 'Signed',
-  },
-  {
-    id: 213,
-    forSignature: false,
-    type: 'pdf',
-    name: 'Specialized home care plan doc TEST.pdf',
-    path: '/Specialized home care plan doc TEST.pdf',
-    status: 'Signed',
-  },
-];
-
 export const Onboarding = ({
   request,
   onSave,
@@ -105,8 +78,7 @@ export const Onboarding = ({
                     </tr>
                   </thead>
                   <tbody>
-                    {/* {listToSign.map((doc) => ( */}
-                    {listFiles.map((doc) => (
+                    {listToSign.map((doc) => (
                       <tr key={doc.id}>
                         <td>{doc.name}</td>
                         <td>{t(`Onboarding.${doc.status}`, doc.status)}</td>

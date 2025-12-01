@@ -7,11 +7,9 @@ export const SomethingWentWrong = ({ tryAgain }) => {
 
   return (
     <div className="col-lg-8">
-      <div className="form-holder bg-white pb-4">
+      <div className="form-holder form-holder_warning bg-white">
         <div className="warning-text">
-          <div className="warning_icon_size">
-            <ShieldIcon />
-          </div>
+          <ShieldIcon className="shield-icon" />
           <span className="ms-3">
             {t('SomethingWent')}
             <span

@@ -205,11 +205,14 @@ input[type='radio'] {
   font-family: Inter;
   font-size: 24px;
   font-weight: 600;
-  margin-bottom: 20px;
 }
-.warning_icon_size {
+.shield-icon {
   width: 32px;
-  height: auto;
+  height: 32px;
+}
+.shield_icon {
+  width: 32px;
+  height: 32px;
 }
 
 .form-holder {
@@ -241,6 +244,16 @@ input[type='radio'] {
       padding-top: 18px;
     }
   }
+}
+
+.form-holder_warning {
+  padding-top: 50px;
+  padding-bottom: 50px;
+  padding-left: 40px;
+  padding-right: 40px;
+  align-items: center;
+  justify-content: center;
+  display: inline-block;
 }
 
 .form-group {
