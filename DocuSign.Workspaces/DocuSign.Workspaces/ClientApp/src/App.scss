@@ -84,6 +84,8 @@ body.home-page::before {
   min-height: 100vh;
 
   .main-content {
+    margin-top: -20px;
+    padding-top: 20px;
     flex: 1;
   }
 
@@ -103,7 +105,6 @@ body.home-page::before {
   position: relative;
   color: #fff;
   padding: 0;
-  overflow: hidden;
   min-height: 50%;
 }
 
@@ -182,6 +183,7 @@ body.home-page::before {
   font-weight: 700;
   letter-spacing: 0.01em;
   padding-left: 4rem;
+  z-index: 10;
 }
 
 .nav__logo {
@@ -1108,16 +1110,18 @@ body:not(.home-page) .footer {
 
   .nav__links--open {
     display: flex;
+    margin-top: -50px;
+    padding-top: 50px;
+
+    .nav__actions {
+      margin-left: 2rem;
+    }
   }
 
   .nav__link {
     padding: 1rem 2rem;
     text-align: center;
     /* font-size: 8px; */
-  }
-
-  .nav--open .nav__actions {
-    margin-left: 2rem;
   }
 
   .card_home {

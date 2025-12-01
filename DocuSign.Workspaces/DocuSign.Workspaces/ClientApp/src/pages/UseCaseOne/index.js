@@ -56,7 +56,6 @@ export const UseCaseOnePage = () => {
         body: JSON.stringify(payload),
       });
       if (!res.ok) {
-        console.log('<<<< res', res);
         toast.error(`${t('Common.ServerError')}${res.status}`);
         throw new Error(`${t('Common.ServerError')}${res.status}`);
       }

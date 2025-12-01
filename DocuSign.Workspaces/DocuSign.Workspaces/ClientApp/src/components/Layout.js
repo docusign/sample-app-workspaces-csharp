@@ -80,7 +80,7 @@ export default function Layout() {
           className={`nav__overlay ${isNavOpen ? 'nav__overlay--open' : ''}`}
           onClick={() => setIsNavOpen(false)}
         />
-        <div className={`nav ${isNavOpen ? 'nav--open' : ''}`}>
+        <div className="nav">
           <div className="nav__brand">
             <Link to="/">
               <img
