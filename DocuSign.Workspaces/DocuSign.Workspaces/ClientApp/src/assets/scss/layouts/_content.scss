@@ -99,7 +99,6 @@ h5,
 .body2 {
   font-size: 16px;
   font-weight: 500;
-
   font-family: 'Inter';
   font-style: normal;
   line-height: 150%;
@@ -200,6 +199,14 @@ h5,
       font-size: 16px;
       line-height: 150%;
       font-weight: 600;
+    }
+    .body1 {
+      font-size: 14px;
+      line-height: 150%;
+      color: #13131b;
+    }
+    .body2 {
+      font-size: 14px;
     }
   }
 }

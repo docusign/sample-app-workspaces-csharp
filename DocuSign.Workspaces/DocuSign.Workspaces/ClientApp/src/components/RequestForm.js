@@ -111,7 +111,7 @@ export const RequestForm = ({ request, onSave, onChange, requesting = false, err
           </div>
           <div className="text-end">
             <button
-              className="pill card__cta btn-primary"
+              className="pill card__cta btn-primary  w-100"
               type="submit"
               disabled={
                 requesting ||

@@ -1391,6 +1391,11 @@ body:not(.home-page) .footer {
   .card__cta {
     font-size: 16px;
     letter-spacing: 0;
+    padding: 12px 32px;
+    height: 48px;
+  }
+  .btn-primary {
+    padding: 1px 2px;
   }
 
   .arrow_right_icon {

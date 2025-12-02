@@ -239,13 +239,15 @@ export const RequestFormPhysician = ({
                       <div className="uploaded-file-header">
                         <span className="uploaded-file-name">{file.name}</span>
 
-                        <button
-                          type="button"
-                          className="uploaded-file-preview"
-                          onClick={() => handlePreview(file)}
-                        >
-                          {t('Common.Preview')}
-                        </button>
+                        {file.status !== 'uploading' && (
+                          <button
+                            type="button"
+                            className="uploaded-file-preview preview-large-screen"
+                            onClick={() => handlePreview(file)}
+                          >
+                            {t('Common.Preview')}
+                          </button>
+                        )}
                       </div>
 
                       {file.status === 'uploading' && (
@@ -265,17 +267,27 @@ export const RequestFormPhysician = ({
                           <span>{file.errorMessage}</span>
                         </div>
                       )}
-
-                      {file.isNeedSign && (
-                        <label className="uploaded-file-signature">
-                          <input
-                            type="checkbox"
-                            checked={file.forSignature}
-                            onChange={() => toggleSignature(file.id)}
-                          />
-                          <span>{t('Common.ForSignature')}</span>
-                        </label>
-                      )}
+                      <div className="review-small-screen">
+                        {file.isNeedSign && (
+                          <label className="uploaded-file-signature">
+                            <input
+                              type="checkbox"
+                              checked={file.forSignature}
+                              onChange={() => toggleSignature(file.id)}
+                            />
+                            <span>{t('Common.ForSignature')}</span>
+                          </label>
+                        )}
+                        {file.status !== 'uploading' && (
+                          <button
+                            type="button"
+                            className="uploaded-file-preview preview-small-screen"
+                            onClick={() => handlePreview(file)}
+                          >
+                            {t('Common.Preview')}
+                          </button>
+                        )}
+                      </div>
                     </div>
 
                     {accountStatus?.isConnected &&
@@ -310,7 +322,7 @@ export const RequestFormPhysician = ({
 
           <div className="text-end">
             <button
-              className="pill card__cta btn-primary"
+              className="pill card__cta btn-primary w-100"
               type="button"
               onClick={handleSubmit}
               disabled={

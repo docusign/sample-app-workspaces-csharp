@@ -33,6 +33,10 @@ export const UseCaseTwoPage = () => {
 
   const [currentStep, setCurrentStep] = useState(0);
 
+  useEffect(() => {
+    if (listPhysician?.length) setSelectedPhysician(listPhysician[0]);
+  }, [listPhysician]);
+
   const getPhysicians = async () => {
     try {
       setIsLoadingPhysician(true);

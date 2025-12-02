@@ -86,7 +86,7 @@
   padding: 0;
   flex-shrink: 0;
   margin-left: 10px;
-
+  text-decoration: none;
   &:hover {
     text-decoration: underline;
   }
@@ -238,6 +238,10 @@
   }
 }
 
+.preview-small-screen {
+  display: none;
+}
+
 @media (max-width: 768px) {
   .uploaded-file-item {
     padding: 12px;
@@ -260,5 +264,20 @@
   .btn-upload-document {
     padding: 12px 0px;
     font-size: 14px;
+  }
+}
+
+@media (max-width: 420px) {
+  .preview-large-screen {
+    display: none;
+  }
+  .preview-small-screen {
+    display: inline-block;
+    margin-left: auto;
+  }
+  .review-small-screen {
+    display: flex;
+    align-items: center;
+    margin-top: 8px;
   }
 }

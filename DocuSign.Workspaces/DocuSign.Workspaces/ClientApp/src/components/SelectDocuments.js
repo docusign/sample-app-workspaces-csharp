@@ -100,7 +100,7 @@ export const SelectDocuments = ({
             <span className="btn_previous_text">{t('Common.Previous')}</span>
           </button>
           <button
-            className="pill card__cta btn-primary"
+            className="pill card__cta btn-primary  w-100"
             type="button"
             onClick={() => {
               const filteredCheckedDocuments = Object.values(checkedMap).filter(
