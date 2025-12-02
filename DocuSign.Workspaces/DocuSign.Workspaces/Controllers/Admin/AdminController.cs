@@ -72,7 +72,7 @@ namespace DocuSign.Workspaces.Controllers.Admin
             settings.IsConsentGranted = true;
             settings.UserId = _authenticationService.PrePopulateUserId(settings.BasePath, code);
             _settingsRepository.Save(settings);
-            return LocalRedirect("/admin");
+            return LocalRedirect("/");
         }
 
         [HttpGet]
