@@ -15,7 +15,7 @@ namespace DocuSign.Workspaces.Hubs
 
         public override async Task OnConnectedAsync()
         {
-            string accessToken = Context.User.FindFirst("access_token").Value;
+            var accessToken = Context.User.FindFirst("access_token").Value;
             _eventsRepository.SaveReceiver(accessToken, Context.ConnectionId);
             await base.OnConnectedAsync();
         }

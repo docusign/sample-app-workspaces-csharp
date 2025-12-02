@@ -1,15 +1,12 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Net.Http;
 using System.Net.Http.Headers;
-using System.Threading.Tasks;
 using DocuSign.eSign.Client;
 using Docusign.IAM.SDK;
 using Docusign.IAM.SDK.Hooks;
 using Docusign.IAM.SDK.Models.Components;
 using Docusign.IAM.SDK.Utils;
 using DocuSign.Workspaces.Infrastructure.Services.Interfaces;
-using Newtonsoft.Json;
 
 namespace DocuSign.Workspaces.Infrastructure.Services
 {
@@ -34,9 +31,8 @@ namespace DocuSign.Workspaces.Infrastructure.Services
             return apiClient;
         }
 
-        public async Task<SDKConfig> BuildSdkConfig()
+        public SDKConfig BuildSdkConfig()
         {
-            
             var config = new SDKConfig
             {
                 SecuritySource = () => new Security
@@ -60,7 +56,7 @@ namespace DocuSign.Workspaces.Infrastructure.Services
 
         public HttpClient BuildHttpClient()
         {
-            HttpClient client = _clientFactory.CreateClient();
+            var client = _clientFactory.CreateClient();
             client.DefaultRequestHeaders.Add("Authorization", "Bearer " + _accountRepository.AccessToken);
             client.BaseAddress = new Uri(_accountRepository.BaseUri);
             client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));

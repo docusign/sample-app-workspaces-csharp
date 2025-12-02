@@ -20,8 +20,8 @@ namespace DocuSign.Workspaces.Infrastructure.Services
 
         public (string connectionId, string useCaseType) GetEnvelopDetails(string envelopeId)
         {
-            (string accessToken, string useCaseType) = _envelopIdToReceiverAndUseCaseTypes[envelopeId];
-            string connectionId = _tokensToEventReceiverDictionary[accessToken];
+            (var accessToken, var useCaseType) = _envelopIdToReceiverAndUseCaseTypes[envelopeId];
+            var connectionId = _tokensToEventReceiverDictionary[accessToken];
             return (connectionId, useCaseType);
         }
 

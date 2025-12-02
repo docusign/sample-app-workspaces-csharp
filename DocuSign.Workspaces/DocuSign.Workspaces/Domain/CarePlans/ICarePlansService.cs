@@ -1,7 +1,6 @@
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using DocuSign.Workspaces.Domain.CarePlans.Model;
-using DocuSign.Workspaces.Domain.Workspaces.Models;
 
 namespace DocuSign.Workspaces.Domain.CarePlans;
 

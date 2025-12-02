@@ -24,7 +24,7 @@ namespace DocuSign.Workspaces.Infrastructure.Services
 
         private Lazy<DocuSignClient> _apiClient => new (() => _docuSignClientsFactory.BuildDocuSignApiClient());
         private Lazy<HttpClient> _docuSignHttpClient => new (() => _docuSignClientsFactory.BuildHttpClient());
-        private Lazy<SDKConfig> _docusingSdkConfig => new (() => _docuSignClientsFactory.BuildSdkConfig().GetAwaiter().GetResult());
+        private Lazy<SDKConfig> _docusingSdkConfig => new (() => _docuSignClientsFactory.BuildSdkConfig());
 
         public DocuSignApiProvider(IDocuSignClientsFactory docuSignClientsFactory)
         {

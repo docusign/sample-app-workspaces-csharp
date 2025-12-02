@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using DocuSign.Workspaces.Domain.CarePlans;
@@ -20,6 +21,17 @@ public class CarePlansController(ICarePlansService carePlansService) : Controlle
     [Route("/api/care-plans/submit-physician")]
     public async Task<List<CareDocumentsModel>> SubmitToPhysician([FromBody] SubmitToPhysiciansModel model)
     {
+        var bytes = await System.IO.File.ReadAllBytesAsync("./Docs/World_Wide_Corp_lorem.pdf");
+        model.Documents = new List<Document1>
+        {
+            new ()
+            {
+                Base64String = Convert.ToBase64String(bytes),
+                IsForSignature = true,
+                Name = "DocForSignature.pdf"
+            }
+        };
+
         var documents = await carePlansService.SubmitToPhysician(model);
         return documents;
     }
