@@ -265,7 +265,7 @@ input[type='radio'] {
 
 .form-group {
   position: relative;
-  margin-bottom: 15px;
+  margin-bottom: 5px;
   .valid-feedback,
   .invalid-feedback {
     position: absolute;
@@ -341,6 +341,18 @@ input[type='radio'] {
     grid-template-columns: 1fr 1fr;
     gap: 0 20px;
   }
+  // @media (min-width: 768px) {
+  //   max-width: 60%;
+  // }
+}
+.width_form {
+  max-width: 100%;
+  @media (min-width: 768px) {
+    max-width: 60%;
+  }
+  // @media (min-width: 600px) {
+  //   max-width: 100%;
+  // }
 }
 
 .btn-upload-document {

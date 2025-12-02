@@ -13,8 +13,9 @@ export const RequestForm = ({ request, onSave, onChange, requesting = false, err
   return (
     <div className="col-lg-8">
       <div className="form-holder bg-white">
-        <h4 className="mb-5">{t('FormTitle')}</h4>
-
+        <div className="width_form">
+          <h4 className="mb-5">{t('FormTitle')}</h4>
+        </div>
         <form
           onSubmit={(event) => {
             onSave(event);
@@ -23,86 +24,90 @@ export const RequestForm = ({ request, onSave, onChange, requesting = false, err
           className={submitted ? 'was-validated' : ''}
           noValidate
         >
-          <div className="subtitle1 mb-4">{t('PrimaryTitle')}</div>
-          <div className="form-grid  mb-5">
-            <InputText
-              name="firstName"
-              label={
-                <>
-                  <UserIcon className="form_icon" />
-                  {t('FullName')}
-                </>
-              }
-              placeholder={t('FirstName')}
-              value={request.firstName}
-              onChange={onChange}
-              error={errors.firstName}
-            />
-            <InputText
-              name="lastName"
-              label=""
-              placeholder={t('LastName')}
-              value={request.lastName}
-              onChange={onChange}
-              error={errors.lastName}
-            />
-            <InputText
-              name="email"
-              placeholder={t('Email')}
-              label={
-                <>
-                  <SmsIcon className="form_icon" />
-                  {t('Email')}
-                </>
-              }
-              value={request.email}
-              onChange={onChange}
-              error={errors.email}
-            />
-          </div>
-          <div className="subtitle1  mb-4">
-            {t('SecondaryTitle')}
-            <span className="optional-italic">{t('Common.Optional')}</span>
-          </div>
+          <div className="width_form">
+            <div className="subtitle1 mb-4 ">{t('PrimaryTitle')}</div>
+            <div className="form-grid  mb-5">
+              <InputText
+                name="firstName"
+                label={
+                  <>
+                    <UserIcon className="form_icon" />
+                    {t('FullName')}
+                  </>
+                }
+                placeholder={t('FirstName')}
+                value={request.firstName}
+                onChange={onChange}
+                error={errors.firstName}
+              />
+              <InputText
+                name="lastName"
+                label=""
+                placeholder={t('LastName')}
+                value={request.lastName}
+                onChange={onChange}
+                error={errors.lastName}
+              />
+              <div className="mt-3" />
+              <InputText
+                name="email"
+                placeholder={t('Email')}
+                label={
+                  <>
+                    <SmsIcon className="form_icon" />
+                    {t('Email')}
+                  </>
+                }
+                value={request.email}
+                onChange={onChange}
+                error={errors.email}
+              />
+            </div>
+            <div className="subtitle1  mb-4">
+              {t('SecondaryTitle')}
+              <span className="optional-italic">{t('Common.Optional')}</span>
+            </div>
 
-          <div className="form-grid">
-            <InputText
-              name="firstNameOptional"
-              label={
-                <>
-                  <UserIcon className="form_icon" />
-                  {t('FullName')}
-                </>
-              }
-              placeholder={t('FirstName')}
-              value={request.firstNameOptional}
-              onChange={onChange}
-              error={errors.firstNameOptional}
-              required={false}
-            />
-            <InputText
-              name="lastNameOptional"
-              label=""
-              placeholder={t('LastName')}
-              value={request.lastNameOptional}
-              onChange={onChange}
-              error={errors.lastNameOptional}
-              required={false}
-            />
-            <InputText
-              name="emailOptional"
-              placeholder={t('Email')}
-              label={
-                <>
-                  <SmsIcon className="form_icon" />
-                  {t('Email')}
-                </>
-              }
-              value={request.emailOptional}
-              onChange={onChange}
-              error={errors.emailOptional}
-              required={false}
-            />
+            <div className="form-grid">
+              <InputText
+                name="firstNameOptional"
+                label={
+                  <>
+                    <UserIcon className="form_icon" />
+                    {t('FullName')}
+                  </>
+                }
+                placeholder={t('FirstName')}
+                value={request.firstNameOptional}
+                onChange={onChange}
+                error={errors.firstNameOptional}
+                required={false}
+              />
+              <InputText
+                name="lastNameOptional"
+                label=""
+                placeholder={t('LastName')}
+                value={request.lastNameOptional}
+                onChange={onChange}
+                error={errors.lastNameOptional}
+                required={false}
+              />
+              <div className="mt-3" />
+              <InputText
+                name="emailOptional"
+                placeholder={t('Email')}
+                label={
+                  <>
+                    <SmsIcon className="form_icon" />
+                    {t('Email')}
+                  </>
+                }
+                value={request.emailOptional}
+                onChange={onChange}
+                error={errors.emailOptional}
+                required={false}
+              />
+            </div>
           </div>
           <div className="text-end">
             <button

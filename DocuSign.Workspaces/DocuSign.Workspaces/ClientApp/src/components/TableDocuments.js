@@ -29,8 +29,8 @@ export const TableDocuments = ({
     setSortConfig({ key, direction });
 
     const sorted = [...listPending].sort((a, b) => {
-      const aVal = a[key].toLowerCase();
-      const bVal = b[key].toLowerCase();
+      const aVal = a[key]?.toLowerCase();
+      const bVal = b[key]?.toLowerCase();
 
       if (aVal < bVal) return direction === 'asc' ? -1 : 1;
       if (aVal > bVal) return direction === 'asc' ? 1 : -1;
@@ -59,7 +59,7 @@ export const TableDocuments = ({
                 <table className="documents-table">
                   <thead>
                     <tr>
-                      <th onClick={() => handleSort('label')}>
+                      <th onClick={() => handleSort('name')}>
                         <div className="header-content">
                           {t('Onboarding.EnvelopeName')}
                           <SortIcon

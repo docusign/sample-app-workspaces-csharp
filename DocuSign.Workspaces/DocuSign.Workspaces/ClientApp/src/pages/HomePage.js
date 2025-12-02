@@ -1,4 +1,4 @@
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { useOutletContext, useNavigate } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import { ReactComponent as ArrowRightIcon } from '../assets/icons/arrow-right.svg';
@@ -6,8 +6,9 @@ import { ReactComponent as CheckHomeIcon } from '../assets/icons/check_home.svg'
 
 export default function HomePage() {
   const { t } = useTranslation();
-  const { openLoginModal } = useOutletContext();
+  const { openLoginModal, accountStatus } = useOutletContext();
   const navigate = useNavigate();
+  const [pendingNavigationUrl, setPendingNavigationUrl] = useState(null);
 
   useEffect(() => {
     document.body.classList.add('home-page');
@@ -15,6 +16,13 @@ export default function HomePage() {
       document.body.classList.remove('home-page');
     };
   }, []);
+
+  useEffect(() => {
+    if (accountStatus?.isConnected && pendingNavigationUrl) {
+      navigate(pendingNavigationUrl);
+      setPendingNavigationUrl(null);
+    }
+  }, [accountStatus?.isConnected, pendingNavigationUrl, navigate]);
 
   return (
     <>
@@ -52,7 +60,12 @@ export default function HomePage() {
                   className="pill card__cta"
                   type="button"
                   onClick={() => {
-                    navigate(card.url);
+                    if (accountStatus?.isConnected) {
+                      navigate(card.url);
+                    } else {
+                      setPendingNavigationUrl(card.url);
+                      openLoginModal();
+                    }
                   }}
                 >
                   {card.cta}
@@ -63,7 +76,7 @@ export default function HomePage() {
                   <ul>
                     {card.features.map((f) => (
                       <li key={f} className="feature_text">
-                        <CheckHomeIcon /> {f}
+                        <CheckHomeIcon style={{ marginRight: 12 }} /> {f}
                       </li>
                     ))}
                   </ul>

@@ -4,10 +4,11 @@ import parse from 'html-react-parser';
 import { Collapse } from 'react-bootstrap';
 import { ReactComponent as MinusIcon } from '../assets/icons/minus.svg';
 import { ReactComponent as PlusIcon } from '../assets/icons/add.svg';
+import './ApiDescription.scss';
 
 export const ApiDescription = () => {
   const { t } = useTranslation();
-  const [open, setOpen] = React.useState(false);
+  const [open, setOpen] = React.useState(true);
 
   return (
     <div className="col-lg-4 pt-5 pb-4 behind_scenes">

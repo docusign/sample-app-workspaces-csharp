@@ -65,12 +65,12 @@
   "DocumentToSign": "Documents to sign",
   "UnloadedRequests": "Upload Requests",
   "AddDocumentsTitle": "Select documents for this client’s package",
-  "PrimaryTitle": "Primary Owner details",
-  "SecondaryTitle": "Secondary Owner details",
+  "PrimaryTitle": "Primary owner details",
+  "SecondaryTitle": "Secondary owner details",
   "Error": {
     "FirstName": "-ERROR FIRST NAME-",
     "LastName": "- ERROR LAST NAME -",
-    "Email": "Wrong email"
+    "Email": "Invalid email format"
   },
   "ApiDescription": {
     "SeeMore": "Behind the scenes",
@@ -119,6 +119,7 @@
   "UseCaseOne": {
     "Title": "Onboarding a new wealth management client",
     "WorkspaceCreatedSuccess": "Workspace successfully created",
+    "EnvelopeSuccessfullyCreated": "Envelope successfully created and sent",
     "Step1": "STEP 1",
     "Step2": "STEP 2",
     "Step3": "STEP 3"

@@ -6,6 +6,7 @@
   display: inline-block;
   align-items: center;
   justify-content: center;
+  text-decoration: none;
 }
 .back-link:hover {
   color: #260275;
@@ -23,8 +24,9 @@
 }
 .card__cta.btn_previous {
   color: #141414;
+  margin-right: 10px;
   background: transparent;
-  border: 0px solid #ccc;
+  border: 1px solid transparent;
   width: auto !important; //
   &:hover {
     background-color: transparent;
@@ -211,6 +213,7 @@ body.home-page::before {
   gap: 4px;
   text-decoration: none;
   transition: all 0.1s ease 0s;
+  margin-right: 24px;
 }
 .nav__link:hover {
   color: #e0e0f2;
@@ -242,7 +245,8 @@ body.home-page::before {
 
 .home-hero__copy h1 {
   max-width: 65%;
-  font-size: clamp(2.3rem, 4vw, 4rem);
+  // font-size: clamp(2.3rem, 4vw, 4rem);
+  font-size: 64px;
   line-height: 1.1;
   margin: 2rem 0 1rem;
 }
@@ -290,16 +294,12 @@ body.home-page::before {
 }
 
 .cards {
-  display: grid;
-  // gap: 1rem;
-  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 64px;
   width: 100%;
   padding-top: 7rem;
-  justify-content: center;
-  justify-items: center;
-  // background-color: green;
-  // padding-left: 50px;
-  // padding-right: 50px;
 }
 
 .card_home {
@@ -312,8 +312,7 @@ body.home-page::before {
   flex-direction: column;
   align-items: center;
   gap: 22px;
-  width: 80%;
-  // max-width: 100%;
+  width: 462px;
   max-width: 462px;
 }
 
@@ -321,15 +320,14 @@ body.home-page::before {
   display: flex;
   flex-direction: row;
   align-items: center;
-  padding: 16px;
   gap: 10px;
   background: #e9eaee;
   border-radius: 240px;
 }
 
 .card__icon img {
-  max-width: 56px;
-  max-height: 56px;
+  max-width: 88px;
+  max-height: 88px;
 }
 
 .card__title {
@@ -351,7 +349,7 @@ body.home-page::before {
   padding: 14px 32px;
   gap: 16px;
   width: 211px;
-  height: 58px;
+  height: 64px;
   border-radius: 240px;
   font-size: 20px;
   font-weight: 500;
@@ -360,9 +358,11 @@ body.home-page::before {
   border: none;
   box-shadow: none;
   letter-spacing: -0.01em;
+  border: 3px solid #6e47cc;
 
   &:hover {
     background-color: #4e2ca0;
+    border: 3px solid #4e2ca0;
   }
 
   &:focus {
@@ -407,10 +407,12 @@ body.home-page::before {
 }
 .card__features ul {
   padding-left: 0;
-  margin: 0.4rem 0 0;
+  // margin: 0.4rem 0 0;
+  margin-top: 20px;
+  margin-left: 4px;
   list-style: none;
   display: grid;
-  gap: 12px;
+  gap: 6px;
   color: #13131b;
   text-align: left;
   width: 100%;
@@ -578,7 +580,7 @@ body.home-page::before {
   width: 100%;
   margin-top: 30px;
   margin-bottom: 50px;
-  margin-left: 20px;
+  margin-left: 0px;
 }
 
 .step-wrapper {
@@ -693,6 +695,7 @@ body.home-page::before {
 .btn-primary[disabled] {
   background-color: #fafafa;
   color: #9e9d9f;
+  border: 3px solid transparent;
   .arrow_right_icon {
     color: #9e9d9f;
   }
@@ -1124,16 +1127,18 @@ body:not(.home-page) .footer {
   }
   .home-hero__subtext {
     margin-top: 20px;
+    font-size: 20px;
   }
   .home-hero__copy h1 {
     max-width: 100%;
-    font-size: clamp(2.3rem, 4vw, 4rem);
+    // font-size: clamp(2.3rem, 4vw, 4rem);
+    font-size: 56px;
     line-height: 1.1;
     margin: 0px;
     // margin: 4rem 0 1rem;
   }
   .home-hero__content {
-    padding: 48px 3rem 0;
+    padding: 48px 24px 0;
   }
 
   .nav__logo {
@@ -1145,7 +1150,8 @@ body:not(.home-page) .footer {
 
   .nav__link {
     text-align: center;
-    margin-right: 10px;
+    margin-right: 5px;
+    font-size: 18px;
   }
 
   .card_home {
@@ -1155,12 +1161,19 @@ body:not(.home-page) .footer {
     margin-left: 0px;
   }
   .cards {
-    gap: 24px;
-    margin-top: 140px;
+    gap: 16px;
+    margin-top: 145px;
     padding-left: 0px;
   }
   .nav {
     min-height: 82px;
+  }
+}
+
+@media (max-width: 701px) {
+  .nav__link {
+    margin-right: 0px;
+    font-size: 14px;
   }
 }
 
@@ -1214,10 +1227,6 @@ body:not(.home-page) .footer {
     justify-content: space-between;
     gap: 16px;
     margin: auto;
-  }
-
-  .nav__link {
-    font-size: 18px;
   }
 
   .cta-section {

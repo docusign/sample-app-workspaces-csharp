@@ -85,7 +85,6 @@ export const UseCaseOnePage = () => {
         secondaryOwnerLastName: request.lastNameOptional,
         secondaryOwnerEmail: request.emailOptional,
       };
-      console.log('<<<< 22 payload', payload);
       const res = await fetch(urlAddDocuments, {
         method: 'POST',
         credentials: 'include',
@@ -94,19 +93,15 @@ export const UseCaseOnePage = () => {
         },
         body: JSON.stringify(payload),
       });
-      console.log('<<<< 22 res', res);
       if (!res.ok) {
         throw new Error(`${t('Common.ServerError')}${res.status}`);
       }
 
       const data = await res.json();
-      console.log('<< 22 RESPONSE create data', data);
       setRespFiles(data);
-      // showToast('Workspace successfully created');
+      showToast(t('UseCaseOne.EnvelopeSuccessfullyCreated'));
     } catch (error) {
-      console.log('<< 22 ERROR', error);
       setErrorOnboarding(t('Common.Error'));
-      // setRequesting(false);
     } finally {
       setRequesting(false);
       setCurrentStep(2);
@@ -131,14 +126,8 @@ export const UseCaseOnePage = () => {
   }
 
   function formIsValid() {
-    const { firstName, lastName, email, emailOptional } = request;
+    const { email, emailOptional } = request;
     const errors = {};
-    // if (!firstName) {
-    //   errors.firstName = t('Error.FirstName');
-    // }
-    // if (!lastName) {
-    //   errors.lastName = t('Error.LastName');
-    // }
 
     if (
       !email ||

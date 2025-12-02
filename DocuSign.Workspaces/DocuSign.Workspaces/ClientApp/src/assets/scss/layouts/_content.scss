@@ -60,7 +60,8 @@ h4,
 .h4 {
   font-family: Inter;
   font-size: 24px;
-  line-height: 22px;
+  line-height: 120%;
+  font-weight: 600;
   color: #141414;
 }
 
@@ -124,8 +125,8 @@ h5,
   @media (max-width: 768px) {
     padding-top: 20px;
     padding-bottom: 20px;
-    padding-left: 20px;
-    padding-right: 20px;
+    padding-left: 40px;
+    padding-right: 40px;
     .warning-text {
       margin-bottom: 0px;
       font-size: 24px;
@@ -139,8 +140,9 @@ h5,
     h2,
     .h2 {
       font-family: Inter;
-      font-size: 24px;
-      line-height: 22px;
+      // font-size: 24px;
+      font-size: 32px;
+      line-height: 104%;
       color: #141414;
     }
   }
