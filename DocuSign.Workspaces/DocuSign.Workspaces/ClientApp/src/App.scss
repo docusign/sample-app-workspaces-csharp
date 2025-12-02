@@ -1380,6 +1380,17 @@ body:not(.home-page) .footer {
     padding-bottom: 24px !important;
   }
 }
+@media (max-width: 420px) {
+  .card__cta {
+    font-size: 16px;
+    letter-spacing: 0;
+  }
+
+  .arrow_right_icon {
+    width: 20px;
+    height: 20px;
+  }
+}
 @media (max-width: 375px) {
   body.home-page::before {
     top: 50px;
@@ -1390,6 +1401,16 @@ body:not(.home-page) .footer {
     background-size: 100% auto;
     background-position: center bottom;
     z-index: -1;
+  }
+
+  .back-link {
+    font-weight: 600;
+    font-size: 20px;
+  }
+
+  .back-link__icon {
+    width: 20px;
+    height: 20px;
   }
 
   .cards {

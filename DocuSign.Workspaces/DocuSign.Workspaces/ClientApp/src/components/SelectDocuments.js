@@ -1,11 +1,9 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import PropTypes from 'prop-types';
 import { useTranslation } from 'react-i18next';
-import { useOutletContext } from 'react-router-dom';
 import { AgreementRow } from './AgreementRow';
 import { ReactComponent as ArrowRightIcon } from '../assets/icons/arrow-right.svg';
 import { ReactComponent as ArrowLeftIcon } from '../assets/icons/arrow-left.svg';
-import { ReactComponent as Warning2Icon } from '../assets/icons/warning-2.svg';
 const listToSign = [
   {
     id: 21,
@@ -37,17 +35,12 @@ export const SelectDocuments = ({
   errors = {},
   onPrevious,
 }) => {
-  const { accountStatus } = useOutletContext();
   const [checkedMap, setCheckedMap] = useState(
     Object.fromEntries(
       [...listToSign, ...uploadRequest].map((item) => [item.id, { ...item, isChecked: false }])
     )
   );
 
-  useEffect(() => {
-    console.log('<<<< accountStatus', accountStatus);
-    console.log('<<<< accountName', accountStatus?.connectedUser?.accountName);
-  }, [accountStatus]);
   const handlePreview = (file) => {
     if (file && file.file) {
       const fileURL = URL.createObjectURL(file.file);
@@ -66,10 +59,10 @@ export const SelectDocuments = ({
   return (
     <div className="col-lg-8">
       <div className="form-holder bg-white">
-        <h4 className="mb-5">{t('AddDocumentsTitle')}</h4>
+        <h4 className="mb-4">{t('AddDocumentsTitle')}</h4>
 
         <div className="subtitle1 mb-4">{t('DocumentToSign')}</div>
-        <div className="select-form mb-5">
+        <div className="select-form mb-4">
           {listToSign.map((item) => (
             <AgreementRow
               key={item.id}
@@ -87,15 +80,7 @@ export const SelectDocuments = ({
           <span className="optional-italic">{t('Common.Optional')}</span>
         </div>
 
-        {accountStatus?.isConnected && accountStatus?.connectedUser?.accountName === 'test' && (
-          <div className="attention_block mb-4">
-            <Warning2Icon /> {t('SelectDocuments.PersonalAccountsOnly')}
-          </div>
-        )}
-
-        <div
-          className={`select-form ${accountStatus?.isConnected && accountStatus?.connectedUser?.accountName === 'test' ? 'disabled-block' : ''}`}
-        >
+        <div className={`select-form `}>
           {uploadRequest.map((item) => (
             <AgreementRow
               key={item.id}

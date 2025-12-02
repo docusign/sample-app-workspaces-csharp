@@ -148,9 +148,6 @@
     "Production": "Production",
     "SignsphereAlt": "Signsphere"
   },
-  "SelectDocuments": {
-    "PersonalAccountsOnly": "Document selection is available only for personal accounts"
-  },
   "UseCaseTwo": {
     "Title": "Care Plans approval inbox",
     "Description": "As a staff member you will assign care plans and other documents for review by a specific physician"

@@ -10,7 +10,7 @@ export const SomethingWentWrong = ({ tryAgain }) => {
       <div className="form-holder form-holder_warning bg-white">
         <div className="warning-text">
           <ShieldIcon className="shield-icon" />
-          <span className="ms-3">
+          <span className="warning-text_margin">
             {t('SomethingWent')}
             <span
               style={{ color: 'inherit', textDecoration: 'underline', cursor: 'pointer' }}

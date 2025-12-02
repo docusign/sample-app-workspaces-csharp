@@ -206,6 +206,9 @@ input[type='radio'] {
   font-size: 24px;
   font-weight: 600;
 }
+.warning-text_margin {
+  margin-left: 24px;
+}
 .shield-icon {
   width: 32px;
   height: 32px;
@@ -243,6 +246,9 @@ input[type='radio'] {
     & {
       padding-top: 18px;
     }
+  }
+  @media (max-width: 420px) {
+    padding: 24px 20px;
   }
 }
 
