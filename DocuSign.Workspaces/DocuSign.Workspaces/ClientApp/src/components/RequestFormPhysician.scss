@@ -77,7 +77,8 @@
 
 .uploaded-file-preview {
   font-family: 'Inter', sans-serif;
-  font-size: 12px;
+  font-size: 14px;
+  line-height: 150%;
   color: #666bfa;
   background: none;
   border: none;
@@ -224,9 +225,12 @@
   cursor: pointer;
   transition: all 0.2s ease;
 
-  .plus {
+  .plus_upload {
     width: 20px;
     height: 20px;
+    path {
+      stroke: #6e47cc;
+    }
   }
 
   &:hover {
@@ -252,5 +256,9 @@
 
   .uploaded-file-preview {
     font-size: 11px;
+  }
+  .btn-upload-document {
+    padding: 12px 0px;
+    font-size: 14px;
   }
 }

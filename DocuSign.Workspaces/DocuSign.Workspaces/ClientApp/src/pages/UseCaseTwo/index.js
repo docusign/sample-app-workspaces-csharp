@@ -87,11 +87,11 @@ export const UseCaseTwoPage = () => {
 
       const data = await res.json();
       setListFiles(data);
-
-      setCurrentStep(1);
     } catch (error) {
-      setRequesting(false);
       setErrorOnboarding(t('Common.Error'));
+    } finally {
+      setRequesting(false);
+      setCurrentStep(1);
     }
   }
 

@@ -55,7 +55,7 @@ function UploadModal({ isOpen, onClose, onFilesChange }) {
         </button>
 
         <div className="upload-modal__header">
-          <h2>{t('UploadModal.Title')}</h2>
+          <span className="body2">{t('UploadModal.Title')}</span>
         </div>
 
         <div

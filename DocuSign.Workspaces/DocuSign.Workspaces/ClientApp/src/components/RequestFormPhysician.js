@@ -180,8 +180,10 @@ export const RequestFormPhysician = ({
         <div className="mb-2 subtitle1">{t('RequestFormPhysician.PhysicianInformation')}</div>
 
         <form onSubmit={handleSubmit} className={submitted ? 'was-validated' : ''} noValidate>
-          <div className="subtitle2 mb-4">{t('RequestFormPhysician.InvitationMessage')}</div>
-          <div className="form-grid col-lg-8 mb-4">
+          <div className="subtitle2 width_form mb-4">
+            {t('RequestFormPhysician.InvitationMessage')}
+          </div>
+          <div className="form-grid col-lg-8 width_form mb-4">
             <InputText
               name="email"
               placeholder={t('Email')}
@@ -301,7 +303,7 @@ export const RequestFormPhysician = ({
 
           {accountStatus?.isConnected && (
             <button className="btn-upload-document" type="button" onClick={openModal}>
-              <PlusIcon className="plus" />
+              <PlusIcon className="plus_upload" />
               {t('Common.UploadDocument')}
             </button>
           )}
