@@ -1342,10 +1342,24 @@ body:not(.home-page) .footer {
     padding: 18px 16px 0;
   }
 
+  .footer__text {
+    font-size: 14px;
+    font-weight: 400;
+    line-height: 150%;
+  }
+
   .home-hero__subtext {
     font-weight: 500;
     font-size: 14px;
     line-height: 150%;
     letter-spacing: 0em;
+  }
+
+  .footer__copyright {
+    display: flex;
+    width: 100%;
+    padding-left: 0;
+    justify-content: center;
+    text-align: center;
   }
 }
