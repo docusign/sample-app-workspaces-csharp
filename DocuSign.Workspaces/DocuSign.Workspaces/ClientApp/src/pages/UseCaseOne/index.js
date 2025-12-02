@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Toaster, toast } from 'react-hot-toast';
 import { RequestForm } from '../../components/RequestForm';
@@ -36,6 +36,18 @@ export const UseCaseOnePage = () => {
   const [errorOnboarding, setErrorOnboarding] = useState('');
   const [currentStep, setCurrentStep] = useState(0);
   const [respFiles, setRespFiles] = useState([]);
+  const [isMobile, setIsMobile] = useState(window.innerWidth < 420);
+
+  useEffect(() => {
+    const handleResize = () => {
+      setIsMobile(window.innerWidth < 420);
+    };
+
+    window.addEventListener('resize', handleResize);
+    return () => {
+      window.removeEventListener('resize', handleResize);
+    };
+  }, []);
 
   async function handleSave(event) {
     event.preventDefault();
@@ -190,7 +202,10 @@ export const UseCaseOnePage = () => {
           ))}
         <ApiDescription />
       </div>
-      <Toaster position="top-center" />
+      <Toaster
+        position={isMobile ? 'top-right' : 'top-center'}
+        containerStyle={isMobile ? { top: 95, right: 8 } : {}}
+      />
     </section>
   );
 };

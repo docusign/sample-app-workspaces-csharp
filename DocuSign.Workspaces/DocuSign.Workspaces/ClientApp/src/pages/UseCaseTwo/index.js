@@ -30,6 +30,18 @@ export const UseCaseTwoPage = () => {
   const [listFiles, setListFiles] = useState([]);
   const [errorOnboarding, setErrorOnboarding] = useState('');
   const [selectedPhysician, setSelectedPhysician] = useState(undefined);
+  const [isMobile, setIsMobile] = useState(window.innerWidth < 420);
+
+  useEffect(() => {
+    const handleResize = () => {
+      setIsMobile(window.innerWidth < 420);
+    };
+
+    window.addEventListener('resize', handleResize);
+    return () => {
+      window.removeEventListener('resize', handleResize);
+    };
+  }, []);
 
   const [currentStep, setCurrentStep] = useState(0);
 
@@ -159,7 +171,10 @@ export const UseCaseTwoPage = () => {
           ))}
         <ApiDescription />
       </div>
-      <Toaster position="top-center" />
+      <Toaster
+        position={isMobile ? 'top-right' : 'top-center'}
+        containerStyle={isMobile ? { top: 95, right: 8 } : {}}
+      />
     </section>
   );
 };

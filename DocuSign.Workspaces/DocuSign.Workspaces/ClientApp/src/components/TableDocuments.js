@@ -2,8 +2,6 @@ import React, { useState } from 'react';
 import PropTypes from 'prop-types';
 import { useTranslation } from 'react-i18next';
 import { useOutletContext } from 'react-router-dom';
-import { ReactComponent as DownloadIcon } from '../assets/icons/import.svg';
-import { ReactComponent as EyeIcon } from '../assets/icons/eye.svg';
 import { SortIcon } from '../components/SortIcon';
 
 export const TableDocuments = ({
