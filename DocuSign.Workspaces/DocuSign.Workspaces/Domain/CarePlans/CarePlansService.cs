@@ -17,7 +17,7 @@ public class CarePlansService(IDocuSignApiProvider docuSignApiProvider, IAppConf
         var physiciansWorkspaces = new List<PhysicianModel>();
         if (appConfiguration.DocuSign.TestAccountConnectionSettings.AccountId == accountRepository.AccountId)
         {
-            List<string> physicians = ["Dr. Max PayneNan", "Dr. Angela KerrNan", "Dr. Luke HeerNan"];
+            List<string> physicians = ["Dr. Max Payne", "Dr. Angela Kerr", "Dr. Luke Heer"];
             var workspaces = await docuSignApiProvider.Workspace2.GetWorkspacesAsync(accountRepository.AccountId);
             if (workspaces.Workspaces != null || workspaces.Workspaces?.Count != 0)
             {
@@ -118,8 +118,8 @@ public class CarePlansService(IDocuSignApiProvider docuSignApiProvider, IAppConf
 
                 var signer1 = new Signer
                 {
-                    Name = "BohdanMoroz",
-                    Email = "bohdan.moroz@sigma.software",
+                    Name = model.Physician.Name,
+                    Email = accountRepository.Email,
                     RecipientId = "1",
                     Status = sentStatus,
                     Tabs = signer1Tabs
