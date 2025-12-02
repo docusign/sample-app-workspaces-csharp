@@ -46,10 +46,7 @@ export const SelectDocuments = ({
 
   useEffect(() => {
     console.log('<<<< accountStatus', accountStatus);
-    console.log('<<<< accountName', accountStatus.connectedUser.accountName);
-    // accountName: "test"
-    // if (!accountStatus?.isConnected) {
-    // }
+    console.log('<<<< accountName', accountStatus?.connectedUser?.accountName);
   }, [accountStatus]);
   const handlePreview = (file) => {
     if (file && file.file) {
@@ -90,14 +87,14 @@ export const SelectDocuments = ({
           <span className="optional-italic">{t('Common.Optional')}</span>
         </div>
 
-        {accountStatus?.isConnected && accountStatus.connectedUser.accountName === 'test' && (
+        {accountStatus?.isConnected && accountStatus?.connectedUser?.accountName === 'test' && (
           <div className="attention_block mb-4">
             <Warning2Icon /> {t('SelectDocuments.PersonalAccountsOnly')}
           </div>
         )}
 
         <div
-          className={`select-form ${accountStatus?.isConnected && accountStatus.connectedUser.accountName === 'test' ? 'disabled-block' : ''}`}
+          className={`select-form ${accountStatus?.isConnected && accountStatus?.connectedUser?.accountName === 'test' ? 'disabled-block' : ''}`}
         >
           {uploadRequest.map((item) => (
             <AgreementRow

@@ -303,7 +303,12 @@ function LoginModal({
   return (
     <div className="auth-modal__backdrop" role="dialog" aria-modal="true">
       <div className="auth-modal">
-        <button className="auth-modal__close" type="button" onClick={onClose} aria-label={t('Common.Close')}>
+        <button
+          className="auth-modal__close"
+          type="button"
+          onClick={onClose}
+          aria-label={t('Common.Close')}
+        >
           <img src="/close_modal.png" alt={t('LoginModal.CloseModal')} />
         </button>
         <div className="auth-modal__header">
@@ -312,9 +317,7 @@ function LoginModal({
           </div>
         </div>
         <div className="auth-modal__content">
-          <p className="auth-modal__description">
-            {t('LoginModal.Description')}
-          </p>
+          <p className="auth-modal__description">{t('LoginModal.Description')}</p>
           <div className="auth-modal__options auth-modal__options--radio">
             <label
               className={`auth-option auth-option--radio ${selectedAuth === 'acg' ? 'auth-option--selected' : ''}`}
@@ -327,9 +330,7 @@ function LoginModal({
                 onChange={() => setSelectedAuth('acg')}
               />
               <div>
-                <span className="auth-option__title">
-                  {t('LoginModal.LoginWithDevAccount')}
-                </span>
+                <span className="auth-option__title">{t('LoginModal.LoginWithDevAccount')}</span>
               </div>
             </label>
             <label
@@ -343,13 +344,13 @@ function LoginModal({
                 onChange={() => setSelectedAuth('jwt')}
               />
               <div>
-                <span className="auth-option__title">{t('LoginModal.ContinueWithTestAccount')}</span>
+                <span className="auth-option__title">
+                  {t('LoginModal.ContinueWithTestAccount')}
+                </span>
               </div>
             </label>
           </div>
-          <p className="auth-modal__note">
-            {t('LoginModal.GetFreeAccount')}
-          </p>
+          <p className="auth-modal__note">{t('LoginModal.GetFreeAccount')}</p>
         </div>
         <div className="auth-modal__actions">
           <button className="secondary-btn" type="button" onClick={onClose}>
