@@ -62,7 +62,7 @@ export default function HomePage() {
                   <span className="card__features-title">{t('DocuSignFeatures')}</span>
                   <ul>
                     {card.features.map((f) => (
-                      <li key={f}>
+                      <li key={f} className="feature_text">
                         <CheckHomeIcon /> {f}
                       </li>
                     ))}
