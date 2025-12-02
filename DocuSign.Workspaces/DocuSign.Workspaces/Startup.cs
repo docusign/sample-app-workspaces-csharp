@@ -5,12 +5,6 @@ using DocuSign.Workspaces.Domain.CarePlans;
 using DocuSign.Workspaces.Domain.Common.Services;
 using DocuSign.Workspaces.Domain.CustomerProfile.Services;
 using DocuSign.Workspaces.Domain.CustomerProfile.Services.Interfaces;
-using DocuSign.Workspaces.Domain.CustomQuote.Services;
-using DocuSign.Workspaces.Domain.CustomQuote.Services.Interfaces;
-using DocuSign.Workspaces.Domain.EmploymentContract.Services;
-using DocuSign.Workspaces.Domain.EmploymentContract.Services.Interfaces;
-using DocuSign.Workspaces.Domain.TermsAndConditions.Services;
-using DocuSign.Workspaces.Domain.TermsAndConditions.Services.Interfaces;
 using DocuSign.Workspaces.Domain.Workspaces;
 using DocuSign.Workspaces.Hubs;
 using DocuSign.Workspaces.Infrastructure.Extensions;
@@ -46,18 +40,6 @@ namespace DocuSign.Workspaces
             services.AddScoped<ITestAccountConnectionSettingsRepository, AppSettingsTestAccountConnectionSettingsRepository>();
             services.AddSingleton<IEventsRepository, InMemoryEventsRepository>();
             services.AddSingleton<IAppConfiguration, AppSettingsConfiguration>();
-
-            services.AddScoped<IEmploymentContractEnvelopeService, EmploymentContractEnvelopeService>();
-            services.AddScoped<IEmploymentContractEnvelopeBuilder, EmploymentContractEnvelopeBuilder>();
-
-            services.AddScoped<ITermsAndConditionsEnvelopeService, TermsAndConditionsEnvelopeService>();
-            services.AddScoped<ITermsAndConditionsEnvelopeBuilder, TermsAndConditionsEnvelopeBuilder>();
-
-            services.AddScoped<ICustomerProfileEnvelopeService, CustomerProfileEnvelopeService>();
-            services.AddScoped<ICustomerProfileEnvelopeBuilder, CustomerProfileEnvelopeBuilder>();
-
-            services.AddScoped<ICustomQuoteEnvelopeService, CustomQuoteEnvelopeService>();
-            services.AddScoped<ICustomQuoteEnvelopeBuilder, CustomQuoteEnvelopeBuilder>();
 
             services.AddScoped<IWealthManagementClient, WealthManagementClient>();
             services.AddScoped<ICarePlansService, CarePlansService>();
