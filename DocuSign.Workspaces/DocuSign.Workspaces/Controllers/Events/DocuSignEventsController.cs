@@ -24,10 +24,10 @@ namespace DocuSign.Workspaces.Controllers.Events
         [HttpGet]
         public async Task<IActionResult> ReceiveEvent([FromBody] DocuSignEventModel docusignEvent)
         {
-            string evnvelopId = docusignEvent?.Data?.EnvelopeId;
+            var evnvelopId = docusignEvent?.Data?.EnvelopeId;
             if (_eventsRepository.IsEnvelopRegistered(evnvelopId))
             {
-                (string connectionId, string useCaseType) = _eventsRepository.GetEnvelopDetails(evnvelopId);
+                var (connectionId, useCaseType) = _eventsRepository.GetEnvelopDetails(evnvelopId);
                 var eventModel = CreateEventModel(useCaseType, docusignEvent);
                 await _hubContext.Clients.Client(connectionId).SendAsync("ReceivedEvent", eventModel);
             }

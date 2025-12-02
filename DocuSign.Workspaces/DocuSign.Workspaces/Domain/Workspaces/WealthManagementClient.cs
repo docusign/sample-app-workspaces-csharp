@@ -12,7 +12,11 @@ using Document = DocuSign.Workspaces.Domain.Workspaces.Models.Document;
 
 namespace DocuSign.Workspaces.Domain.Workspaces;
 
-public class WealthManagementClient(IDocuSignApiProvider docuSignApiProvider, IAccountRepository accountRepository) : IWealthManagementClient
+public class WealthManagementClient(
+    IDocuSignApiProvider docuSignApiProvider,
+    IAppConfiguration appConfiguration,
+    IAccountRepository accountRepository)
+    : IWealthManagementClient
 {
     public async Task<string> CreateWorkspaces(CreateWorkspacesModel createWorkspacesModel)
     {
@@ -98,6 +102,7 @@ public class WealthManagementClient(IDocuSignApiProvider docuSignApiProvider, IA
         }
 
         var workflowId = workflow.WorkflowId;
+        var eventNotificationUrl = $"{appConfiguration.DocuSign.EventNotificationBaseUrl}/api/callback/event";
 
         var env = new EnvelopeDefinition
         {
@@ -105,6 +110,7 @@ public class WealthManagementClient(IDocuSignApiProvider docuSignApiProvider, IA
             EmailSubject = "Please Sign",
             EmailBlurb = "Sample text for email body",
             Status = "Sent",
+            EventNotifications = EventService.ConfigureEventNotifications(eventNotificationUrl)
         };
 
         var doc1 = new eSign.Model.Document

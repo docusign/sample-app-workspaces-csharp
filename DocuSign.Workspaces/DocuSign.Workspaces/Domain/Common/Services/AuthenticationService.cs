@@ -36,7 +36,7 @@ namespace DocuSign.Workspaces.Domain.Common.Services
 
         public string PrePopulateUserId(string basePath, string code)
         {
-            string authServer = new Uri(basePath).Host;
+            var authServer = new Uri(basePath).Host;
             var apiClient = _docuSignClientsFactory.BuildDocuSignAuthClient(authServer);
             OAuth.OAuthToken authToken;
             if (authServer.Contains("-d")) // demo
@@ -54,7 +54,7 @@ namespace DocuSign.Workspaces.Domain.Common.Services
 
         public List<ResponseGetAccountsModel> GetAccounts(string basePath, string userId)
         {
-            string authServer = new Uri(basePath).Host;
+            var authServer = new Uri(basePath).Host;
             var apiClient = _docuSignClientsFactory.BuildDocuSignAuthClient(authServer);
             OAuth.OAuthToken authToken = null;
             try
@@ -85,7 +85,7 @@ namespace DocuSign.Workspaces.Domain.Common.Services
 
         public ClaimsPrincipal AuthenticateFromJwt(AccountConnectionSettings accountConnectionSettings)
         {
-            string authServer = new Uri(accountConnectionSettings.BasePath).Host;
+            var authServer = new Uri(accountConnectionSettings.BasePath).Host;
             var apiClient = _docuSignClientsFactory.BuildDocuSignAuthClient(authServer);
             OAuth.OAuthToken authToken = null;
             try
@@ -118,13 +118,13 @@ namespace DocuSign.Workspaces.Domain.Common.Services
 
             var claims = new List<Claim>
                 {
-                    new Claim("access_token", authToken.access_token),
-                    new Claim(ClaimTypes.NameIdentifier, userInfo.Sub),
-                    new Claim(ClaimTypes.Name, userInfo.Name),
-                    new Claim(ClaimTypes.Email, userInfo.Email),
-                    new Claim("base_uri", account.BaseUri),
-                    new Claim("account_name", account.AccountName),
-                    new Claim("account_id", accountConnectionSettings.AccountId)
+                    new ("access_token", authToken.access_token),
+                    new (ClaimTypes.NameIdentifier, userInfo.Sub),
+                    new (ClaimTypes.Name, userInfo.Name),
+                    new (ClaimTypes.Email, userInfo.Email),
+                    new ("base_uri", account.BaseUri),
+                    new ("account_name", account.AccountName),
+                    new ("account_id", accountConnectionSettings.AccountId)
                 };
 
 
@@ -137,23 +137,23 @@ namespace DocuSign.Workspaces.Domain.Common.Services
 
         public string CreateAdminConsentUrl(string baseUrl, string redirectUrl)
         {
-            string integrationKey = _appConfiguration.DocuSign.IntegrationKey;
-            string scope = "openid signature impersonation";
-            string adminConsentScope = "signature impersonation";
+            var integrationKey = _appConfiguration.DocuSign.IntegrationKey;
+            var scope = "openid signature impersonation";
+            var adminConsentScope = "signature impersonation";
 
-            string fullRedirectUrl = $"{_appConfiguration.DocuSign.RedirectBaseUrl}/{redirectUrl}";
+            var fullRedirectUrl = $"{_appConfiguration.DocuSign.RedirectBaseUrl}/{redirectUrl}";
 
-            UriBuilder builder = new UriBuilder($"{baseUrl}/oauth/auth?response_type=code&scope={scope}&client_id={integrationKey}&redirect_uri={fullRedirectUrl}&admin_consent_scope={adminConsentScope}");
+            var builder = new UriBuilder($"{baseUrl}/oauth/auth?response_type=code&scope={scope}&client_id={integrationKey}&redirect_uri={fullRedirectUrl}&admin_consent_scope={adminConsentScope}");
             return builder.ToString();
         }
 
         public string CreateUserConsentUrl(string baseUrl, string redirectUrl)
         {
-            string integrationKey = _appConfiguration.DocuSign.IntegrationKey;
-            string scope = "signature impersonation";
-            string fullRedirectUrl = $"{_appConfiguration.DocuSign.RedirectBaseUrl}/{redirectUrl}";
+            var integrationKey = _appConfiguration.DocuSign.IntegrationKey;
+            var scope = "signature impersonation";
+            var fullRedirectUrl = $"{_appConfiguration.DocuSign.RedirectBaseUrl}/{redirectUrl}";
 
-            UriBuilder builder = new UriBuilder($"{baseUrl}/oauth/auth?response_type=code&scope={scope}&client_id={integrationKey}&redirect_uri={fullRedirectUrl}");
+            var builder = new UriBuilder($"{baseUrl}/oauth/auth?response_type=code&scope={scope}&client_id={integrationKey}&redirect_uri={fullRedirectUrl}");
             return builder.ToString();
         }
 
