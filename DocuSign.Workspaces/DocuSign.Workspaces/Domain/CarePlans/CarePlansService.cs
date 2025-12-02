@@ -1,9 +1,7 @@
 using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.Linq;
 using System.Threading.Tasks;
-using DocuSign.eSign.Api;
 using DocuSign.eSign.Model;
 using Docusign.IAM.SDK.Models.Components;
 using DocuSign.Workspaces.Domain.CarePlans.Model;
@@ -136,20 +134,8 @@ public class CarePlansService(IDocuSignApiProvider docuSignApiProvider, IAppConf
 
                 await docuSignApiProvider.EnvelopApi.UpdateDocumentsAsync(accountRepository.AccountId, envelopeResponse.EnvelopeId, env);
 
-                try
-                {
-
-                    await docuSignApiProvider.EnvelopApi.UpdateAsync(accountRepository.AccountId, envelopeResponse.EnvelopeId,
-                        new Envelope(Status: sentStatus, NotificationUri: eventNotificationUrl));
-
-                    var sd = await docuSignApiProvider.EnvelopApi.ListAuditEventsAsync(accountRepository.AccountId, envelopeResponse.EnvelopeId);
-                    var hg = sd;
-                }
-                catch (Exception e)
-                {
-                    Console.WriteLine(e);
-                    throw;
-                }
+                await docuSignApiProvider.EnvelopApi.UpdateAsync(accountRepository.AccountId, envelopeResponse.EnvelopeId,
+                    new Envelope(Status: sentStatus));
 
                 documents.Add(new CareDocumentsModel(document.Name, document.IsForSignature, sentStatus));
             }
