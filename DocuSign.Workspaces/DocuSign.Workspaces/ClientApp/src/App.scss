@@ -629,8 +629,8 @@ body.home-page::before {
 }
 
 .step-circle-active {
-  width: 8px;
-  height: 8px;
+  width: 10px;
+  height: 10px;
   border-radius: 50%;
   background: #6e47cc;
 }
@@ -662,6 +662,61 @@ body.home-page::before {
   right: -19px;
   top: 26px;
 }
+
+.step-progress-compact {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+  padding: 8px 0;
+}
+
+.step-text {
+  font-family: Inter;
+  font-size: 16px;
+  font-weight: 500;
+  color: #565454;
+  letter-spacing: 0;
+}
+
+.step-dots {
+  display: flex;
+  gap: 12px;
+  align-items: center;
+}
+
+.step-dot {
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  border: 3px solid #e8e5f7;
+  background: #e8e5f7;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  transition: all 0.3s ease;
+}
+
+.step-dot.active {
+  width: 20px;
+  height: 20px;
+  border-width: 2px;
+  border-color: #6e47cc;
+  background: transparent;
+}
+
+.step-dot.completed {
+  background: #6e47cc;
+  border-color: #6e47cc;
+}
+
+.step-dot-inner {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background: #6e47cc;
+}
+
 .behind_scenes {
   margin-left: 48px;
 }
