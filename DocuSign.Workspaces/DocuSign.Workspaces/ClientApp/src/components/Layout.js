@@ -87,6 +87,7 @@ export default function Layout() {
 
   return (
     <div className="app-wrapper">
+      <div className="bg_color" />
       <header className="home-hero">
         <div
           className={`nav__overlay ${isNavOpen ? 'nav__overlay--open' : ''}`}
