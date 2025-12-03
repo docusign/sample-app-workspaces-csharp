@@ -40,28 +40,31 @@ export const RequestForm = ({ request, onSave, onChange, requesting = false, err
                 onChange={onChange}
                 error={errors.firstName}
               />
-              <InputText
-                name="lastName"
-                label=""
-                placeholder={t('LastName')}
-                value={request.lastName}
-                onChange={onChange}
-                error={errors.lastName}
-              />
-              <div className="mt-3" />
-              <InputText
-                name="email"
-                placeholder={t('Email')}
-                label={
-                  <>
-                    <SmsIcon className="form_icon" />
-                    {t('Email')}
-                  </>
-                }
-                value={request.email}
-                onChange={onChange}
-                error={errors.email}
-              />
+              <div className="hide_margin_top">
+                <InputText
+                  name="lastName"
+                  label=""
+                  placeholder={t('LastName')}
+                  value={request.lastName}
+                  onChange={onChange}
+                  error={errors.lastName}
+                />
+              </div>
+              <div className="mt-3">
+                <InputText
+                  name="email"
+                  placeholder={t('Email')}
+                  label={
+                    <>
+                      <SmsIcon className="form_icon" />
+                      {t('Email')}
+                    </>
+                  }
+                  value={request.email}
+                  onChange={onChange}
+                  error={errors.email}
+                />
+              </div>
             </div>
             <div className="subtitle1  mb-4">
               {t('SecondaryTitle')}
@@ -83,30 +86,33 @@ export const RequestForm = ({ request, onSave, onChange, requesting = false, err
                 error={errors.firstNameOptional}
                 required={false}
               />
-              <InputText
-                name="lastNameOptional"
-                label=""
-                placeholder={t('LastName')}
-                value={request.lastNameOptional}
-                onChange={onChange}
-                error={errors.lastNameOptional}
-                required={false}
-              />
-              <div className="mt-3" />
-              <InputText
-                name="emailOptional"
-                placeholder={t('Email')}
-                label={
-                  <>
-                    <SmsIcon className="form_icon" />
-                    {t('Email')}
-                  </>
-                }
-                value={request.emailOptional}
-                onChange={onChange}
-                error={errors.emailOptional}
-                required={false}
-              />
+              <div className="hide_margin_top">
+                <InputText
+                  name="lastNameOptional"
+                  label=""
+                  placeholder={t('LastName')}
+                  value={request.lastNameOptional}
+                  onChange={onChange}
+                  error={errors.lastNameOptional}
+                  required={false}
+                />
+              </div>
+              <div className="mt-3">
+                <InputText
+                  name="emailOptional"
+                  placeholder={t('Email')}
+                  label={
+                    <>
+                      <SmsIcon className="form_icon" />
+                      {t('Email')}
+                    </>
+                  }
+                  value={request.emailOptional}
+                  onChange={onChange}
+                  error={errors.emailOptional}
+                  required={false}
+                />
+              </div>
             </div>
           </div>
           <div className="text-end">

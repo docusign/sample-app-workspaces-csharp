@@ -340,25 +340,30 @@ input[type='radio'] {
   pointer-events: none;
   user-select: none;
 }
+.hide_margin_top {
+  margin-top: 0px;
+
+  @media (max-width: 768px) {
+    margin-top: -20px;
+  }
+}
 
 .form-grid {
-  @media (min-width: 1441px) {
+  @media (min-width: 1230px) {
     display: grid;
     grid-template-columns: 1fr 1fr;
     gap: 0 20px;
   }
-  // @media (min-width: 768px) {
-  //   max-width: 60%;
-  // }
 }
 .width_form {
+  flex: 1;
+  min-width: 100%;
   max-width: 100%;
-  @media (min-width: 768px) {
+
+  @media (max-width: 768px) {
     max-width: 60%;
+    min-width: auto;
   }
-  // @media (min-width: 600px) {
-  //   max-width: 100%;
-  // }
 }
 
 .btn-upload-document {

@@ -75,9 +75,9 @@ body.home-page::before {
   width: 100%;
   padding-top: 50%;
   background: url('../public/home_background.png') top/100% auto no-repeat;
-  background-size: auto 100%;
+  background-size: 100% auto;
   z-index: -1;
-  background-position: right top;
+  background-position: right -50px;
 }
 
 .app-wrapper {
