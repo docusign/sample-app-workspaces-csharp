@@ -3,8 +3,6 @@
   height: 26px;
 }
 .collapsed_button {
-  flex: 1;
-  max-width: 320px;
   display: flex;
   flex-direction: row;
   align-items: center;
@@ -58,5 +56,10 @@
   .form_and_description_grid {
     display: flex;
     flex-direction: column;
+  }
+}
+@media (max-width: 768px) {
+  .collapsed_button {
+    flex: 1;
   }
 }

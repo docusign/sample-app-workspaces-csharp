@@ -11,6 +11,7 @@ function LoginModal({
   onClose,
   resumeAuthStep,
   onClearAuthStep,
+  setIsTestAccount,
 }) {
   const { t } = useTranslation();
   const defaultEnv = useMemo(() => environments?.[0]?.url || '', [environments]);
@@ -29,6 +30,10 @@ function LoginModal({
 
   const autoConnectTriggered = useRef(false);
   const latestLoginWithAcg = useRef(null);
+
+  useEffect(() => {
+    setIsTestAccount(selectedAuth === 'jwt');
+  }, [selectedAuth, setIsTestAccount]);
 
   useEffect(() => {
     if (isOpen) {

@@ -14,6 +14,7 @@ export default function Layout() {
     { key: 'production', label: t('Layout.Production'), url: 'https://account.docusign.com' },
   ];
   const [accountStatus, setAccountStatus] = useState(null);
+  const [isTestAccount, setIsTestAccount] = useState(false);
   const [isLoginOpen, setIsLoginOpen] = useState(false);
   const [isNavOpen, setIsNavOpen] = useState(false);
 
@@ -138,7 +139,7 @@ export default function Layout() {
       </header>
 
       <main className="main-content">
-        <Outlet context={{ openLoginModal, accountStatus }} />
+        <Outlet context={{ openLoginModal, accountStatus, isTestAccount }} />
       </main>
 
       <footer className="footer">
@@ -157,6 +158,7 @@ export default function Layout() {
         onLogout={logout}
         resumeAuthStep={getCookie('ds_auth_step') === 'acg-consent' ? 'acg' : null}
         onClearAuthStep={clearAuthCookie}
+        setIsTestAccount={setIsTestAccount}
       />
     </div>
   );

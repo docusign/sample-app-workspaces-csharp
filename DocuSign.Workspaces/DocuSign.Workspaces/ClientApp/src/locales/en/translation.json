@@ -99,6 +99,8 @@
   "Common": {
     "Preview": "Preview",
     "ForSignature": "For signature",
+    "RequiresSignature": "Requires signature",
+    "DoNotRequireSignature": "Does not require signature",
     "UploadDocument": "Upload Document",
     "RemoveFile": "Remove file",
     "Yes": "Yes",

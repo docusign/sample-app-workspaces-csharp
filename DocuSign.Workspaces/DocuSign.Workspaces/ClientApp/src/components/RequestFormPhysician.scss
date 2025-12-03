@@ -78,6 +78,7 @@
 .uploaded-file-preview {
   font-family: 'Inter', sans-serif;
   font-size: 14px;
+  font-weight: 500;
   line-height: 150%;
   color: #666bfa;
   background: none;
@@ -166,6 +167,24 @@
   font-weight: bold;
 }
 
+.is_need_signature {
+  margin-top: 5px;
+  background-color: #cdbfed;
+  border-radius: 4px;
+  padding: 2px 8px;
+  font-size: 12px;
+  font-family: Inter;
+  font-weight: 400;
+}
+.is_not_need_signature {
+  margin-top: 5px;
+  background-color: rgba(204, 204, 204, 0.3);
+  border-radius: 4px;
+  padding: 2px 8px;
+  font-size: 12px;
+  font-family: Inter;
+  font-weight: 400;
+}
 .uploaded-file-signature {
   display: flex;
   align-items: center;

@@ -17,32 +17,29 @@ import { ReactComponent as DocType } from '../assets/icons/doc.svg';
 const listFiles = [
   {
     id: 211,
-    forSignature: false,
+    forSignature: true,
     type: 'pdf',
-    name: 'Patient progress report TEST.pdf',
-    path: '/Patient progress report TEST.pdf',
+    name: 'Patient Lab Report.pdf',
+    path: '/Patient Lab Report.pdf',
     isNeedSign: true,
-    isSubmitted: true,
     status: 'success',
   },
   {
     id: 212,
-    forSignature: false,
+    forSignature: true,
     type: 'pdf',
-    name: 'Physical therapy plan TEST.pdf',
-    path: '/Physical therapy plan TEST.pdf',
-    isNeedSign: true,
-    isSubmitted: true,
+    name: 'Physical Therapy Plan of CarePatient Information.pdf',
+    path: '/Physical Therapy Plan of CarePatient Information.pdf',
+    isNeedSign: false,
     status: 'success',
   },
   {
     id: 213,
     forSignature: false,
     type: 'pdf',
-    name: 'Specialized home care plan doc TEST.pdf',
-    path: '/Specialized home care plan doc TEST.pdf',
+    name: 'Specialized Home Care Plan.pdf',
+    path: '/Specialized Home Care Plan.pdf',
     isNeedSign: false,
-    isSubmitted: true,
     status: 'success',
   },
 ];
@@ -58,7 +55,7 @@ export const RequestFormPhysician = ({
   selectedPhysician,
   setSelectedPhysician,
 }) => {
-  const { accountStatus } = useOutletContext();
+  const { accountStatus, isTestAccount } = useOutletContext();
   const [isUploadOpen, setIsUploadOpen] = useState(false);
   const [uploadedFiles, setUploadedFiles] = useState([]);
 
@@ -66,12 +63,14 @@ export const RequestFormPhysician = ({
   const closeModal = () => setIsUploadOpen(false);
 
   useEffect(() => {
-    if (accountStatus?.isConnected === false) {
-      setUploadedFiles(listFiles);
-    } else if (accountStatus?.isConnected) {
-      setUploadedFiles([]);
+    if (accountStatus?.isConnected) {
+      if (isTestAccount) {
+        setUploadedFiles(listFiles);
+      } else {
+        setUploadedFiles([]);
+      }
     }
-  }, [accountStatus]);
+  }, [accountStatus, isTestAccount]);
 
   const { t } = useTranslation();
   const [submitted, setSubmitted] = useState(false);
@@ -134,11 +133,6 @@ export const RequestFormPhysician = ({
     setUploadedFiles((prev) => prev.filter((f) => f.id !== fileId));
   };
 
-  const forSend = (fileId) => {
-    setUploadedFiles((prev) =>
-      prev.map((f) => (f.id === fileId ? { ...f, forSend: !f.forSend } : f))
-    );
-  };
   const toggleSignature = (fileId) => {
     setUploadedFiles((prev) =>
       prev.map((f) => (f.id === fileId ? { ...f, forSignature: !f.forSignature } : f))
@@ -154,10 +148,12 @@ export const RequestFormPhysician = ({
   const handleSubmit = (event) => {
     const requestWithFiles = {
       ...request,
-      files: uploadedFiles.filter((f) =>
-        accountStatus?.isConnected
-          ? f.forSignature
-          : f.forSend && (f.isNeedSign ? f.forSignature : true)
+      files: uploadedFiles.filter(
+        (f) =>
+          // accountStatus?.isConnected
+          //   ? f.forSignature
+          //   : f.forSend && (f.isNeedSign ? f.forSignature : true)
+          f.forSignature
       ),
     };
 
@@ -173,7 +169,7 @@ export const RequestFormPhysician = ({
       window.open(file.path, '_blank', 'noopener,noreferrer');
     }
   };
-
+  console.log('<<< isTestAccount', isTestAccount);
   return (
     <div className="col-lg-8">
       <div className="form-holder bg-white">
@@ -221,15 +217,6 @@ export const RequestFormPhysician = ({
             <div className="uploaded-files-container mb-3">
               {uploadedFiles.map((file) => (
                 <div className="d-flex align-items-center">
-                  {!accountStatus?.isConnected && (
-                    <label className="uploaded-file-signature me-3">
-                      <input
-                        type="checkbox"
-                        checked={file.forSend}
-                        onChange={() => forSend(file.id)}
-                      />
-                    </label>
-                  )}
                   <div key={file.id} className="uploaded-file-item">
                     <div className="uploaded-file-icon">
                       {getFileIcon(file.type) === 'pdf' ? <PdfType /> : <DocType />}
@@ -268,16 +255,27 @@ export const RequestFormPhysician = ({
                         </div>
                       )}
                       <div className="review-small-screen">
-                        {file.isNeedSign && (
+                        {file.isNeedSign && !isTestAccount && (
                           <label className="uploaded-file-signature">
                             <input
                               type="checkbox"
                               checked={file.forSignature}
                               onChange={() => toggleSignature(file.id)}
                             />
-                            <span>{t('Common.ForSignature')}</span>
+                            <span>{t('Common.RequiresSignature')}</span>
                           </label>
                         )}
+                        {isTestAccount &&
+                          file.forSignature &&
+                          (file.isNeedSign ? (
+                            <label className="is_need_signature">
+                              <span>{t('Common.RequiresSignature')}</span>
+                            </label>
+                          ) : (
+                            <label className="is_not_need_signature">
+                              <span>{t('Common.DoNotRequireSignature')}</span>
+                            </label>
+                          ))}
                         {file.status !== 'uploading' && (
                           <button
                             type="button"
@@ -298,14 +296,18 @@ export const RequestFormPhysician = ({
                           </div>
                         </div>
                       ) : (
-                        <button
-                          type="button"
-                          className="uploaded-file-remove"
-                          onClick={() => removeFile(file.id)}
-                          aria-label={t('Common.RemoveFile')}
-                        >
-                          <TrashIcon style={file.status === 'error' ? { color: '#CA5048' } : {}} />
-                        </button>
+                        !isTestAccount && (
+                          <button
+                            type="button"
+                            className="uploaded-file-remove"
+                            onClick={() => removeFile(file.id)}
+                            aria-label={t('Common.RemoveFile')}
+                          >
+                            <TrashIcon
+                              style={file.status === 'error' ? { color: '#CA5048' } : {}}
+                            />
+                          </button>
+                        )
                       ))}
                   </div>
                 </div>
@@ -313,7 +315,7 @@ export const RequestFormPhysician = ({
             </div>
           )}
 
-          {accountStatus?.isConnected && (
+          {accountStatus?.isConnected && !isTestAccount && (
             <button className="btn-upload-document" type="button" onClick={openModal}>
               <PlusIcon className="plus_upload" />
               {t('Common.UploadDocument')}
@@ -322,7 +324,7 @@ export const RequestFormPhysician = ({
 
           <div className="text-end">
             <button
-              className="pill card__cta btn-primary w-100"
+              className="pill card__cta btn-primary width_100_small_screen"
               type="button"
               onClick={handleSubmit}
               disabled={
