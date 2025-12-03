@@ -82,6 +82,12 @@
   "Onboarding": {
     "Title": "Review & confirm documents",
     "EnvelopeName": "Envelope Name",
+    "Envelope": "Envelope",
+    "WorkspaceDocument": "Workspace document",
+    "PendingSignature": "Pending signature",
+    "Yes": "Yes",
+    "No": "No",
+    "Name": "Name",
     "Status": "Status",
     "Actions": "Actions",
     "Preview": "Preview",
@@ -116,6 +122,7 @@
   },
   "TableDocuments": {
     "Title": "Care Plan Documents",
+    "Type": "Type",
     "RequiresSignature": "Requires Signature"
   },
   "UseCaseOne": {

@@ -4,17 +4,9 @@ import { useTranslation } from 'react-i18next';
 import { useOutletContext } from 'react-router-dom';
 import { SortIcon } from '../components/SortIcon';
 
-export const TableDocuments = ({
-  request,
-  onSave,
-  listFiles,
-  onChange,
-  requesting = false,
-  errors = {},
-  onPrevious,
-}) => {
+export const TableDocuments = ({ onSave, listFiles }) => {
   const { t } = useTranslation();
-  const { accountStatus } = useOutletContext();
+  const { isTestAccount } = useOutletContext();
   const [submitted, setSubmitted] = useState(false);
   const [listPending, setListPending] = useState(listFiles);
   const [sortConfig, setSortConfig] = useState({ key: null, direction: 'asc' });
@@ -59,7 +51,7 @@ export const TableDocuments = ({
                     <tr>
                       <th onClick={() => handleSort('name')}>
                         <div className="header-content">
-                          {t('Onboarding.EnvelopeName')}
+                          {t('Onboarding.Name')}
                           <SortIcon
                             column="label"
                             key={sortConfig.key}
@@ -67,15 +59,15 @@ export const TableDocuments = ({
                           />
                         </div>
                       </th>
-                      {!accountStatus?.isConnected && (
+                      {isTestAccount && (
+                        <th onClick={() => handleSort('status')}>
+                          <div className="header-content">{t('TableDocuments.Type')}</div>
+                        </th>
+                      )}
+                      {isTestAccount && (
                         <th onClick={() => handleSort('status')}>
                           <div className="header-content">
                             {t('TableDocuments.RequiresSignature')}
-                            <SortIcon
-                              column="status"
-                              key={sortConfig.key}
-                              direction={sortConfig.direction}
-                            />
                           </div>
                         </th>
                       )}
@@ -95,10 +87,27 @@ export const TableDocuments = ({
                     {listPending.map((doc) => (
                       <tr key={doc.id}>
                         <td>{doc.name}</td>
-                        {!accountStatus?.isConnected && (
-                          <td>{doc.isNeedSign ? t('Common.Yes') : t('Common.No')}</td>
+                        {isTestAccount && (
+                          <td>
+                            {doc.isSigned
+                              ? t('Onboarding.Envelope')
+                              : t('Onboarding.WorkspaceDocument')}
+                          </td>
                         )}
-                        <td>{doc.status}</td>
+                        {isTestAccount && (
+                          <td>
+                            <div
+                              className={
+                                doc.isSigned ? 'is_need_signature' : 'is_not_need_signature'
+                              }
+                            >
+                              {doc.isSigned ? t('Onboarding.Yes') : t('Onboarding.No')}
+                            </div>
+                          </td>
+                        )}
+                        <td>
+                          {doc.status === 'sent' ? t('Onboarding.PendingSignature') : doc.status}
+                        </td>
                       </tr>
                     ))}
                   </tbody>

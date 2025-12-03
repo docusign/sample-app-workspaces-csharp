@@ -17,7 +17,7 @@ import { ReactComponent as DocType } from '../assets/icons/doc.svg';
 const listFiles = [
   {
     id: 211,
-    forSignature: true,
+    isForSignature: true,
     type: 'pdf',
     name: 'Patient Lab Report.pdf',
     path: '/Patient Lab Report.pdf',
@@ -26,16 +26,17 @@ const listFiles = [
   },
   {
     id: 212,
-    forSignature: true,
+    // isForSignature: false,
+    isForSignature: true,
     type: 'pdf',
     name: 'Physical Therapy Plan of CarePatient Information.pdf',
     path: '/Physical Therapy Plan of CarePatient Information.pdf',
-    isNeedSign: false,
+    isNeedSign: true,
     status: 'success',
   },
   {
     id: 213,
-    forSignature: false,
+    isForSignature: false,
     type: 'pdf',
     name: 'Specialized Home Care Plan.pdf',
     path: '/Specialized Home Care Plan.pdf',
@@ -112,7 +113,7 @@ export const RequestFormPhysician = ({
         type: file.type,
         status: isOverLimit ? 'error' : 'uploading',
         progress: 0,
-        forSignature: false,
+        isForSignature: false,
         errorMessage: isOverLimit ? t('RequestFormPhysician.FileSizeLimitExceeded') : null,
         file: file,
       };
@@ -135,7 +136,7 @@ export const RequestFormPhysician = ({
 
   const toggleSignature = (fileId) => {
     setUploadedFiles((prev) =>
-      prev.map((f) => (f.id === fileId ? { ...f, forSignature: !f.forSignature } : f))
+      prev.map((f) => (f.id === fileId ? { ...f, isForSignature: !f.isForSignature } : f))
     );
   };
 
@@ -151,12 +152,13 @@ export const RequestFormPhysician = ({
       files: uploadedFiles.filter(
         (f) =>
           // accountStatus?.isConnected
-          //   ? f.forSignature
-          //   : f.forSend && (f.isNeedSign ? f.forSignature : true)
-          f.forSignature
+          //   ? f.isForSignature
+          //   : f.forSend && (f.isNeedSign ? f.isForSignature : true)
+          // f.isForSignature
+          f.isNeedSign
       ),
     };
-
+    console.log('<<<< 00000 requestWithFiles', requestWithFiles);
     onSave(requestWithFiles);
     setSubmitted(true);
   };
@@ -169,7 +171,6 @@ export const RequestFormPhysician = ({
       window.open(file.path, '_blank', 'noopener,noreferrer');
     }
   };
-  console.log('<<< isTestAccount', isTestAccount);
   return (
     <div className="col-lg-8">
       <div className="form-holder bg-white">
@@ -259,15 +260,15 @@ export const RequestFormPhysician = ({
                           <label className="uploaded-file-signature">
                             <input
                               type="checkbox"
-                              checked={file.forSignature}
+                              checked={file.isForSignature}
                               onChange={() => toggleSignature(file.id)}
                             />
                             <span>{t('Common.RequiresSignature')}</span>
                           </label>
                         )}
                         {isTestAccount &&
-                          file.forSignature &&
-                          (file.isNeedSign ? (
+                          file.isNeedSign &&
+                          (file.isForSignature ? (
                             <label className="is_need_signature">
                               <span>{t('Common.RequiresSignature')}</span>
                             </label>
@@ -330,7 +331,7 @@ export const RequestFormPhysician = ({
               disabled={
                 requesting ||
                 !selectedPhysician ||
-                !uploadedFiles.some((f) => f.forSignature) ||
+                !uploadedFiles.some((f) => f.isForSignature) ||
                 !request.email ||
                 errors.email
               }

@@ -36,7 +36,7 @@ export async function prepareDocuments(list) {
     docs.push({
       base64String: base64,
       name: item.name,
-      isForSignature: true,
+      isForSignature: item.isForSignature,
     });
   }
 
