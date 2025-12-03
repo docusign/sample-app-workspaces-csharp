@@ -317,14 +317,12 @@ body.home-page::before {
   display: flex;
   flex-direction: row;
   align-items: center;
+  justify-content: center;
   gap: 10px;
   background: #e9eaee;
   border-radius: 240px;
-}
-
-.card__icon img {
-  max-width: 88px;
-  max-height: 88px;
+  width: 88px;
+  height: 88px;
 }
 
 .card__title {
@@ -338,7 +336,10 @@ body.home-page::before {
   line-height: 1.3;
   text-align: center;
   color: #13131b;
-  width: 100%;
+  width: 70%;
+}
+.card__title_width {
+  width: 50%;
 }
 
 .card__cta {
@@ -1127,6 +1128,11 @@ body:not(.home-page) .footer {
 
   .card__title {
     min-height: 50px;
+    width: auto;
+  }
+
+  .card__title_width {
+    width: auto;
   }
 
   .footer__main {

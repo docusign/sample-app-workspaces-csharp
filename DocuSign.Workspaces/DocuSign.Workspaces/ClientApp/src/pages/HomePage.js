@@ -3,6 +3,8 @@ import { useOutletContext, useNavigate } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import { ReactComponent as ArrowRightIcon } from '../assets/icons/arrow-right.svg';
 import { ReactComponent as CheckHomeIcon } from '../assets/icons/check_home.svg';
+import { ReactComponent as UserAddIcon } from '../assets/icons/user-add.svg';
+import { ReactComponent as NoteIcon } from '../assets/icons/note.svg';
 
 export default function HomePage() {
   const { t } = useTranslation();
@@ -37,25 +39,25 @@ export default function HomePage() {
           <div className="cards">
             {[
               {
-                icon: '/wm_card_icon.png',
+                icon: <UserAddIcon />,
                 title: t('WealthManagement'),
                 cta: t('GetStarted'),
                 url: '/use-case1',
                 features: [t('RemoteSigning'), t('Templates'), t('BrandingIntegration')],
               },
               {
-                icon: '/cp_card_icon.png',
+                icon: <NoteIcon />,
                 title: t('CarePlans'),
                 cta: t('GetStarted'),
                 url: '/use-case2',
                 features: [t('PersistentWorkspaces'), t('DocumentAggregation'), t('SignAndAssign')],
               },
-            ].map((card) => (
+            ].map((card, index) => (
               <div className="card_home" key={card.title}>
-                <div className="card__icon">
-                  <img src={card.icon} alt="" />
+                <div className="card__icon">{card.icon}</div>
+                <div className={index === 1 ? 'card__title card__title_width' : 'card__title'}>
+                  {card.title}
                 </div>
-                <div className="card__title">{card.title}</div>
                 <button
                   className="pill card__cta"
                   type="button"
