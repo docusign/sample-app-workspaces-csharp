@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { Link, Outlet } from 'react-router-dom';
+import { Link, Outlet, useNavigate, useLocation } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import LoginModal from '../loginModal/LoginModal';
 import { ReactComponent as ChevronRightIcon } from '../assets/icons/chevron-right.svg';
@@ -8,15 +8,23 @@ export const API_BASE = 'https://localhost:5001';
 
 export default function Layout() {
   const { t } = useTranslation();
+  const navigate = useNavigate();
+  const location = useLocation();
 
   const ENVIRONMENTS = [
     { key: 'demo', label: t('Layout.Demo'), url: 'https://account-d.docusign.com' },
     { key: 'production', label: t('Layout.Production'), url: 'https://account.docusign.com' },
   ];
   const [accountStatus, setAccountStatus] = useState(null);
-  const [isTestAccount, setIsTestAccount] = useState(false);
+  const [isTestAccount, setIsTestAccount] = useState(
+    () => JSON.parse(sessionStorage.getItem('isTestAccount')) || false
+  );
   const [isLoginOpen, setIsLoginOpen] = useState(false);
   const [isNavOpen, setIsNavOpen] = useState(false);
+
+  useEffect(() => {
+    sessionStorage.setItem('isTestAccount', JSON.stringify(isTestAccount));
+  }, [isTestAccount]);
 
   const getCookie = (name) => {
     const match = document.cookie.match(new RegExp('(^| )' + name + '=([^;]+)'));
@@ -71,6 +79,9 @@ export default function Layout() {
       setAccountStatus(null);
       clearAuthCookie();
       closeLoginModal();
+      if (location.pathname !== '/') {
+        navigate('/');
+      }
     }
   };
 
