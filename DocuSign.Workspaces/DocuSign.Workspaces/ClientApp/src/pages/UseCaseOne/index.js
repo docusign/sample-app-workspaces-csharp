@@ -6,6 +6,8 @@ import GoBackArrow from '../../components/GoBackArrow';
 import { ApiDescription } from '../../components/ApiDescription';
 import StepProgress from '../../components/StepProgress';
 import { SelectDocuments } from '../../components/SelectDocuments';
+import { SkeletonSelectDocuments } from '../../components/SkeletonSelectDocuments';
+import { SkeletonOnboarding } from '../../components/SkeletonOnboarding';
 import { Onboarding } from '../../components/Onboarding';
 import { SomethingWentWrong } from '../../components/SomethingWentWrong';
 import { API_BASE } from '../../components/Layout';
@@ -55,6 +57,7 @@ export const UseCaseOnePage = () => {
       return;
     }
     setRequesting(true);
+    setCurrentStep(1);
     try {
       const payload = {
         workspacesName: request.firstName + request.lastName,
@@ -75,7 +78,6 @@ export const UseCaseOnePage = () => {
 
       setWorkspaceId(workspaceId);
       showToast(t('UseCaseOne.WorkspaceCreatedSuccess'));
-      setCurrentStep(1);
     } catch (error) {
       toast.error(error.message);
     } finally {
@@ -85,6 +87,7 @@ export const UseCaseOnePage = () => {
 
   async function onAddDocuments(event) {
     setRequesting(true);
+    setCurrentStep(2);
     const documents = await prepareDocuments(event);
     try {
       const payload = {
@@ -116,7 +119,6 @@ export const UseCaseOnePage = () => {
       setErrorOnboarding(t('Common.Error'));
     } finally {
       setRequesting(false);
-      setCurrentStep(2);
     }
   }
 
@@ -182,13 +184,16 @@ export const UseCaseOnePage = () => {
             errors={errors}
           />
         )}
-        {currentStep === 1 && (
-          <SelectDocuments
-            onPrevious={onPrevious}
-            requesting={requesting}
-            onAddDocuments={onAddDocuments}
-          />
-        )}
+        {currentStep === 1 &&
+          (requesting ? (
+            <SkeletonSelectDocuments />
+          ) : (
+            <SelectDocuments
+              onPrevious={onPrevious}
+              requesting={requesting}
+              onAddDocuments={onAddDocuments}
+            />
+          ))}
 
         {currentStep === 2 &&
           (errorOnboarding ? (
@@ -197,6 +202,8 @@ export const UseCaseOnePage = () => {
                 setCurrentStep(0);
               }}
             />
+          ) : requesting ? (
+            <SkeletonOnboarding />
           ) : (
             <Onboarding filesList={respFiles} />
           ))}

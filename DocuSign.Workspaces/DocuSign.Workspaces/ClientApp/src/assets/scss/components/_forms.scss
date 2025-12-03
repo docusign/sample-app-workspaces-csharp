@@ -364,6 +364,10 @@ input[type='radio'] {
     max-width: 60%;
     min-width: auto;
   }
+  @media (max-width: 420px) {
+    max-width: 100%;
+    min-width: auto;
+  }
 }
 
 .btn-upload-document {

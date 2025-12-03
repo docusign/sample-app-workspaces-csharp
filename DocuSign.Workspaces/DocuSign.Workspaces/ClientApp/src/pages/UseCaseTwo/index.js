@@ -5,6 +5,7 @@ import { RequestFormPhysician } from '../../components/RequestFormPhysician';
 import GoBackArrow from '../../components/GoBackArrow';
 import { ApiDescription } from '../../components/ApiDescription';
 import { TableDocuments } from '../../components/TableDocuments';
+import { SkeletonTableDocuments } from '../../components/SkeletonTableDocuments';
 import { SomethingWentWrong } from '../../components/SomethingWentWrong';
 import { API_BASE } from '../../components/Layout';
 import { prepareDocuments } from '../../components/helper/filesConverter';
@@ -27,6 +28,7 @@ export const UseCaseTwoPage = () => {
   const [isLoadingPhysician, setIsLoadingPhysician] = useState(false);
   const [errors, setErrors] = useState({});
   const [listPhysician, setListPhysician] = useState([]);
+  const [currentStep, setCurrentStep] = useState(0);
   const [listFiles, setListFiles] = useState([]);
   const [errorOnboarding, setErrorOnboarding] = useState('');
   const [selectedPhysician, setSelectedPhysician] = useState(undefined);
@@ -42,8 +44,6 @@ export const UseCaseTwoPage = () => {
       window.removeEventListener('resize', handleResize);
     };
   }, []);
-
-  const [currentStep, setCurrentStep] = useState(0);
 
   useEffect(() => {
     if (listPhysician?.length) setSelectedPhysician(listPhysician[0]);
@@ -81,6 +81,8 @@ export const UseCaseTwoPage = () => {
       return;
     }
     setRequesting(true);
+    setCurrentStep(1);
+
     try {
       const documents = await prepareDocuments(event.files);
       const payload = {
@@ -107,7 +109,6 @@ export const UseCaseTwoPage = () => {
       setErrorOnboarding(t('Common.Error'));
     } finally {
       setRequesting(false);
-      setCurrentStep(1);
     }
   }
 
@@ -166,6 +167,8 @@ export const UseCaseTwoPage = () => {
                 setCurrentStep(0);
               }}
             />
+          ) : requesting ? (
+            <SkeletonTableDocuments />
           ) : (
             <TableDocuments listFiles={listFiles} />
           ))}
