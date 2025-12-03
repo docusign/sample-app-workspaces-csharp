@@ -26,8 +26,8 @@ const listFiles = [
   },
   {
     id: 212,
-    // isForSignature: false,
-    isForSignature: true,
+    isForSignature: false,
+    // isForSignature: true,
     type: 'pdf',
     name: 'Physical Therapy Plan of CarePatient Information.pdf',
     path: '/Physical Therapy Plan of CarePatient Information.pdf',
@@ -149,16 +149,8 @@ export const RequestFormPhysician = ({
   const handleSubmit = (event) => {
     const requestWithFiles = {
       ...request,
-      files: uploadedFiles.filter(
-        (f) =>
-          // accountStatus?.isConnected
-          //   ? f.isForSignature
-          //   : f.forSend && (f.isNeedSign ? f.isForSignature : true)
-          // f.isForSignature
-          f.isNeedSign
-      ),
+      files: uploadedFiles.filter((f) => f.isNeedSign),
     };
-    console.log('<<<< 00000 requestWithFiles', requestWithFiles);
     onSave(requestWithFiles);
     setSubmitted(true);
   };

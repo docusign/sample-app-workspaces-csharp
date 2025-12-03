@@ -163,7 +163,6 @@ function LoginModal({
         return;
       }
 
-      // If no redirect was returned, refresh status/settings so the next login attempt can proceed.
       await fetchStatusAndSettings();
       setSelectedAuth('acg');
     } catch (err) {
