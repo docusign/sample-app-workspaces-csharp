@@ -1,13 +1,13 @@
 html,
 body {
   height: 100%;
-  font-family: Inter;
+  font-family: 'Inter';
 }
 
 body {
   display: flex;
   flex-direction: column;
-  font-family: Inter;
+  font-family: 'Inter';
 }
 
 .content {
@@ -27,7 +27,7 @@ a.disabled {
 h1,
 .h1 {
   font-size: 64px;
-  font-family: Inter;
+  font-family: 'Inter';
   line-height: 104%;
   margin-bottom: 25px;
   color: #141414;
@@ -39,7 +39,7 @@ h1,
 
 h2,
 .h2 {
-  font-family: Inter;
+  font-family: 'Inter';
   font-size: 48px;
   line-height: 104%;
   font-weight: 600;
@@ -49,7 +49,7 @@ h2,
 
 h3,
 .h3 {
-  font-family: Inter;
+  font-family: 'Inter';
   font-size: 48px;
   line-height: 110%;
   margin-bottom: 20px;
@@ -58,7 +58,7 @@ h3,
 
 h4,
 .h4 {
-  font-family: Inter;
+  font-family: 'Inter';
   font-size: 24px;
   line-height: 120%;
   font-weight: 600;
@@ -67,21 +67,21 @@ h4,
 
 h5,
 .h5 {
-  font-family: Inter;
+  font-family: 'Inter';
   font-size: 20px;
   line-height: 22px;
   font-weight: 600;
   color: #141414;
 }
 .body1 {
-  font-family: Inter;
+  font-family: 'Inter';
   font-size: 20px;
   line-height: 130%;
   font-weight: 500;
   color: #141414;
 }
 .subtitle1 {
-  font-family: Inter;
+  font-family: 'Inter';
   font-size: 18px;
   line-height: 104%;
   font-weight: 600;
@@ -147,7 +147,7 @@ h5,
     }
     h2,
     .h2 {
-      font-family: Inter;
+      font-family: 'Inter';
       font-size: 32px;
       line-height: 104%;
       color: #141414;
@@ -181,7 +181,7 @@ h5,
     }
     h2,
     .h2 {
-      font-family: Inter;
+      font-family: 'Inter';
       font-size: 24px;
       font-weight: 600;
       line-height: 120%;
