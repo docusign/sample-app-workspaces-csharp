@@ -121,7 +121,7 @@ export default function Layout() {
             </a>
             <a
               className="nav__link"
-              href="https://github.com/docusign/code-examples-csharp/tree/master/Workspaces"
+              href="https://github.com/docusign/sample-app-workspaces-csharp"
               target="_blank"
               rel="noreferrer"
             >

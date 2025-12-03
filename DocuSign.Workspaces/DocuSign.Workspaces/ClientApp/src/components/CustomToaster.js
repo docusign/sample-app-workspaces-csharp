@@ -15,6 +15,6 @@ export const showToast = (message, type = 'success') => {
         </button>
       </div>
     ),
-    { duration: 50000 }
+    { duration: 5000 }
   );
 };

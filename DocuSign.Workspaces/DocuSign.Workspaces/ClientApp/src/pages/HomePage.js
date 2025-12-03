@@ -92,10 +92,18 @@ export default function HomePage() {
           <div className="footer__description">
             <p className="footer__text">{t('AgreeBetterDescription')}</p>
             <div className="footer__actions">
-              <button className="pill footer__cta" type="button" onClick={openLoginModal}>
+              <button
+                className="pill footer__cta"
+                type="button"
+                onClick={() => window.open('https://go.docusign.com/o/sandbox/', '_blank')}
+              >
                 {t('CreateDeveloperAccount')}
               </button>
-              <button className="pill footer__link" type="button">
+              <button
+                className="pill footer__link"
+                type="button"
+                onClick={() => window.open('https://developers.docusign.com/', '_blank')}
+              >
                 {t('LearnMore')}
               </button>
             </div>
