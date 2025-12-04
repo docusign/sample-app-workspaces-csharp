@@ -40,42 +40,22 @@ export const SkeletonTableDocuments = ({ rowCount = 3 }) => {
     return (
       <div className="documents-table-wrapper">
         <div className="documents-table-container">
-          <table className="documents-table">
-            <thead>
-              <tr>
-                <th>
-                  <div className="skeleton-table-header-cell" />
-                </th>
-                <th>
-                  <div className="skeleton-table-header-cell" />
-                </th>
-                <th>
-                  <div className="skeleton-table-header-cell" />
-                </th>
-                <th>
-                  <div className="skeleton-table-header-cell" />
-                </th>
-              </tr>
-            </thead>
-            <tbody>
+          <div className="skeleton-two-columns">
+            <div className="skeleton-column">
               {Array.from({ length: rowCount }).map((_, index) => (
-                <tr key={index}>
-                  <td>
-                    <div className="skeleton-table-cell" />
-                  </td>
-                  <td>
-                    <div className="skeleton-table-cell" />
-                  </td>
-                  <td>
-                    <div className="skeleton-table-cell" />
-                  </td>
-                  <td>
-                    <div className="skeleton-table-cell" />
-                  </td>
-                </tr>
+                <div key={index} className="skeleton-row">
+                  <div className="skeleton-table-cell" />
+                </div>
               ))}
-            </tbody>
-          </table>
+            </div>
+            <div className="skeleton-column">
+              {Array.from({ length: rowCount }).map((_, index) => (
+                <div key={index} className="skeleton-row">
+                  <div className="skeleton-table-cell" />
+                </div>
+              ))}
+            </div>
+          </div>
         </div>
       </div>
     );

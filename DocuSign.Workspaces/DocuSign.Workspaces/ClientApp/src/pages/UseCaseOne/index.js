@@ -176,13 +176,15 @@ export const UseCaseOnePage = () => {
 
   return (
     <section className="content-section">
-      <GoBackArrow />
-      <h2>{t('UseCaseOne.Title')}</h2>
-      <div className="col-lg-11">
-        <StepProgress
-          steps={[t('UseCaseOne.Step1'), t('UseCaseOne.Step2'), t('UseCaseOne.Step3')]}
-          currentStep={currentStep}
-        />
+      <div className={requesting ? 'blur-content' : ''}>
+        <GoBackArrow />
+        <h2>{t('UseCaseOne.Title')}</h2>
+        <div className="col-lg-11">
+          <StepProgress
+            steps={[t('UseCaseOne.Step1'), t('UseCaseOne.Step2'), t('UseCaseOne.Step3')]}
+            currentStep={currentStep}
+          />
+        </div>
       </div>
       <div className="form_and_description_grid">
         {currentStep === 0 && (
@@ -218,7 +220,7 @@ export const UseCaseOnePage = () => {
           ) : (
             <Onboarding filesList={respFiles} />
           ))}
-        <ApiDescription />
+        <ApiDescription requesting={requesting} />
       </div>
       <Toaster
         position={isMobile ? 'top-right' : 'top-center'}

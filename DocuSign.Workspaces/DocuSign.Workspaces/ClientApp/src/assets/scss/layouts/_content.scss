@@ -118,6 +118,13 @@ h5,
   transition: 0.5s;
   z-index: 999999;
 }
+.blur-content {
+  filter: grayscale(100%);
+  opacity: 0.2;
+  pointer-events: none;
+  user-select: none;
+  transition: filter 0.3s ease;
+}
 
 .content-section {
   background: #eff1f6;

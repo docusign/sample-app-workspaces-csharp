@@ -150,9 +150,11 @@ export const UseCaseTwoPage = () => {
 
   return (
     <section className="content-section">
-      <GoBackArrow />
-      <h2>{t('UseCaseTwo.Title')}</h2>
-      <div className="col-lg-6 body1">{t('UseCaseTwo.Description')}</div>
+      <div className={requesting ? 'blur-content' : ''}>
+        <GoBackArrow />
+        <h2>{t('UseCaseTwo.Title')}</h2>
+        <div className="col-lg-6 body1">{t('UseCaseTwo.Description')}</div>
+      </div>
       <div className="form_and_description_grid">
         {currentStep === 0 && (
           <RequestFormPhysician
@@ -176,12 +178,12 @@ export const UseCaseTwoPage = () => {
                 scrollToTop();
               }}
             />
-          ) : requesting ? (
+          ) : !requesting ? (
             <SkeletonTableDocuments />
           ) : (
             <TableDocuments listFiles={listFiles} />
           ))}
-        <ApiDescription />
+        <ApiDescription requesting={requesting} />
       </div>
       <Toaster
         position={isMobile ? 'top-right' : 'top-center'}

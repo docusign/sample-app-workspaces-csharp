@@ -4,11 +4,16 @@ import parse from 'html-react-parser';
 import { Collapse } from 'react-bootstrap';
 import { ReactComponent as MinusIcon } from '../assets/icons/minus.svg';
 import { ReactComponent as PlusIcon } from '../assets/icons/add.svg';
+import { ApiDescriptionSkeleton } from './ApiDescriptionSkeleton';
 import './ApiDescription.scss';
 
-export const ApiDescription = () => {
+export const ApiDescription = ({ requesting }) => {
   const { t } = useTranslation();
   const [open, setOpen] = React.useState(true);
+
+  if (requesting) {
+    return <ApiDescriptionSkeleton isBig={open} />;
+  }
 
   return (
     <div className="col-lg-4 pt-5 pb-4 behind_scenes">

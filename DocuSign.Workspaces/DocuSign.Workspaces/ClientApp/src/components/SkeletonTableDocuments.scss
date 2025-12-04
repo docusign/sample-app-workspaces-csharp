@@ -20,12 +20,22 @@
     animation: pulse 1.4s infinite ease-in-out;
   }
 
-  .skeleton-table-header-cell {
-    width: 120px;
-    height: 20px;
-    border-radius: 4px;
-    background: #e6e6e6;
-    animation: pulse 1.4s infinite ease-in-out;
+  .skeleton-two-columns {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 20px;
+  }
+
+  .skeleton-column {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+  }
+
+  .skeleton-row {
+    padding: 6px 0;
+    margin-top: 0px;
+    margin-bottom: 0px;
   }
 
   .skeleton-table-cell {
@@ -60,7 +70,7 @@
       }
 
       .skeleton-value {
-        width: 150px;
+        width: 50%;
         height: 14px;
         border-radius: 4px;
         background: #e6e6e6;
