@@ -10,8 +10,20 @@ ENV NPM_CONFIG_LEGACY_PEER_DEPS=true
 COPY --from=node /usr/local /usr/local
 WORKDIR /src
 COPY . .
-RUN dotnet restore "DocuSign.Workspaces.csproj"
-RUN dotnet publish "DocuSign.Workspaces.csproj" -c Release -o /app/publish --no-restore
+RUN /bin/bash <<'BASH'
+set -euo pipefail
+PROJECT_FILE="DocuSign.Workspaces.csproj"
+if [ -f "$PROJECT_FILE" ]; then
+    SELECTED_PROJECT="$PROJECT_FILE"
+elif [ -f "DocuSign.Workspaces/DocuSign.Workspaces/$PROJECT_FILE" ]; then
+    SELECTED_PROJECT="DocuSign.Workspaces/DocuSign.Workspaces/$PROJECT_FILE"
+else
+    echo "Unable to locate DocuSign.Workspaces.csproj in build context"
+    exit 1
+fi
+dotnet restore "$SELECTED_PROJECT"
+dotnet publish "$SELECTED_PROJECT" -c Release -o /app/publish --no-restore
+BASH
 
 FROM base AS final
 WORKDIR /app
