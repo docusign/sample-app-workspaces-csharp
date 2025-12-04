@@ -178,7 +178,7 @@ export const UseCaseTwoPage = () => {
                 scrollToTop();
               }}
             />
-          ) : !requesting ? (
+          ) : requesting ? (
             <SkeletonTableDocuments />
           ) : (
             <TableDocuments listFiles={listFiles} />
