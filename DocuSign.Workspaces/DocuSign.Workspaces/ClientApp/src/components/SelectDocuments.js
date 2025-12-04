@@ -59,10 +59,10 @@ export const SelectDocuments = ({
   return (
     <div className="col-lg-8">
       <div className="form-holder bg-white">
-        <h4 className="mb-4">{t('AddDocumentsTitle')}</h4>
+        <h4>{t('AddDocumentsTitle')}</h4>
 
-        <div className="subtitle1 mb-4">{t('DocumentToSign')}</div>
-        <div className="select-form mb-4">
+        <div className="subtitle1 margin_top_bottom">{t('DocumentToSign')}</div>
+        <div className="select-form">
           {listToSign.map((item) => (
             <AgreementRow
               key={item.id}
@@ -75,7 +75,7 @@ export const SelectDocuments = ({
             />
           ))}
         </div>
-        <div className="subtitle1  mb-2">
+        <div className="subtitle1 margin_top_bottom_second">
           {t('UnloadedRequests')}
           <span className="optional-italic">{t('Common.Optional')}</span>
         </div>

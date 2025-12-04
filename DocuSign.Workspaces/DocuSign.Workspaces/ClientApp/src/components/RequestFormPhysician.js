@@ -203,13 +203,18 @@ export const RequestFormPhysician = ({
             )}
           </div>
 
-          <div className="mb-4 mt-4 subtitle1">{t('RequestFormPhysician.IncomingDocuments')}</div>
+          <div className="subtitle1 margin_top_bottom_second">
+            {t('RequestFormPhysician.IncomingDocuments')}
+          </div>
 
           {uploadedFiles.length > 0 && (
             <div className="uploaded-files-container mb-3">
               {uploadedFiles.map((file) => (
                 <div className="d-flex align-items-center">
-                  <div key={file.id} className="uploaded-file-item">
+                  <div
+                    key={file.id}
+                    className={`uploaded-file-item ${file.isNeedSign ? '' : 'uploaded-file-item--signed'}`}
+                  >
                     <div className="uploaded-file-icon">
                       {getFileIcon(file.type) === 'pdf' ? <PdfType /> : <DocType />}
                     </div>

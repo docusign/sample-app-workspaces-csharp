@@ -28,10 +28,11 @@
   background: transparent;
   border: 1px solid transparent;
   width: auto !important; //
+  transition: all 0.2s ease;
   &:hover {
     background-color: transparent;
     border-width: 1px;
-    border-color: #141414;
+    border-color: #ababab;
   }
 
   &:focus {
@@ -403,7 +404,7 @@ body.home-page::before {
   font-weight: 500;
   font-size: 16px;
   line-height: 150%;
-  color: #141414;
+  color: #13131b;
   width: 100%;
   text-align: left;
 }
@@ -483,6 +484,7 @@ body.home-page::before {
 
 .footer__title {
   margin: 0;
+  color: #141414;
 }
 
 .footer__description {
@@ -648,10 +650,11 @@ body.home-page::before {
   margin-right: 10px;
   background: #e8e5f7;
   border-radius: 2px;
+  transition: all 0.2s ease;
 }
 
 .step-line.active {
-  background: #c2b6f9;
+  background: #e0e0f2;
 }
 
 .step-line.completed {
@@ -815,6 +818,9 @@ body.home-page::before {
   cursor: pointer;
   text-decoration: none;
   margin-left: 20px;
+  &:hover {
+    color: #343bf8;
+  }
 }
 
 .doctor-row__label {

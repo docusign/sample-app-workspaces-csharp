@@ -211,7 +211,7 @@ export const UseCaseOnePage = () => {
       </div>
       <Toaster
         position={isMobile ? 'top-right' : 'top-center'}
-        containerStyle={isMobile ? { top: 95, right: 8 } : {}}
+        containerStyle={isMobile ? { top: 95, right: 8 } : { top: 85 }}
       />
     </section>
   );

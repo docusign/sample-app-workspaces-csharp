@@ -18,10 +18,10 @@
   justify-content: center;
   max-width: 100%;
   min-width: 0;
-  &:hover {
-    border-color: #d0d1d9;
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
-  }
+}
+
+.uploaded-file-item--signed {
+  border-color: #9e9d9f;
 }
 
 .uploaded-file-icon {
@@ -89,7 +89,7 @@
   margin-left: 10px;
   text-decoration: none;
   &:hover {
-    text-decoration: underline;
+    color: #343bf8;
   }
 }
 
@@ -110,10 +110,10 @@
     width: 16px;
     height: 16px;
   }
+}
 
-  &:hover {
-    color: #e74c3c;
-  }
+.uploaded-file-remove:hover {
+  color: #565454;
 }
 
 .uploaded-file-progress {
@@ -236,15 +236,19 @@
   display: inline-flex;
   align-items: center;
   gap: 8px;
-  padding: 12px 20px;
+  padding: 5px 0px;
   background: transparent;
+  line-height: 150%;
   border: none;
   color: #6e47cc;
-  font-family: 'Inter', sans-serif;
+  font-family: 'Inter';
   font-weight: 500;
-  font-size: 16px;
+  font-size: 14px;
   cursor: pointer;
   transition: all 0.2s ease;
+  flex: none;
+  order: 1;
+  flex-grow: 0;
 
   .plus_upload {
     width: 20px;
@@ -283,7 +287,6 @@
     font-size: 11px;
   }
   .btn-upload-document {
-    padding: 12px 0px;
     font-size: 14px;
   }
 }
