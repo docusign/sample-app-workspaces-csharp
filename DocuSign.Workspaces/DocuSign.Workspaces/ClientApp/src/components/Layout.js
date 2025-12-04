@@ -4,7 +4,17 @@ import { useTranslation } from 'react-i18next';
 import LoginModal from '../loginModal/LoginModal';
 import { ReactComponent as ChevronRightIcon } from '../assets/icons/chevron-right.svg';
 
-export const API_BASE = 'https://localhost:5001';
+const resolveApiBase = () => {
+  if (process.env.REACT_APP_API_BASE) {
+    return process.env.REACT_APP_API_BASE;
+  }
+  if (typeof window !== 'undefined') {
+    return window.location.origin;
+  }
+  return '';
+};
+
+export const API_BASE = resolveApiBase();
 
 export default function Layout() {
   const { t } = useTranslation();
