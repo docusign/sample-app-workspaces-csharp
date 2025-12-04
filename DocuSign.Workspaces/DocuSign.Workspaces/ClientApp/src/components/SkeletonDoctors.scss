@@ -1,0 +1,36 @@
+.doctor-skeleton {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 16px;
+  margin-top: 10px;
+  padding-top: 2px;
+}
+
+.doctor-skeleton__circle {
+  width: 18px;
+  height: 18px;
+  border-radius: 50%;
+  background: #e6e6e6;
+  animation: pulse 1.4s infinite ease-in-out;
+}
+
+.doctor-skeleton__text {
+  width: 140px;
+  height: 14px;
+  border-radius: 4px;
+  background: #e6e6e6;
+  animation: pulse 1.4s infinite ease-in-out;
+}
+
+@keyframes pulse {
+  0% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.4;
+  }
+  100% {
+    opacity: 1;
+  }
+}

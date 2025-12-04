@@ -3,7 +3,7 @@
   "GithubSource": "Github Source",
   "Logout": "Log out",
   "Login": "Login",
-  "Copyright": "© 2025 DocuSign Inc.",
+  "Copyright": "© 2025 Docusign Inc.",
   "Welcome": "Welcome to the Workspaces Sample App",
   "Explore": "Explore how organizations use Workspaces to manage, share, and approve critical documents across teams and clients",
   "WealthManagement": "Wealth Management client engagement",
@@ -15,9 +15,9 @@
   "PersistentWorkspaces": "Persistent Workspaces",
   "DocumentAggregation": "Document aggregation",
   "SignAndAssign": "Sign & assign flow",
-  "DocuSignFeatures": "DocuSign features:",
-  "AgreeBetter": "DocuSign: It’s time to agree better",
-  "AgreeBetterDescription": "DocuSign helps organizations connect and automate how they prepare, sign, act on, and manage agreements.",
+  "DocuSignFeatures": "Docusign features:",
+  "AgreeBetter": "Docusign: It’s time to agree better",
+  "AgreeBetterDescription": "Docusign helps organizations connect and automate how they prepare, sign, act on, and manage agreements.",
   "CreateDeveloperAccount": "Create developer account",
   "LearnMore": "Learn more",
   "Back": "Back",
@@ -29,7 +29,7 @@
   "Step1": "Step 1: Start authorization",
   "Close": "Close",
   "SelectAuthPath": "Select the authentication path you used in the legacy admin page.",
-  "ConnectDocuSignAccount": "Connect your DocuSign Account",
+  "ConnectDocuSignAccount": "Connect your Docusign Account",
   "ACGDescription": "Agreement Cloud Gateway (user account) authorization.",
   "LoginWithTestAccount": "Log in with a test account",
   "JWTDescription": "JWT / test account sign-in from the previous client.",
@@ -44,7 +44,7 @@
   "RefreshStatus": "Refresh status",
   "Connecting": "Connecting...",
   "ConnectAccount": "Connect account",
-  "PickEnvironment": "Pick your DocuSign environment, then request consent just like the legacy admin step 1.",
+  "PickEnvironment": "Pick your Docusign environment, then request consent just like the legacy admin step 1.",
   "GrantUserConsent": "Grant user consent",
   "GrantAdminConsent": "Grant admin consent",
   "ContinueWithJWT": "Continue with the JWT / test account flow from the legacy admin page.",
@@ -65,26 +65,107 @@
   "DocumentToSign": "Documents to sign",
   "UnloadedRequests": "Upload Requests",
   "AddDocumentsTitle": "Select documents for this client’s package",
-  "PrimaryTitle": "Primary Owner details",
-  "SecondaryTitle": "Secondary Owner details",
+  "PrimaryTitle": "Primary owner details",
+  "SecondaryTitle": "Secondary owner details",
   "Error": {
     "FirstName": "-ERROR FIRST NAME-",
-    "Activity": "- ERROR ACTIVITY -",
     "LastName": "- ERROR LAST NAME -",
-    "Email": "- ERROR EMAIL"
+    "Email": "Invalid email format"
   },
   "ApiDescription": {
     "SeeMore": "Behind the scenes",
-    "CodeFlow": "<h3>This sample features</h3><ul><li>Branding</li><li>Conditional recipients</li><li>Document visibility</li><li>Embedded signing</li></ul><h3>Code flow</h3><p>See the <strong>Controller</strong> and envelope source code.</p><h5>Step 1</h5><p>After the form is submitted, call the <span className=\"colored_text\">AccountBrands:list</span> method on the account to check if the brand you want to create already exists.</p><p>If it does, find the corresponding brand ID. If not, call the <span className=\"colored_text\">AccountBrands:create</span> method to create a new brand.</p><p>The brand ID is then stored for the next step.</p><p>After the user completes signing the envelope in the embedded signing session, the envelope is redirected to the second signer based on the conditions described in Step 2. After the user completes signing the envelope in the</p>"
+    "CodeFlow": "<h5>This sample features</h5><ul><li>Branding</li><li>Conditional recipients</li><li>Document visibility</li><li>Embedded signing</li></ul><h5>Code flow</h5><p>See the <strong>Controller</strong> and envelope source code.</p><h5>Step 1</h5><p>After the form is submitted, call the <span className=\"colored_text\">AccountBrands:list</span> method on the account to check if the brand you want to create already exists.</p><p>If it does, find the corresponding brand ID. If not, call the <span className=\"colored_text\">AccountBrands:create</span> method to create a new brand.</p><p>The brand ID is then stored for the next step.</p><p>After the user completes signing the envelope in the embedded signing session, the envelope is redirected to the second signer based on the conditions described in Step 2. After the user completes signing the envelope in the</p>"
   },
   "Saving": "Saving...",
-  "SomethingWent": "Something went wrong, please try again",
+  "SomethingWent": "Something went wrong, please ",
+  "TryAgain": "try again",
   "Onboarding": {
     "Title": "Review & confirm documents",
     "EnvelopeName": "Envelope Name",
+    "Envelope": "Envelope",
+    "WorkspaceDocument": "Workspace document",
+    "PendingSignature": "Pending signature",
+    "Yes": "Yes",
+    "No": "No",
+    "Name": "Name",
     "Status": "Status",
     "Actions": "Actions",
     "Preview": "Preview",
-    "Download": "Download"
+    "Download": "Download",
+    "Signed": "Signed"
+  },
+  "RequestFormPhysician": {
+    "PhysicianInformation": "Physician information",
+    "InvitationMessage": "To see the physician's experience, provide your email address to receive the Workspace invitation",
+    "SelectPhysician": "Select physician",
+    "IncomingDocuments": "Incoming documents",
+    "FileSizeLimitExceeded": "File size exceeds 50 MB limit",
+    "SubmitToPhysician": "Submit to Physician"
+  },
+  "Common": {
+    "Preview": "Preview",
+    "ForSignature": "For signature",
+    "RequiresSignature": "Requires signature",
+    "DoNotRequireSignature": "Does not require signature",
+    "UploadDocument": "Upload Document",
+    "RemoveFile": "Remove file",
+    "Yes": "Yes",
+    "No": "No",
+    "Error": "Error",
+    "Close": "Close",
+    "Cancel": "Cancel",
+    "Login": "Login",
+    "ServerError": "Server error: ",
+    "CannotLoadFile": "Cannot load file: ",
+    "Optional": " (optional)",
+    "Previous": "Previous"
+  },
+  "TableDocuments": {
+    "Title": "Care Plan Documents",
+    "Type": "Type",
+    "RequiresSignature": "Requires Signature"
+  },
+  "UseCaseOne": {
+    "Title": "Onboarding a new wealth management client",
+    "WorkspaceCreatedSuccess": "Workspace successfully created",
+    "EnvelopeSuccessfullyCreated": "Envelope successfully created and sent",
+    "Step1": "STEP 1",
+    "Step2": "STEP 2",
+    "Step3": "STEP 3"
+  },
+  "LoginModal": {
+    "CloseModal": "Close modal",
+    "Title": "Log in with Docusign",
+    "Description": "Learn more about authentication options with Docusign",
+    "LoginWithDevAccount": "Log in with your Docusign developer account",
+    "ContinueWithTestAccount": "Continue with a test account",
+    "GetFreeAccount": "If you don't have a Docusign developer account, you can get one for free!",
+    "LoggingIn": "Logging in...",
+    "Error": {
+      "UnableToLoadAccountStatus": "Unable to load account status.",
+      "UnableToLoadSettings": "Unable to load settings.",
+      "UnableToStartConsentFlow": "Unable to start consent flow.",
+      "UnableToLoginWithTestAccount": "Unable to log in with test account.",
+      "UnableToLoadAccounts": "Unable to load accounts.",
+      "NoAccounts": "No accounts available for this user.",
+      "UnableToConnectAccount": "Unable to connect account.",
+      "IncompleteConsent": "Consent information is incomplete. Please grant consent again."
+    }
+  },
+  "Layout": {
+    "Demo": "Demo",
+    "Production": "Production",
+    "SignsphereAlt": "Signsphere"
+  },
+  "UseCaseTwo": {
+    "Title": "Care Plans approval inbox",
+    "Description": "As a staff member you will assign care plans and other documents for review by a specific physician"
+  },
+  "UploadModal": {
+    "CloseModal": "Close modal",
+    "Title": "Upload care plan or other document",
+    "UploadDocuments": "Upload Documents",
+    "AcceptedFormats": "Accepted formats: PDF, DOCX. Max file size: 50MB",
+    "ChooseFile": "Choose File"
   }
 }

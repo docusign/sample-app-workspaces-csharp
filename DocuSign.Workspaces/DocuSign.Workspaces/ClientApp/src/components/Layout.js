@@ -1,20 +1,30 @@
 import { useEffect, useState } from 'react';
-import { Link, Outlet } from 'react-router-dom';
+import { Link, Outlet, useNavigate, useLocation } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import LoginModal from '../loginModal/LoginModal';
 import { ReactComponent as ChevronRightIcon } from '../assets/icons/chevron-right.svg';
 
-const ENVIRONMENTS = [
-  { key: 'demo', label: 'Demo', url: 'https://account-d.docusign.com' },
-  { key: 'production', label: 'Production', url: 'https://account.docusign.com' },
-];
-const API_BASE = 'https://localhost:5001';
+export const API_BASE = 'https://localhost:5001';
 
 export default function Layout() {
   const { t } = useTranslation();
+  const navigate = useNavigate();
+  const location = useLocation();
+
+  const ENVIRONMENTS = [
+    { key: 'demo', label: t('Layout.Demo'), url: 'https://account-d.docusign.com' },
+    { key: 'production', label: t('Layout.Production'), url: 'https://account.docusign.com' },
+  ];
   const [accountStatus, setAccountStatus] = useState(null);
+  const [isTestAccount, setIsTestAccount] = useState(
+    () => JSON.parse(sessionStorage.getItem('isTestAccount')) || false
+  );
   const [isLoginOpen, setIsLoginOpen] = useState(false);
   const [isNavOpen, setIsNavOpen] = useState(false);
+
+  useEffect(() => {
+    sessionStorage.setItem('isTestAccount', JSON.stringify(isTestAccount));
+  }, [isTestAccount]);
 
   const getCookie = (name) => {
     const match = document.cookie.match(new RegExp('(^| )' + name + '=([^;]+)'));
@@ -69,20 +79,28 @@ export default function Layout() {
       setAccountStatus(null);
       clearAuthCookie();
       closeLoginModal();
+      if (location.pathname !== '/') {
+        navigate('/');
+      }
     }
   };
 
   return (
     <div className="app-wrapper">
+      <div className="bg_color" />
       <header className="home-hero">
         <div
           className={`nav__overlay ${isNavOpen ? 'nav__overlay--open' : ''}`}
           onClick={() => setIsNavOpen(false)}
         />
-        <div className={`nav ${isNavOpen ? 'nav--open' : ''}`}>
+        <div className="nav">
           <div className="nav__brand">
             <Link to="/">
-              <img className="nav__logo" src="/signsphere-logo.png" alt="Signsphere" />
+              <img
+                className="nav__logo"
+                src="/signsphere-logo.png"
+                alt={t('Layout.SignsphereAlt')}
+              />
             </Link>
           </div>
           <button className="nav__toggle" type="button" onClick={() => setIsNavOpen(!isNavOpen)}>
@@ -91,15 +109,20 @@ export default function Layout() {
             <span />
           </button>
           <nav className={`nav__links ${isNavOpen ? 'nav__links--open' : ''}`}>
-            <Link to="/workspaces" className="nav__link">
+            <a
+              className="nav__link"
+              href="https://developers.docusign.com/docs/workspaces-api/"
+              target="_blank"
+              rel="noreferrer"
+            >
               {t('WorkspacesAPI')}{' '}
               <span className="nav__arrow">
                 <ChevronRightIcon />
               </span>
-            </Link>
+            </a>
             <a
               className="nav__link"
-              href="https://github.com/docusign/code-examples-csharp/tree/master/Workspaces"
+              href="https://github.com/docusign/sample-app-workspaces-csharp"
               target="_blank"
               rel="noreferrer"
             >
@@ -128,7 +151,7 @@ export default function Layout() {
       </header>
 
       <main className="main-content">
-        <Outlet context={{ openLoginModal }} />
+        <Outlet context={{ openLoginModal, accountStatus, isTestAccount }} />
       </main>
 
       <footer className="footer">
@@ -147,6 +170,7 @@ export default function Layout() {
         onLogout={logout}
         resumeAuthStep={getCookie('ds_auth_step') === 'acg-consent' ? 'acg' : null}
         onClearAuthStep={clearAuthCookie}
+        setIsTestAccount={setIsTestAccount}
       />
     </div>
   );

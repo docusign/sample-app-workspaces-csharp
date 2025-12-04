@@ -1,12 +1,26 @@
 .plus_minus {
   width: 26px;
   height: 26px;
-  margin-left: 72px;
+}
+.collapsed_button {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+  white-space: nowrap;
+}
+.plus {
+  width: 26px;
+  height: 26px;
+  margin-right: 2px;
+  color: #6e47cc;
 }
 .btn-see-more {
   text-decoration: none;
   border: 0px;
   background-color: transparent;
+  flex: 1;
+  width: 100%;
 }
 .form_and_description_grid {
   display: flex;
@@ -33,6 +47,7 @@
   }
   .colored_text {
     color: #6e47cc;
+    font-weight: 600;
     text-decoration: none;
   }
 }
@@ -41,5 +56,10 @@
   .form_and_description_grid {
     display: flex;
     flex-direction: column;
+  }
+}
+@media (max-width: 768px) {
+  .collapsed_button {
+    flex: 1;
   }
 }

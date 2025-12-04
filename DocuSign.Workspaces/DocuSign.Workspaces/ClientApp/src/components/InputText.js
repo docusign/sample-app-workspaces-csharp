@@ -20,7 +20,9 @@ export const InputText = ({
   }
   return (
     <div className={wrapperClass}>
-      <label htmlFor={name}>{label}</label>
+      <label htmlFor={name} style={{ position: 'relative', top: '-4px' }}>
+        {label}
+      </label>
       <input
         type={type}
         name={name}
