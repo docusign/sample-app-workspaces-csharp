@@ -76,12 +76,20 @@ export const UseCaseTwoPage = () => {
     getPhysicians();
   }, []);
 
+  const scrollToTop = () => {
+    window.scrollTo({
+      top: 0,
+      behavior: 'smooth',
+    });
+  };
+
   async function handleSave(event) {
     if (!formIsValid()) {
       return;
     }
     setRequesting(true);
     setCurrentStep(1);
+    scrollToTop();
 
     try {
       const documents = await prepareDocuments(event.files);
@@ -165,6 +173,7 @@ export const UseCaseTwoPage = () => {
             <SomethingWentWrong
               tryAgain={() => {
                 setCurrentStep(0);
+                scrollToTop();
               }}
             />
           ) : requesting ? (

@@ -30,8 +30,8 @@ export const TableDocuments = ({ onSave, listFiles }) => {
     setSortConfig({ key, direction });
 
     const sorted = [...listPending].sort((a, b) => {
-      const aVal = a[key]?.toLowerCase();
-      const bVal = b[key]?.toLowerCase();
+      const aVal = typeof a[key] === 'string' ? a[key]?.toLowerCase() : a[key];
+      const bVal = typeof b[key] === 'string' ? b[key]?.toLowerCase() : b[key];
 
       if (aVal < bVal) return direction === 'asc' ? -1 : 1;
       if (aVal > bVal) return direction === 'asc' ? 1 : -1;
@@ -48,7 +48,7 @@ export const TableDocuments = ({ onSave, listFiles }) => {
           <div key={doc.id} className="document-card">
             <div className="card-row">
               <span className="card-label">{t('Onboarding.Name').toUpperCase()}</span>
-              <span className="card-value">{doc.name}</span>
+              <span className="card-name-value">{doc.name}</span>
             </div>
 
             {isTestAccount && (
@@ -67,7 +67,7 @@ export const TableDocuments = ({ onSave, listFiles }) => {
                 </span>
                 <div>
                   <span
-                    className={`card-value ${doc.isSigned ? 'is_need_signature' : 'is_not_need_signature'}`}
+                    className={`card-value-yes ${doc.isSigned ? 'is_need_signature' : 'is_not_need_signature'}`}
                   >
                     {doc.isSigned ? t('Onboarding.Yes') : t('Onboarding.No')}
                   </span>
@@ -105,13 +105,27 @@ export const TableDocuments = ({ onSave, listFiles }) => {
                   </div>
                 </th>
                 {isTestAccount && (
-                  <th onClick={() => handleSort('status')}>
-                    <div className="header-content">{t('TableDocuments.Type')}</div>
+                  <th onClick={() => handleSort('isSigned')}>
+                    <div className="header-content">
+                      {t('TableDocuments.Type')}
+                      <SortIcon
+                        column="type"
+                        key={sortConfig.key}
+                        direction={sortConfig.direction}
+                      />
+                    </div>
                   </th>
                 )}
                 {isTestAccount && (
-                  <th onClick={() => handleSort('status')}>
-                    <div className="header-content">{t('TableDocuments.RequiresSignature')}</div>
+                  <th onClick={() => handleSort('isSigned')}>
+                    <div className="header-content">
+                      {t('TableDocuments.RequiresSignature')}
+                      <SortIcon
+                        column="requires signature"
+                        key={sortConfig.key}
+                        direction={sortConfig.direction}
+                      />
+                    </div>
                   </th>
                 )}
                 <th onClick={() => handleSort('status')}>

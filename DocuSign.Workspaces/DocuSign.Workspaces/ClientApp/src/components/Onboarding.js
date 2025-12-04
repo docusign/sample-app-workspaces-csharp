@@ -57,7 +57,7 @@ export const Onboarding = ({
                     <tr>
                       <th onClick={() => handleSort('name')}>
                         <div className="header-content">
-                          {t('Onboarding.EnvelopeName')}
+                          {t('Onboarding.Name')}
                           <SortIcon
                             column="label"
                             key={sortConfig.key}
@@ -81,7 +81,11 @@ export const Onboarding = ({
                     {listToSign.map((doc) => (
                       <tr key={doc.id}>
                         <td>{doc.name}</td>
-                        <td>{t(`Onboarding.${doc.status}`, doc.status)}</td>
+                        <td>
+                          <span className="status_text">
+                            {t(`Onboarding.${doc.status}`, doc.status)}
+                          </span>
+                        </td>
                       </tr>
                     ))}
                   </tbody>

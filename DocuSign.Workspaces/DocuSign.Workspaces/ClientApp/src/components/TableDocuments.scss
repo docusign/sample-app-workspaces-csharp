@@ -11,7 +11,9 @@
   border: 1px solid #9e9d9f80;
   border-color: rgba(158, 157, 159, 0.5);
   border-radius: 12px;
-  padding: 20px;
+  padding: 28px;
+  padding-top: 10px;
+  padding-bottom: 10px;
 }
 
 .card-row {
@@ -26,24 +28,42 @@
 }
 
 .card-label {
+  font-family: 'Inter';
   font-size: 10px;
   font-weight: 600;
-  color: #666;
+  line-height: 20px;
+  color: #565454;
   text-transform: uppercase;
-  letter-spacing: 0.5px;
+  letter-spacing: 0;
   flex: 0 0 30%;
 }
 .card-label-long {
   flex: 0 0 60%;
 }
 
-.card-value {
+.card-name-value {
   font-size: 14px;
   color: #141414;
   text-align: right;
   line-height: 150%;
   flex: 1;
   font-weight: 500;
+}
+.card-value {
+  font-size: 14px;
+  color: #141414;
+  text-align: right;
+  line-height: 150%;
+  flex: 1;
+  font-weight: 400;
+}
+.card-value-yes {
+  font-size: 12px;
+  color: #13131b;
+  text-align: right;
+  line-height: 130%;
+  flex: 1;
+  font-weight: 400;
 }
 
 @media (max-width: 420px) {

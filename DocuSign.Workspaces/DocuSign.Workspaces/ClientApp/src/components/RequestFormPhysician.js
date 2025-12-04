@@ -213,7 +213,7 @@ export const RequestFormPhysician = ({
                 <div className="d-flex align-items-center">
                   <div
                     key={file.id}
-                    className={`uploaded-file-item ${file.isNeedSign ? '' : 'uploaded-file-item--signed'}`}
+                    className={`uploaded-file-item ${file.isNeedSign || isTestAccount ? '' : 'uploaded-file-item--signed'}`}
                   >
                     <div className="uploaded-file-icon">
                       {getFileIcon(file.type) === 'pdf' ? <PdfType /> : <DocType />}

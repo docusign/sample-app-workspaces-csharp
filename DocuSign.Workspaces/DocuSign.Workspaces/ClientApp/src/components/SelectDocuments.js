@@ -26,15 +26,7 @@ const uploadRequest = [
   { id: 12, name: 'Tax Return.pdf', path: '/Pay Statement.pdf' },
 ];
 
-export const SelectDocuments = ({
-  request,
-  onSave,
-  onAddDocuments,
-  onChange,
-  requesting = false,
-  errors = {},
-  onPrevious,
-}) => {
+export const SelectDocuments = ({ onAddDocuments, requesting = false, onPrevious }) => {
   const [checkedMap, setCheckedMap] = useState(
     Object.fromEntries(
       [...listToSign, ...uploadRequest].map((item) => [item.id, { ...item, isChecked: false }])

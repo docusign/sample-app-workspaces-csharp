@@ -50,7 +50,7 @@
 .arrow_right_icon {
   width: 26px;
   height: 26px;
-  margin-left: 8px;
+  margin-left: 10px;
   margin-bottom: 2px;
   color: #ffffff;
 }
@@ -79,7 +79,7 @@ body.home-page::before {
   background: url('../public/home_background.jpg') top/100% auto no-repeat;
   background-size: 100% auto;
   z-index: -1;
-  background-position: right -50px;
+  background-position: right -10px;
 }
 
 .bg_color {
@@ -307,7 +307,7 @@ body.home-page::before {
   justify-content: center;
   gap: 64px;
   width: 100%;
-  padding-top: 7rem;
+  padding-top: 3.7rem;
 }
 
 .card_home {
@@ -354,11 +354,12 @@ body.home-page::before {
 
 .card__cta {
   align-self: center;
-  padding: 14px 32px;
+  padding: 11px 32px;
   gap: 16px;
   width: 211px;
-  height: 64px;
+  height: 58px;
   border-radius: 240px;
+  font-family: 'Inter';
   font-size: 20px;
   font-weight: 500;
   background: #6e47cc;
@@ -485,6 +486,7 @@ body.home-page::before {
 .footer__title {
   margin: 0;
   color: #141414;
+  text-wrap: balance;
 }
 
 .footer__description {
@@ -494,6 +496,7 @@ body.home-page::before {
   align-items: center;
   gap: 16px;
   width: 100%;
+  text-wrap: balance;
 }
 
 .footer__text {
@@ -671,6 +674,7 @@ body.home-page::before {
   left: -18px;
   right: -19px;
   top: 26px;
+  white-space: nowrap;
 }
 
 .step-progress-compact {
@@ -893,6 +897,13 @@ body.home-page::before {
   margin-bottom: 32px;
 }
 
+.status_text {
+  font-weight: 400;
+  font-family: 'Inter';
+  font-size: 14px;
+  color: #141414;
+}
+
 .documents-table-wrapper {
   width: 100%;
   margin: 0 auto;
@@ -923,17 +934,9 @@ body.home-page::before {
             cursor: pointer;
             transition: background-color 0.2s ease;
 
-            &:hover {
-              background-color: #f9fafb;
-            }
-
             &:last-child {
               text-align: right;
               cursor: default;
-
-              &:hover {
-                background-color: transparent;
-              }
             }
 
             .header-content {
@@ -944,10 +947,6 @@ body.home-page::before {
                 margin-left: 6px;
                 display: inline-flex;
                 align-items: center;
-
-                &.inactive {
-                  opacity: 0.3;
-                }
               }
             }
           }
@@ -957,10 +956,6 @@ body.home-page::before {
       tbody {
         tr {
           transition: background-color 0.2s ease;
-
-          &:hover {
-            background-color: #f9fafb;
-          }
 
           td {
             padding: 10px 12px;
@@ -994,15 +989,6 @@ body.home-page::before {
                 align-items: center;
                 justify-content: center;
 
-                &:hover {
-                  background-color: #f3f4f6;
-                }
-
-                &:focus {
-                  outline: none;
-                  box-shadow: 0 0 0 2px #e5e7eb;
-                }
-
                 svg {
                   display: block;
                   width: 16px;
@@ -1015,10 +1001,6 @@ body.home-page::before {
 
         tr:nth-child(odd) {
           background-color: #f9f9f9;
-
-          &:hover {
-            background-color: #f4f2f9;
-          }
 
           td:first-child {
             border-top-left-radius: 8px;
@@ -1118,8 +1100,6 @@ body:not(.home-page) .footer {
     padding-left: 3rem;
   }
   .nav__actions {
-    /* position: absolute  ;
-        align-self: end; */
     margin-left: 0.1rem;
     padding-right: 0.1rem;
   }
@@ -1165,7 +1145,6 @@ body:not(.home-page) .footer {
     padding: 1px;
 
     .documents-table-container {
-      padding: 1px;
       .documents-table {
         thead th,
         tbody td {
@@ -1197,9 +1176,9 @@ body:not(.home-page) .footer {
     // width: 100%;
     padding-top: 50%;
     background: url('../public/home_background-middle.jpg') top/100% auto no-repeat;
-    background-size: 100% auto;
+    background-size: 130% auto;
     z-index: -1;
-    background-position: center 30px;
+    background-position: center 0px;
   }
 
   .card__title {
@@ -1245,7 +1224,7 @@ body:not(.home-page) .footer {
   }
   .cards {
     gap: 16px;
-    margin-top: 260px;
+    margin-top: 240px;
     padding-left: 0px;
   }
   .nav {
@@ -1365,6 +1344,11 @@ body:not(.home-page) .footer {
     background-position: right top;
     background-size: auto 100%;
   }
+
+  .step-progress {
+    width: 90%;
+    margin-left: 18px;
+  }
   .footer__title {
     font-size: 20px;
     line-height: 1.15;
@@ -1412,8 +1396,9 @@ body:not(.home-page) .footer {
   .card__cta {
     font-size: 16px;
     letter-spacing: 0;
-    padding: 8px 32px;
-    height: 48px;
+    padding: 11px 22px;
+    height: 52px;
+    font-size: 16px;
   }
   .width_100_small_screen {
     width: 100%;
@@ -1423,8 +1408,16 @@ body:not(.home-page) .footer {
   }
 
   .arrow_right_icon {
-    width: 20px;
-    height: 20px;
+    width: 24px;
+    height: 24px;
+  }
+
+  .previous_icon {
+    margin-left: 0px;
+  }
+
+  .documents-table-container {
+    padding: 16px;
   }
 }
 @media (max-width: 375px) {

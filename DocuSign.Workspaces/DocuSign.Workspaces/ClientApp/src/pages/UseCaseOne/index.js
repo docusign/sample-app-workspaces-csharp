@@ -51,6 +51,13 @@ export const UseCaseOnePage = () => {
     };
   }, []);
 
+  const scrollToTop = () => {
+    window.scrollTo({
+      top: 0,
+      behavior: 'smooth',
+    });
+  };
+
   async function handleSave(event) {
     event.preventDefault();
     if (!formIsValid()) {
@@ -58,6 +65,7 @@ export const UseCaseOnePage = () => {
     }
     setRequesting(true);
     setCurrentStep(1);
+    scrollToTop();
     try {
       const payload = {
         workspacesName: request.firstName + request.lastName,
@@ -88,6 +96,7 @@ export const UseCaseOnePage = () => {
   async function onAddDocuments(event) {
     setRequesting(true);
     setCurrentStep(2);
+    scrollToTop();
     const documents = await prepareDocuments(event);
     try {
       const payload = {
@@ -125,6 +134,7 @@ export const UseCaseOnePage = () => {
   const onPrevious = () => {
     if (currentStep >= 1) {
       setCurrentStep(currentStep - 1);
+      scrollToTop();
     }
   };
 
@@ -200,6 +210,7 @@ export const UseCaseOnePage = () => {
             <SomethingWentWrong
               tryAgain={() => {
                 setCurrentStep(0);
+                scrollToTop();
               }}
             />
           ) : requesting ? (
