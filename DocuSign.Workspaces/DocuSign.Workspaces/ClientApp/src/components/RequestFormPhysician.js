@@ -168,9 +168,7 @@ export const RequestFormPhysician = ({
         <div className="mb-2 subtitle1">{t('RequestFormPhysician.PhysicianInformation')}</div>
 
         <form onSubmit={handleSubmit} className={submitted ? 'was-validated' : ''} noValidate>
-          <div className="subtitle2 width_form mb-4">
-            {t('RequestFormPhysician.InvitationMessage')}
-          </div>
+          <div className="subtitle2 mb-4">{t('RequestFormPhysician.InvitationMessage')}</div>
           <div className="form-grid col-lg-8 width_form mb-4">
             <InputText
               name="email"
@@ -273,15 +271,6 @@ export const RequestFormPhysician = ({
                               <span>{t('Common.DoNotRequireSignature')}</span>
                             </label>
                           ))}
-                        {file.status !== 'uploading' && (
-                          <button
-                            type="button"
-                            className="uploaded-file-preview preview-small-screen"
-                            onClick={() => handlePreview(file)}
-                          >
-                            {t('Common.Preview')}
-                          </button>
-                        )}
                       </div>
                     </div>
 
