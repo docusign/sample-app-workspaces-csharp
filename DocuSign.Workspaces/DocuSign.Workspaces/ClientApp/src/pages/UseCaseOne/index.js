@@ -7,7 +7,7 @@ import { ApiDescription } from '../../components/ApiDescription';
 import StepProgress from '../../components/StepProgress';
 import { SelectDocuments } from '../../components/SelectDocuments';
 import { SkeletonSelectDocuments } from '../../components/SkeletonSelectDocuments';
-import { SkeletonOnboarding } from '../../components/SkeletonOnboarding';
+import { SkeletonTableDocuments } from '../../components/SkeletonTableDocuments';
 import { Onboarding } from '../../components/Onboarding';
 import { SomethingWentWrong } from '../../components/SomethingWentWrong';
 import { API_BASE } from '../../components/Layout';
@@ -216,7 +216,7 @@ export const UseCaseOnePage = () => {
               }}
             />
           ) : requesting ? (
-            <SkeletonOnboarding />
+            <SkeletonTableDocuments />
           ) : (
             <Onboarding filesList={respFiles} />
           ))}

@@ -3,7 +3,7 @@
   flex-direction: column;
   gap: 16px;
   padding: 16px 0;
-  font-family: 'Inter';
+  font-family: 'Inter', sans-serif;
 }
 
 .document-card {
@@ -28,7 +28,7 @@
 }
 
 .card-label {
-  font-family: 'Inter';
+  font-family: 'Inter', sans-serif;
   font-size: 10px;
   font-weight: 600;
   line-height: 20px;

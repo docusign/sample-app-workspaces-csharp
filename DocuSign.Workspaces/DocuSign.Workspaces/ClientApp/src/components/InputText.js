@@ -26,7 +26,7 @@ export const InputText = ({
       <input
         type={type}
         name={name}
-        className="form-control"
+        className={`form-control ${error ? 'error_border' : ''}`}
         placeholder={placeholder}
         value={value}
         onChange={onChange}

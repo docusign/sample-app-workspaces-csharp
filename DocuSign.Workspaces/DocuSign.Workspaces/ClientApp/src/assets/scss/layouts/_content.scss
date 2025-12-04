@@ -1,13 +1,13 @@
 html,
 body {
   height: 100%;
-  font-family: 'Inter';
+  font-family: 'Inter', sans-serif;
 }
 
 body {
   display: flex;
   flex-direction: column;
-  font-family: 'Inter';
+  font-family: 'Inter', sans-serif;
 }
 
 .content {
@@ -27,7 +27,7 @@ a.disabled {
 h1,
 .h1 {
   font-size: 64px;
-  font-family: 'Inter';
+  font-family: 'Inter', sans-serif;
   line-height: 104%;
   margin-bottom: 25px;
   color: #141414;
@@ -39,50 +39,53 @@ h1,
 
 h2,
 .h2 {
-  font-family: 'Inter';
+  font-family: 'Inter', sans-serif;
   font-size: 48px;
   line-height: 104%;
   font-weight: 600;
   color: #141414;
   margin-bottom: 20px;
+  text-wrap: balance;
 }
 
 h3,
 .h3 {
-  font-family: 'Inter';
+  font-family: 'Inter', sans-serif;
   font-size: 48px;
   line-height: 110%;
   margin-bottom: 20px;
   font-weight: 500;
+  text-wrap: balance;
 }
 
 h4,
 .h4 {
-  font-family: 'Inter';
+  font-family: 'Inter', sans-serif;
   font-size: 24px;
   line-height: 120%;
   font-weight: 600;
   color: #141414;
+  text-wrap: balance;
 }
 
 h5,
 .h5 {
-  font-family: 'Inter';
+  font-family: 'Inter', sans-serif;
   font-size: 20px;
   line-height: 22px;
   font-weight: 600;
   color: #141414;
+  text-wrap: balance;
 }
 .body1 {
-  font-family: 'Inter';
+  font-family: 'Inter', sans-serif;
   font-size: 20px;
   line-height: 130%;
   font-weight: 500;
   color: #141414;
-  text-wrap: balance;
 }
 .subtitle1 {
-  font-family: 'Inter';
+  font-family: 'Inter', sans-serif;
   font-size: 18px;
   line-height: 104%;
   font-weight: 600;
@@ -93,16 +96,15 @@ h5,
   font-size: 14px;
   font-weight: 400;
   text-wrap: balance;
-  font-family: 'Inter';
+  font-family: 'Inter', sans-serif;
   font-style: normal;
   line-height: 150%;
-  color: #141414;
-  text-wrap: balance;
+  color: #13131b;
 }
 .body2 {
   font-size: 20px;
   font-weight: 500;
-  font-family: 'Inter';
+  font-family: 'Inter', sans-serif;
   font-style: normal;
   line-height: 150%;
   color: #141414;
@@ -158,7 +160,7 @@ h5,
     }
     h2,
     .h2 {
-      font-family: 'Inter';
+      font-family: 'Inter', sans-serif;
       font-size: 32px;
       line-height: 104%;
       color: #141414;
@@ -192,7 +194,7 @@ h5,
     }
     h2,
     .h2 {
-      font-family: 'Inter';
+      font-family: 'Inter', sans-serif;
       font-size: 24px;
       font-weight: 600;
       line-height: 120%;
@@ -216,7 +218,29 @@ h5,
       color: #13131b;
     }
     .body2 {
-      font-size: 18px;
+      margin-top: -10px;
+      font-size: 14px;
+      font-weight: 600;
+      line-height: 150%;
+    }
+    .upload-desc {
+      font-family: 'Inter', sans-serif;
+      font-weight: 400;
+      font-size: 12px;
+      line-height: 150%;
+      text-align: center;
+      letter-spacing: -0.01em;
+      color: #ababab;
+      margin-left: 10px;
+      margin-right: 10px;
+    }
+    .upload-title {
+      font-family: 'Inter', sans-serif;
+      font-weight: 600;
+      font-size: 14px;
+      line-height: 150%;
+      letter-spacing: 0;
+      color: #141414;
     }
   }
 }

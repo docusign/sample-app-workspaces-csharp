@@ -307,6 +307,11 @@ function LoginModal({
   return (
     <div className="auth-modal__backdrop" role="dialog" aria-modal="true">
       <div className="auth-modal">
+        <div className="auth-modal__header">
+          <div>
+            <h2>{t('LoginModal.Title')}</h2>
+          </div>
+        </div>
         <button
           className="auth-modal__close"
           type="button"
@@ -315,11 +320,6 @@ function LoginModal({
         >
           <img src="/close_modal.png" alt={t('LoginModal.CloseModal')} />
         </button>
-        <div className="auth-modal__header">
-          <div>
-            <h2>{t('LoginModal.Title')}</h2>
-          </div>
-        </div>
         <div className="auth-modal__content">
           <p className="auth-modal__description">{t('LoginModal.Description')}</p>
           <div className="auth-modal__options auth-modal__options--radio">

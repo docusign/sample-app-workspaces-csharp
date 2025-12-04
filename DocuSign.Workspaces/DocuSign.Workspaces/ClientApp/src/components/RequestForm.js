@@ -13,9 +13,7 @@ export const RequestForm = ({ request, onSave, onChange, requesting = false, err
   return (
     <div className="col-lg-8">
       <div className="form-holder bg-white">
-        <div className="width_form">
-          <h4 className="mb-5">{t('FormTitle')}</h4>
-        </div>
+        <h4 className="mb-5">{t('FormTitle')}</h4>
         <form
           onSubmit={(event) => {
             onSave(event);

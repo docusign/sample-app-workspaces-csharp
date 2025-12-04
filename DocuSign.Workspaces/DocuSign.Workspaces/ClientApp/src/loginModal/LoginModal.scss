@@ -150,7 +150,7 @@
   max-width: 576px;
   margin: 0 auto;
   @media (max-width: 600px) {
-    flex-direction: column;
+    flex-direction: column-reverse;
   }
 }
 
@@ -263,5 +263,39 @@
 @media (max-width: 520px) {
   .profile-form__row {
     grid-template-columns: 1fr;
+  }
+}
+@media (max-width: 420px) {
+  .auth-modal__header h2 {
+    font-size: 14px;
+  }
+  .auth-modal__description,
+  .auth-modal__note {
+    font-size: 12px;
+  }
+  .auth-option__title {
+    font-size: 12px;
+  }
+  .auth-modal {
+    padding: 24px;
+  }
+  .auth-modal__actions {
+    gap: 8px;
+  }
+  .secondary-btn {
+    font-size: 16px;
+    letter-spacing: 0;
+    padding: 11px 22px;
+    height: 44px;
+    font-size: 16px;
+    width: 100%;
+  }
+  .primary-btn {
+    font-size: 16px;
+    letter-spacing: 0;
+    padding: 11px 22px;
+    height: 44px;
+    font-size: 16px;
+    width: 100%;
   }
 }

@@ -32,7 +32,7 @@ export const ApiDescription = ({ requesting }) => {
                 }}
               >
                 <div className="collapsed_button">
-                  <h4>{t('ApiDescription.SeeMore')} </h4>
+                  <span className="collapsed_see_more">{t('ApiDescription.SeeMore')} </span>
                   {open ? (
                     <MinusIcon className="plus_minus" />
                   ) : (

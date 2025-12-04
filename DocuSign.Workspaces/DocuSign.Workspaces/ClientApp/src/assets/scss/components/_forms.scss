@@ -202,7 +202,7 @@ input[type='radio'] {
   flex-direction: row;
   align-items: center;
   color: #ca5048;
-  font-family: 'Inter';
+  font-family: 'Inter', sans-serif;
   font-size: 24px;
   font-weight: 600;
 }
@@ -309,6 +309,12 @@ input[type='radio'] {
   }
 }
 
+.form-control.error_border,
+.form-control.error_border:focus {
+  border-color: #{$danger} !important;
+  box-shadow: none !important;
+}
+
 .form-control:hover {
   border-color: #565454;
 }
@@ -346,7 +352,7 @@ input[type='radio'] {
   font-weight: 400;
   color: #ababab;
   opacity: 0.5;
-  font-family: 'Inter';
+  font-family: 'Inter', sans-serif;
   line-height: 150%;
 }
 
