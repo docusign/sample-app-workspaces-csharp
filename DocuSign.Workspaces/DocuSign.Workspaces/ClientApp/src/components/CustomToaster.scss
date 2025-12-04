@@ -50,10 +50,13 @@
 @media (max-width: 420px) {
   .custom-toast-container {
     padding: 6px 16px;
-    right: 0;
+    margin-right: 5px;
     left: auto;
+    max-width: 80%;
   }
   .custom-toast-message {
     font-size: 12px;
+    white-space: normal;
+    word-wrap: break-word;
   }
 }

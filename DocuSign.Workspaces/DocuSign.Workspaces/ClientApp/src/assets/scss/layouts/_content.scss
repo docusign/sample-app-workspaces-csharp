@@ -95,11 +95,11 @@ h5,
 .subtitle2 {
   font-size: 14px;
   font-weight: 400;
-  text-wrap: balance;
   font-family: 'Inter', sans-serif;
   font-style: normal;
   line-height: 150%;
   color: #13131b;
+  text-wrap: balance;
 }
 .body2 {
   font-size: 20px;
@@ -211,6 +211,9 @@ h5,
       font-size: 16px;
       line-height: 150%;
       font-weight: 600;
+    }
+    .subtitle2 {
+      text-wrap: wrap;
     }
     .body1 {
       font-size: 14px;
