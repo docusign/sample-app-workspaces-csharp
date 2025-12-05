@@ -32,11 +32,11 @@ export const UseCaseTwoPage = () => {
   const [listFiles, setListFiles] = useState([]);
   const [errorOnboarding, setErrorOnboarding] = useState('');
   const [selectedPhysician, setSelectedPhysician] = useState(undefined);
-  const [isMobile, setIsMobile] = useState(window.innerWidth < 420);
+  const [isMobile, setIsMobile] = useState(window.innerWidth < 500);
 
   useEffect(() => {
     const handleResize = () => {
-      setIsMobile(window.innerWidth < 420);
+      setIsMobile(window.innerWidth < 500);
     };
 
     window.addEventListener('resize', handleResize);

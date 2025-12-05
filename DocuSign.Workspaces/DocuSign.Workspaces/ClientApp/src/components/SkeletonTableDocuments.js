@@ -2,11 +2,11 @@ import React, { useState, useEffect } from 'react';
 import './SkeletonTableDocuments.scss';
 
 export const SkeletonTableDocuments = ({ rowCount = 3 }) => {
-  const [isMobile, setIsMobile] = useState(window.innerWidth < 420);
+  const [isMobile, setIsMobile] = useState(window.innerWidth < 500);
 
   useEffect(() => {
     const handleResize = () => {
-      setIsMobile(window.innerWidth < 420);
+      setIsMobile(window.innerWidth < 500);
     };
 
     window.addEventListener('resize', handleResize);

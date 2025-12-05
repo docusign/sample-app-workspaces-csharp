@@ -11,11 +11,11 @@ export const TableDocuments = ({ onSave, listFiles }) => {
   const [submitted, setSubmitted] = useState(false);
   const [listPending, setListPending] = useState(listFiles);
   const [sortConfig, setSortConfig] = useState({ key: null, direction: 'asc' });
-  const [isMobile, setIsMobile] = useState(window.innerWidth < 420);
+  const [isMobile, setIsMobile] = useState(window.innerWidth < 500);
 
   useEffect(() => {
     const handleResize = () => {
-      setIsMobile(window.innerWidth < 420);
+      setIsMobile(window.innerWidth < 500);
     };
 
     window.addEventListener('resize', handleResize);

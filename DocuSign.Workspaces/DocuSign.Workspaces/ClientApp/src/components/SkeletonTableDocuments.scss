@@ -60,9 +60,10 @@
       justify-content: space-between;
       align-items: center;
       margin-bottom: 12px;
+      gap: 10px;
 
       .skeleton-label {
-        width: 100px;
+        width: 50%;
         height: 14px;
         border-radius: 4px;
         background: #e6e6e6;

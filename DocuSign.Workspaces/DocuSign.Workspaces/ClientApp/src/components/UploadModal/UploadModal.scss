@@ -70,6 +70,7 @@
   padding: 32px 24px;
   gap: 10px;
   background: #ffffff;
+  font-family: 'Inter', sans-serif;
   border-radius: 12px;
   transition: all 0.2s ease;
   margin-bottom: 24px;
@@ -78,6 +79,7 @@
     background: #f8f7fc;
 
     .upload-container__border rect {
+      font-family: 'Inter', sans-serif;
       stroke: #6e47cc;
       stroke-width: 2;
     }
@@ -86,6 +88,7 @@
 
 .upload-container__border {
   position: absolute;
+  font-family: 'Inter', sans-serif;
   top: 0;
   left: 0;
   width: 100%;

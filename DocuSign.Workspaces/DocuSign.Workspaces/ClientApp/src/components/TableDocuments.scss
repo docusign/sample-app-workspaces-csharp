@@ -65,15 +65,3 @@
   flex: 1;
   font-weight: 400;
 }
-
-@media (max-width: 420px) {
-  .hide {
-    display: none;
-  }
-}
-
-@media (min-width: 421px) {
-  .documents-cards {
-    display: none;
-  }
-}

@@ -38,11 +38,11 @@ export const UseCaseOnePage = () => {
   const [errorOnboarding, setErrorOnboarding] = useState('');
   const [currentStep, setCurrentStep] = useState(0);
   const [respFiles, setRespFiles] = useState([]);
-  const [isMobile, setIsMobile] = useState(window.innerWidth < 420);
+  const [isMobile, setIsMobile] = useState(window.innerWidth < 500);
 
   useEffect(() => {
     const handleResize = () => {
-      setIsMobile(window.innerWidth < 420);
+      setIsMobile(window.innerWidth < 500);
     };
 
     window.addEventListener('resize', handleResize);
