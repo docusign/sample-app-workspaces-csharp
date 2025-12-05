@@ -89,7 +89,7 @@ export const TableDocuments = ({ onSave, listFiles }) => {
 
   const renderTable = () => {
     return (
-      <div className="documents-table-wrapper hide">
+      <div className="documents-table-wrapper">
         <div className="documents-table-container">
           <table className="documents-table">
             <thead>
@@ -179,7 +179,9 @@ export const TableDocuments = ({ onSave, listFiles }) => {
           className={submitted ? 'was-validated' : ''}
           noValidate
         >
-          <div className="select-form">{isMobile ? renderCards() : renderTable()}</div>
+          <div className="select-form">
+            {isMobile && isTestAccount ? renderCards() : renderTable()}
+          </div>
         </form>
       </div>
     </div>
