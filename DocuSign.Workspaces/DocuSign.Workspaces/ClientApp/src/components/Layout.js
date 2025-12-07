@@ -36,6 +36,14 @@ export default function Layout() {
     sessionStorage.setItem('isTestAccount', JSON.stringify(isTestAccount));
   }, [isTestAccount]);
 
+  useEffect(() => {
+    if (isLoginOpen) {
+      document.body.classList.add('modal-open');
+    } else {
+      document.body.classList.remove('modal-open');
+    }
+  }, [isLoginOpen]);
+
   const getCookie = (name) => {
     const match = document.cookie.match(new RegExp('(^| )' + name + '=([^;]+)'));
     return match ? decodeURIComponent(match[2]) : null;

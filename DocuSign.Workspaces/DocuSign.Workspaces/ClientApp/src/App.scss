@@ -1,3 +1,7 @@
+body.modal-open .nav {
+  filter: brightness(40%);
+}
+
 .back-link {
   color: #6e47cc;
   font-weight: 700;
@@ -342,6 +346,7 @@ body.home-page::before {
   text-align: center;
   color: #13131b;
   width: 70%;
+  text-wrap: balance;
 }
 .card__title_width {
   width: 50%;
@@ -552,6 +557,10 @@ body.home-page::before {
   font-size: 20px;
   font-weight: 500;
   border: none;
+  transition: all 0.2s ease;
+  &:hover {
+    color: #b4bac5;
+  }
 }
 
 .footer__copyright {
@@ -922,14 +931,13 @@ body.home-page::before {
     border-radius: 16px;
     border: 1px solid #e5e7eb;
     overflow: hidden;
-    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
     padding: 15px;
 
     .documents-table {
       width: 100%;
       border-collapse: separate;
       border-spacing: 0;
-
+      table-layout: fixed;
       thead {
         tr {
           th {

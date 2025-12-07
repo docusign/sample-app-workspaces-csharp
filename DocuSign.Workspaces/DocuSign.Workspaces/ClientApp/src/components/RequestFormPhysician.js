@@ -63,6 +63,14 @@ export const RequestFormPhysician = ({
   const closeModal = () => setIsUploadOpen(false);
 
   useEffect(() => {
+    if (isUploadOpen) {
+      document.body.classList.add('modal-open');
+    } else {
+      document.body.classList.remove('modal-open');
+    }
+  }, [isUploadOpen]);
+
+  useEffect(() => {
     if (accountStatus?.isConnected) {
       if (isTestAccount) {
         setUploadedFiles(listFiles);
@@ -204,7 +212,6 @@ export const RequestFormPhysician = ({
           <div className="subtitle1 margin_top_bottom_second">
             {t('RequestFormPhysician.IncomingDocuments')}
           </div>
-
           {uploadedFiles.length > 0 && (
             <div className="uploaded-files-container mb-3">
               {uploadedFiles.map((file) => (
@@ -214,7 +221,11 @@ export const RequestFormPhysician = ({
                     className={`uploaded-file-item ${file.isNeedSign || isTestAccount ? '' : 'uploaded-file-item--signed'}`}
                   >
                     <div className="uploaded-file-icon">
-                      {getFileIcon(file.type) === 'pdf' ? <PdfType /> : <DocType />}
+                      {getFileIcon(file.type) === 'pdf' ? (
+                        <PdfType className="doc_icon_size" />
+                      ) : (
+                        <DocType className="doc_icon_size" />
+                      )}
                     </div>
 
                     <div className="uploaded-file-content">

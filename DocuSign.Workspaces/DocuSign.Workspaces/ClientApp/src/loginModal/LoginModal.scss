@@ -136,7 +136,7 @@
 .auth-option__title {
   font-family: 'Inter', sans-serif;
   font-weight: 400;
-  font-size: 14px;
+  font-size: 16px;
   line-height: 150%;
   color: #151515;
 }
@@ -266,18 +266,18 @@
   .profile-form__row {
     grid-template-columns: 1fr;
   }
-}
-@media (max-width: 420px) {
+  .auth-modal__description,
+  .auth-modal__note {
+    font-size: 14px;
+  }
+  .auth-option__title {
+    font-size: 14px;
+  }
+
   .auth-modal__header h2 {
     font-size: 14px;
   }
-  .auth-modal__description,
-  .auth-modal__note {
-    font-size: 12px;
-  }
-  .auth-option__title {
-    font-size: 12px;
-  }
+
   .auth-modal {
     padding: 24px;
   }

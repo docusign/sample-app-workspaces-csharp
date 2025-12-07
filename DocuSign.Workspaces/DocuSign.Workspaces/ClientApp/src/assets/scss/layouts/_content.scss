@@ -83,6 +83,7 @@ h5,
   line-height: 130%;
   font-weight: 500;
   color: #141414;
+  text-wrap: balance;
 }
 .subtitle1 {
   font-family: 'Inter', sans-serif;
@@ -103,12 +104,19 @@ h5,
 }
 .body2 {
   font-size: 20px;
-  font-weight: 500;
+  font-weight: 600;
   font-family: 'Inter', sans-serif;
   font-style: normal;
-  line-height: 150%;
+  line-height: 130%;
   color: #141414;
   text-wrap: balance;
+}
+
+.upload-title {
+  font-family: 'Inter', sans-serif;
+  font-weight: 500;
+  font-size: 16px;
+  line-height: 150%;
 }
 
 .overlay {
@@ -158,6 +166,14 @@ h5,
       width: 24px;
       height: 24px;
     }
+    .body2 {
+      font-size: 16px;
+      font-weight: 500;
+      line-height: 150%;
+    }
+    .upload-title {
+      font-weight: 500;
+    }
     h2,
     .h2 {
       font-family: 'Inter', sans-serif;
@@ -185,7 +201,7 @@ h5,
       display: inline-block;
     }
   }
-  @media (max-width: 420px) {
+  @media (max-width: 500px) {
     padding-left: 16px;
     padding-right: 16px;
 
@@ -221,29 +237,22 @@ h5,
       color: #13131b;
     }
     .body2 {
-      margin-top: -10px;
       font-size: 14px;
       font-weight: 600;
-      line-height: 150%;
     }
     .upload-desc {
-      font-family: 'Inter', sans-serif;
-      font-weight: 400;
       font-size: 12px;
+      font-weight: 400;
       line-height: 150%;
       text-align: center;
       letter-spacing: -0.01em;
-      color: #ababab;
       margin-left: 10px;
       margin-right: 10px;
     }
     .upload-title {
-      font-family: 'Inter', sans-serif;
       font-weight: 600;
       font-size: 14px;
       line-height: 150%;
-      letter-spacing: 0;
-      color: #141414;
     }
   }
 }

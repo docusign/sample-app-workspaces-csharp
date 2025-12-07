@@ -28,6 +28,11 @@
   flex-shrink: 0;
 }
 
+.doc_size {
+  width: 32px;
+  height: 42px;
+}
+
 .file-badge {
   width: 40px;
   height: 40px;
@@ -64,6 +69,7 @@
   flex-direction: row;
   align-items: flex-start;
   justify-content: flex-start;
+  min-width: 0;
 }
 
 .uploaded-file-name {
@@ -72,7 +78,7 @@
   font-size: 16px;
   color: #151515;
   letter-spacing: 0px;
-  white-space: normal;
+  white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
   min-width: 0;
@@ -104,23 +110,24 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  width: 20px;
-  height: 20px;
+  width: 24px;
+  height: 24px;
   background: none;
   border: none;
   cursor: pointer;
-  color: #565454;
+  color: #13131b;
   flex-shrink: 0;
   padding: 0;
 
   svg {
-    width: 16px;
-    height: 16px;
+    width: 24px;
+    height: 24px;
   }
 }
 
 .uploaded-file-remove:hover {
   color: #9e9d9f;
+  // color: #13131b;
 }
 
 .uploaded-file-progress {
@@ -202,8 +209,10 @@
   margin-top: 2px;
   cursor: pointer;
   font-family: 'Inter', sans-serif;
-  font-size: 13px;
-  color: #151515;
+  font-size: 14px;
+  font-weight: 400;
+  line-height: 150%;
+  color: #13131b;
 
   input[type='checkbox'] {
     appearance: none;
@@ -258,8 +267,8 @@
   flex-grow: 0;
 
   .plus_upload {
-    width: 20px;
-    height: 20px;
+    width: 24px;
+    height: 24px;
     path {
       stroke: #6e47cc;
     }
@@ -286,13 +295,9 @@
     flex-wrap: wrap;
   }
 
-  .uploaded-file-name {
-    font-size: 13px;
-  }
-
   .uploaded-file-preview {
     margin-top: 1px;
-    font-size: 11px;
+    font-size: 14px;
   }
   .btn-upload-document {
     font-size: 14px;
@@ -302,9 +307,15 @@
 @media (max-width: 520px) {
   .uploaded-file-name {
     flex: 1;
+    font-size: 12px;
+  }
+  .uploaded-file-preview {
+    margin-left: auto;
+    font-size: 12px;
+    margin-right: 6px;
   }
 }
-@media (max-width: 420px) {
+@media (max-width: 500px) {
   .uploaded-file-header {
     justify-content: space-between;
   }
@@ -312,11 +323,16 @@
     margin-left: auto;
   }
 
+  .doc_icon_size {
+    width: 30px;
+    height: 40px;
+  }
+
   .uploaded-file-name {
     flex: 1;
-    white-space: normal;
-    overflow: visible;
-    text-overflow: clip;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
     margin-right: auto;
   }
 
