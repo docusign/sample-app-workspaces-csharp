@@ -165,7 +165,6 @@ export default function Layout() {
                 <button
                   className="pill pill--light nav__cta"
                   type="button"
-                  // style={{ backgroundColor: 'green', width: '90%' }}
                   onClick={openLoginModal}
                 >
                   {t('Login')}

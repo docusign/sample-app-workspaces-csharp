@@ -1325,9 +1325,9 @@ body:not(.home-page) .footer {
     display: none;
     flex-direction: column;
     position: absolute;
-    top: 80px;
+    top: 90px;
     left: 0;
-    width: 100%;
+    right: 0;
     background: #6e47cc;
     padding: 1rem 0;
     box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
@@ -1341,9 +1341,14 @@ body:not(.home-page) .footer {
     display: flex;
     margin-top: -50px;
     padding-top: 50px;
+    border-bottom-left-radius: 32px;
+    border-bottom-right-radius: 32px;
+    gap: 32px;
 
     .nav__actions {
       margin-left: 2rem;
+      margin-right: 2rem;
+      padding-right: 0;
     }
   }
 
@@ -1358,7 +1363,10 @@ body:not(.home-page) .footer {
 
   .nav__actions {
     margin-left: 1rem;
+  }
+  .nav__cta {
     width: 100%;
+    margin-bottom: 30px;
   }
 
   .home-hero__copy h1 {
@@ -1448,13 +1456,7 @@ body:not(.home-page) .footer {
     padding-bottom: 24px !important;
   }
 }
-// @media (max-width: 500px) {
-//   .nav__cta {
-//     width: 100% !important;
-//     flex: 1;
-//     background-color: green !important;
-//   }
-// }
+
 @media (max-width: 420px) {
   .card__cta {
     font-size: 16px;
