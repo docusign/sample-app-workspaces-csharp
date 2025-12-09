@@ -1,6 +1,7 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useCallback } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Toaster, toast } from 'react-hot-toast';
+import { useOutletContext } from 'react-router-dom';
 import { RequestFormPhysician } from '../../components/RequestFormPhysician';
 import GoBackArrow from '../../components/GoBackArrow';
 import { ApiDescription } from '../../components/ApiDescription';
@@ -23,6 +24,7 @@ const urlSendDocuments = `${API_BASE}/api/care-plans/submit-physician`;
 
 export const UseCaseTwoPage = () => {
   const { t } = useTranslation();
+  const { accountStatus } = useOutletContext();
   const [request, setRequestData] = useState({ ...initialState.request });
   const [requesting, setRequesting] = useState(false);
   const [isLoadingPhysician, setIsLoadingPhysician] = useState(false);
@@ -49,7 +51,7 @@ export const UseCaseTwoPage = () => {
     if (listPhysician?.length) setSelectedPhysician(listPhysician[0]);
   }, [listPhysician]);
 
-  const getPhysicians = async () => {
+  const getPhysicians = useCallback(async () => {
     try {
       setIsLoadingPhysician(true);
       const res = await fetch(urlGetPhysician, {
@@ -70,11 +72,13 @@ export const UseCaseTwoPage = () => {
     } finally {
       setIsLoadingPhysician(false);
     }
-  };
+  }, [urlGetPhysician, t]);
 
   useEffect(() => {
-    getPhysicians();
-  }, []);
+    if (accountStatus?.isConnected) {
+      getPhysicians();
+    }
+  }, [accountStatus, getPhysicians]);
 
   const scrollToTop = () => {
     window.scrollTo({

@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useRef, useState } from 'react';
+import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import './LoginModal.scss';
 
@@ -16,7 +16,7 @@ function LoginModal({
   const { t } = useTranslation();
   const defaultEnv = useMemo(() => environments?.[0]?.url || '', [environments]);
 
-  const [selectedAuth, setSelectedAuth] = useState('acg'); // acg | jwt
+  const [selectedAuth, setSelectedAuth] = useState('jwt'); // acg | jwt
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState('');
   const [accountStatus, setAccountStatus] = useState(currentStatus);
@@ -84,23 +84,31 @@ function LoginModal({
     accountStatus?.isConsentGranted,
   ]);
 
-  const normalizeStatus = (statusJson) => ({
-    ...statusJson,
-    connectedUser: statusJson.connectedUser || statusJson.ConnectedUser || {},
-    isConsentGranted:
-      typeof statusJson.isConsentGranted === 'boolean'
-        ? statusJson.isConsentGranted
-        : statusJson.IsConsentGranted,
-    isConnected:
-      typeof statusJson.isConnected === 'boolean' ? statusJson.isConnected : statusJson.IsConnected,
-  });
+  const normalizeStatus = useCallback(
+    (statusJson) => ({
+      ...statusJson,
+      connectedUser: statusJson.connectedUser || statusJson.ConnectedUser || {},
+      isConsentGranted:
+        typeof statusJson.isConsentGranted === 'boolean'
+          ? statusJson.isConsentGranted
+          : statusJson.IsConsentGranted,
+      isConnected:
+        typeof statusJson.isConnected === 'boolean'
+          ? statusJson.isConnected
+          : statusJson.IsConnected,
+    }),
+    []
+  );
 
-  const normalizeSettings = (settingsJson) => ({
-    ...settingsJson,
-    userProfile: settingsJson.userProfile || settingsJson.UserProfile || {},
-  });
+  const normalizeSettings = useCallback(
+    (settingsJson) => ({
+      ...settingsJson,
+      userProfile: settingsJson.userProfile || settingsJson.UserProfile || {},
+    }),
+    []
+  );
 
-  const fetchStatusAndSettings = async () => {
+  const fetchStatusAndSettings = useCallback(async () => {
     const [statusRes, settingsRes] = await Promise.all([
       fetch(`${apiBase}/api/account/status`, { credentials: 'include' }),
       fetch(`${apiBase}/api/settings`, { credentials: 'include' }),
@@ -133,44 +141,47 @@ function LoginModal({
     }));
 
     return { status: normalizedStatus, settings: normalizedSettings };
-  };
+  }, [apiBase, t, normalizeStatus, normalizeSettings, onStatusChange, setAcgForm]);
 
-  const requestConsent = async (consentType) => {
-    setIsLoading(true);
-    setError('');
-    try {
-      const consentBasePath = acgForm.basePath || defaultEnv;
-      const response = await fetch(`${apiBase}/api/account/consent/obtain`, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        credentials: 'include',
-        body: JSON.stringify({
-          basePath: consentBasePath,
-          redirectUrl: '/',
-          consentType,
-        }),
-      });
+  const requestConsent = useCallback(
+    async (consentType) => {
+      setIsLoading(true);
+      setError('');
+      try {
+        const consentBasePath = acgForm.basePath || defaultEnv;
+        const response = await fetch(`${apiBase}/api/account/consent/obtain`, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          credentials: 'include',
+          body: JSON.stringify({
+            basePath: consentBasePath,
+            redirectUrl: '/',
+            consentType,
+          }),
+        });
 
-      if (!response.ok) {
-        const message = await response.text();
-        throw new Error(message || t('LoginModal.Error.UnableToStartConsentFlow'));
+        if (!response.ok) {
+          const message = await response.text();
+          throw new Error(message || t('LoginModal.Error.UnableToStartConsentFlow'));
+        }
+
+        const payload = await response.json();
+        if (payload.redirectUrl) {
+          document.cookie = 'ds_auth_step=acg-consent; path=/; SameSite=Lax';
+          window.location.href = payload.redirectUrl;
+          return;
+        }
+
+        await fetchStatusAndSettings();
+        setSelectedAuth('acg');
+      } catch (err) {
+        setError(err.message);
+      } finally {
+        setIsLoading(false);
       }
-
-      const payload = await response.json();
-      if (payload.redirectUrl) {
-        document.cookie = 'ds_auth_step=acg-consent; path=/; SameSite=Lax';
-        window.location.href = payload.redirectUrl;
-        return;
-      }
-
-      await fetchStatusAndSettings();
-      setSelectedAuth('acg');
-    } catch (err) {
-      setError(err.message);
-    } finally {
-      setIsLoading(false);
-    }
-  };
+    },
+    [apiBase, t, acgForm, defaultEnv, fetchStatusAndSettings, setSelectedAuth]
+  );
 
   const connectTestAccount = async () => {
     setIsLoading(true);
@@ -197,51 +208,57 @@ function LoginModal({
     }
   };
 
-  const fetchDefaultAccountDetails = async (basePath, userId) => {
-    const query = new URLSearchParams({ basePath, userId });
-    const response = await fetch(`${apiBase}/api/accounts?${query.toString()}`, {
-      credentials: 'include',
-    });
-    if (!response.ok) {
-      const message = await response.text();
-      throw new Error(message || t('LoginModal.Error.UnableToLoadAccounts'));
-    }
-    const payload = await response.json();
-    if (!Array.isArray(payload) || payload.length === 0) {
-      throw new Error(t('LoginModal.Error.NoAccounts'));
-    }
-    const defaultAccount = payload.find((acct) => acct.isDefault || acct.IsDefault) ?? payload[0];
-    return {
-      accountId: defaultAccount.accountId || defaultAccount.AccountId,
-      baseUri: defaultAccount.baseUri || defaultAccount.BaseUri,
-    };
-  };
+  const fetchDefaultAccountDetails = useCallback(
+    async (basePath, userId) => {
+      const query = new URLSearchParams({ basePath, userId });
+      const response = await fetch(`${apiBase}/api/accounts?${query.toString()}`, {
+        credentials: 'include',
+      });
+      if (!response.ok) {
+        const message = await response.text();
+        throw new Error(message || t('LoginModal.Error.UnableToLoadAccounts'));
+      }
+      const payload = await response.json();
+      if (!Array.isArray(payload) || payload.length === 0) {
+        throw new Error(t('LoginModal.Error.NoAccounts'));
+      }
+      const defaultAccount = payload.find((acct) => acct.isDefault || acct.IsDefault) ?? payload[0];
+      return {
+        accountId: defaultAccount.accountId || defaultAccount.AccountId,
+        baseUri: defaultAccount.baseUri || defaultAccount.BaseUri,
+      };
+    },
+    [apiBase, t]
+  );
 
-  const performUserAccountConnection = async ({ basePath, baseUri, accountId, userId }) => {
-    const response = await fetch(`${apiBase}/api/account/connect`, {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      credentials: 'include',
-      body: JSON.stringify({
-        authenticationType: 'UserAccount',
-        basePath,
-        baseUri,
-        accountId,
-        userId,
-      }),
-    });
+  const performUserAccountConnection = useCallback(
+    async ({ basePath, baseUri, accountId, userId }) => {
+      const response = await fetch(`${apiBase}/api/account/connect`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        credentials: 'include',
+        body: JSON.stringify({
+          authenticationType: 'UserAccount',
+          basePath,
+          baseUri,
+          accountId,
+          userId,
+        }),
+      });
 
-    if (!response.ok) {
-      const message = await response.text();
-      throw new Error(message || t('LoginModal.Error.UnableToConnectAccount'));
-    }
+      if (!response.ok) {
+        const message = await response.text();
+        throw new Error(message || t('LoginModal.Error.UnableToConnectAccount'));
+      }
 
-    await fetchStatusAndSettings();
-    onClearAuthStep?.();
-    onClose();
-  };
+      await fetchStatusAndSettings();
+      onClearAuthStep?.();
+      onClose();
+    },
+    [apiBase, t, fetchStatusAndSettings, onClearAuthStep, onClose]
+  );
 
-  const loginWithAcg = async () => {
+  const loginWithAcg = useCallback(async () => {
     setError('');
     let latestSettings = settings;
     let consentGranted = accountStatus?.isConsentGranted;
@@ -287,7 +304,17 @@ function LoginModal({
     } finally {
       setIsLoading(false);
     }
-  };
+  }, [
+    settings,
+    accountStatus,
+    fetchStatusAndSettings,
+    requestConsent,
+    acgForm,
+    defaultEnv,
+    fetchDefaultAccountDetails,
+    performUserAccountConnection,
+    t,
+  ]);
 
   useEffect(() => {
     latestLoginWithAcg.current = loginWithAcg;
