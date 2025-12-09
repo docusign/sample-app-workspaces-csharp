@@ -95,48 +95,20 @@ export const TableDocuments = ({ onSave, listFiles }) => {
             <thead>
               <tr>
                 <th onClick={() => handleSort('name')}>
-                  <div className="header-content">
-                    {t('Onboarding.Name')}
-                    <SortIcon
-                      column="label"
-                      key={sortConfig.key}
-                      direction={sortConfig.direction}
-                    />
-                  </div>
+                  <div className="header-content">{t('Onboarding.Name')}</div>
                 </th>
                 {isTestAccount && (
                   <th onClick={() => handleSort('isSigned')}>
-                    <div className="header-content">
-                      {t('TableDocuments.Type')}
-                      <SortIcon
-                        column="type"
-                        key={sortConfig.key}
-                        direction={sortConfig.direction}
-                      />
-                    </div>
+                    <div className="header-content">{t('TableDocuments.Type')}</div>
                   </th>
                 )}
                 {isTestAccount && (
                   <th onClick={() => handleSort('isSigned')}>
-                    <div className="header-content">
-                      {t('TableDocuments.RequiresSignature')}
-                      <SortIcon
-                        column="requires signature"
-                        key={sortConfig.key}
-                        direction={sortConfig.direction}
-                      />
-                    </div>
+                    <div className="header-content">{t('TableDocuments.RequiresSignature')}</div>
                   </th>
                 )}
                 <th onClick={() => handleSort('status')}>
-                  <div className="header-content">
-                    {t('Onboarding.Status')}
-                    <SortIcon
-                      column="status"
-                      key={sortConfig.key}
-                      direction={sortConfig.direction}
-                    />
-                  </div>
+                  <div className="header-content">{t('Onboarding.Status')}</div>
                 </th>
               </tr>
             </thead>

@@ -235,7 +235,7 @@ export const RequestFormPhysician = ({
                         {file.status !== 'uploading' && (
                           <button
                             type="button"
-                            className="uploaded-file-preview preview-large-screen"
+                            className={`uploaded-file-preview preview-large-screen ${!isTestAccount ? 'mobile_hide' : ''}`}
                             onClick={() => handlePreview(file)}
                           >
                             {t('Common.Preview')}
@@ -268,7 +268,17 @@ export const RequestFormPhysician = ({
                               checked={file.isForSignature}
                               onChange={() => toggleSignature(file.id)}
                             />
-                            <span>{t('Common.RequiresSignature')}</span>
+                            <span>{t('Common.ForSignature')}</span>
+
+                            {file.status !== 'uploading' && (
+                              <button
+                                type="button"
+                                className="uploaded-file-preview preview-large-screen mobile_show"
+                                onClick={() => handlePreview(file)}
+                              >
+                                {t('Common.Preview')}
+                              </button>
+                            )}
                           </label>
                         )}
                         {isTestAccount &&

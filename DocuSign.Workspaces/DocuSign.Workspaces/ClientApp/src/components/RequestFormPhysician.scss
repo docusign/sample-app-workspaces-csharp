@@ -62,6 +62,12 @@
   flex: 1;
   min-width: 0;
 }
+.mobile_hide {
+  display: block;
+}
+.mobile_show {
+  display: none;
+}
 
 .uploaded-file-header {
   display: flex;
@@ -286,6 +292,7 @@
 @media (max-width: 768px) {
   .uploaded-file-item {
     padding: 12px;
+    gap: 8px;
   }
 
   .uploaded-file-header {
@@ -304,7 +311,7 @@
   }
 }
 
-@media (max-width: 520px) {
+@media (max-width: 500px) {
   .uploaded-file-name {
     flex: 1;
     font-size: 12px;
@@ -314,8 +321,6 @@
     font-size: 12px;
     margin-right: 6px;
   }
-}
-@media (max-width: 500px) {
   .uploaded-file-header {
     justify-content: space-between;
   }
@@ -336,6 +341,13 @@
     margin-right: auto;
   }
 
+  .mobile_hide {
+    display: none;
+  }
+  .mobile_show {
+    display: block;
+  }
+
   .preview-large-screen {
     margin-left: auto;
   }
@@ -347,5 +359,13 @@
     display: flex;
     align-items: center;
     margin-top: 8px;
+  }
+
+  .uploaded-file-signature {
+    font-size: 12px;
+    margin-top: 0px;
+  }
+  .uploaded-file-progress-info {
+    font-size: 10px;
   }
 }

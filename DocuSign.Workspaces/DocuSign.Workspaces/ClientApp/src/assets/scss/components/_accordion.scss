@@ -33,6 +33,10 @@
 .form_and_description_grid {
   display: flex;
   flex-direction: row;
+  padding-top: 30px;
+}
+.form_and_description_grid_plus {
+  padding-top: 40px;
 }
 
 .collapsed_info {
@@ -65,10 +69,14 @@
   .form_and_description_grid {
     display: flex;
     flex-direction: column;
+    padding-right: 30px;
   }
 }
 @media (max-width: 768px) {
   .collapsed_button {
     flex: 1;
+  }
+  .form_and_description_grid {
+    padding-right: 0px;
   }
 }

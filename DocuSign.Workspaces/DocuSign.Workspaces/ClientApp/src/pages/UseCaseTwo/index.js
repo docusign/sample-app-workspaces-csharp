@@ -155,7 +155,7 @@ export const UseCaseTwoPage = () => {
         <h2>{t('UseCaseTwo.Title')}</h2>
         <div className="body1">{t('UseCaseTwo.Description')}</div>
       </div>
-      <div className="form_and_description_grid">
+      <div className="form_and_description_grid form_and_description_grid_plus">
         {currentStep === 0 && (
           <RequestFormPhysician
             request={request}

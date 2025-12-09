@@ -8,6 +8,13 @@ input:-webkit-autofill:active {
 .label_input {
   margin-bottom: 4px;
 }
+.label_text_input {
+  position: relative;
+  top: -4px;
+  @media (max-width: 420px) {
+    top: -8px;
+  }
+}
 
 .form-control::-webkit-input-placeholder,
 .form-control::-moz-placeholder,
@@ -236,7 +243,6 @@ input[type='radio'] {
 }
 
 .form-holder {
-  margin-top: 30px;
   padding-left: $grid-gutter-width / 2;
   padding-right: $grid-gutter-width / 2;
   border-radius: 24px;
@@ -382,6 +388,9 @@ input[type='radio'] {
   @media (max-width: 768px) {
     margin-top: -20px;
   }
+  @media (max-width: 420px) {
+    margin-top: -16px;
+  }
 }
 
 .form-grid {
@@ -389,6 +398,16 @@ input[type='radio'] {
     display: grid;
     grid-template-columns: 1fr 1fr;
     gap: 0 20px;
+  }
+}
+.margin_bottom_5 {
+  margin-bottom: 40px;
+
+  @media (max-width: 768px) {
+    margin-bottom: 48px;
+  }
+  @media (max-width: 500px) {
+    margin-bottom: 32px;
   }
 }
 .width_form {
