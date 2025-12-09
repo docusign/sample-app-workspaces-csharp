@@ -3,6 +3,7 @@ import { Link, Outlet, useNavigate, useLocation } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import LoginModal from '../loginModal/LoginModal';
 import { ReactComponent as ChevronRightIcon } from '../assets/icons/chevron-right.svg';
+import { ReactComponent as CrossIcon } from '../assets/icons/cross.svg';
 
 const resolveApiBase = () => {
   if (process.env.REACT_APP_API_BASE) {
@@ -122,9 +123,15 @@ export default function Layout() {
             </Link>
           </div>
           <button className="nav__toggle" type="button" onClick={() => setIsNavOpen(!isNavOpen)}>
-            <span />
-            <span />
-            <span />
+            {isNavOpen ? (
+              <CrossIcon />
+            ) : (
+              <>
+                <span />
+                <span />
+                <span />
+              </>
+            )}
           </button>
           <nav className={`nav__links ${isNavOpen ? 'nav__links--open' : ''}`}>
             <a
@@ -158,6 +165,7 @@ export default function Layout() {
                 <button
                   className="pill pill--light nav__cta"
                   type="button"
+                  // style={{ backgroundColor: 'green', width: '90%' }}
                   onClick={openLoginModal}
                 >
                   {t('Login')}
