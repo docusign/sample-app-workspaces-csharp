@@ -44,7 +44,7 @@ const StepProgress = ({ steps, currentStep }) => {
     );
   }
   return (
-    <div className="step-progress">
+    <div className=" col-lg-9 step-progress">
       {steps.map((step, index) => {
         const isCompleted = index < currentStep;
         const isActive = index === currentStep;
