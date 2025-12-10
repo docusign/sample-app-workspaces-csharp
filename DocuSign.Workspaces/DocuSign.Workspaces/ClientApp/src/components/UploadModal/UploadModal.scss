@@ -70,6 +70,7 @@
   padding: 32px 24px;
   gap: 10px;
   background: #ffffff;
+  font-family: 'Inter', sans-serif;
   border-radius: 12px;
   transition: all 0.2s ease;
   margin-bottom: 24px;
@@ -78,6 +79,7 @@
     background: #f8f7fc;
 
     .upload-container__border rect {
+      font-family: 'Inter', sans-serif;
       stroke: #6e47cc;
       stroke-width: 2;
     }
@@ -86,6 +88,7 @@
 
 .upload-container__border {
   position: absolute;
+  font-family: 'Inter', sans-serif;
   top: 0;
   left: 0;
   width: 100%;
@@ -124,16 +127,18 @@
   text-align: center;
   letter-spacing: -0.01em;
   color: #151515;
+  text-wrap: balance;
 }
 
 .upload-desc {
   font-family: 'Inter', sans-serif;
   font-weight: 400;
-  font-size: 16px;
-  line-height: 140%;
+  font-size: 14px;
+  line-height: 150%;
   text-align: center;
-  letter-spacing: -0.01em;
-  color: #b3b3b3;
+  letter-spacing: 0em;
+  color: #ababab;
+  text-wrap: balance;
 }
 
 .upload-button {

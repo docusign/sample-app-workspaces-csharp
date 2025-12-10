@@ -2,6 +2,14 @@
   width: 26px;
   height: 26px;
 }
+.collapsed_see_more {
+  font-family: 'Inter', sans-serif;
+  font-size: 24px;
+  line-height: 120%;
+  font-weight: 600;
+  color: #141414;
+}
+
 .collapsed_button {
   display: flex;
   flex-direction: row;
@@ -25,6 +33,10 @@
 .form_and_description_grid {
   display: flex;
   flex-direction: row;
+  padding-top: 30px;
+}
+.form_and_description_grid_plus {
+  padding-top: 40px;
 }
 
 .collapsed_info {
@@ -44,6 +56,7 @@
 
   .card-body {
     padding: 10px;
+    font-family: 'Inter', sans-serif;
   }
   .colored_text {
     color: #6e47cc;
@@ -56,10 +69,14 @@
   .form_and_description_grid {
     display: flex;
     flex-direction: column;
+    padding-right: 30px;
   }
 }
 @media (max-width: 768px) {
   .collapsed_button {
     flex: 1;
+  }
+  .form_and_description_grid {
+    padding-right: 0px;
   }
 }

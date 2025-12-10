@@ -3,7 +3,7 @@
   flex-direction: column;
   gap: 16px;
   padding: 16px 0;
-  font-family: 'Inter';
+  font-family: 'Inter', sans-serif;
 }
 
 .document-card {
@@ -12,8 +12,8 @@
   border-color: rgba(158, 157, 159, 0.5);
   border-radius: 12px;
   padding: 28px;
-  padding-top: 10px;
-  padding-bottom: 10px;
+  padding-top: 14px;
+  padding-bottom: 14px;
 }
 
 .card-row {
@@ -28,7 +28,7 @@
 }
 
 .card-label {
-  font-family: 'Inter';
+  font-family: 'Inter', sans-serif;
   font-size: 10px;
   font-weight: 600;
   line-height: 20px;
@@ -64,16 +64,4 @@
   line-height: 130%;
   flex: 1;
   font-weight: 400;
-}
-
-@media (max-width: 420px) {
-  .hide {
-    display: none;
-  }
-}
-
-@media (min-width: 421px) {
-  .documents-cards {
-    display: none;
-  }
 }
