@@ -63,6 +63,14 @@ export const RequestFormPhysician = ({
   const closeModal = () => setIsUploadOpen(false);
 
   useEffect(() => {
+    if (isUploadOpen) {
+      document.body.classList.add('modal-open');
+    } else {
+      document.body.classList.remove('modal-open');
+    }
+  }, [isUploadOpen]);
+
+  useEffect(() => {
     if (accountStatus?.isConnected) {
       if (isTestAccount) {
         setUploadedFiles(listFiles);
@@ -168,9 +176,7 @@ export const RequestFormPhysician = ({
         <div className="mb-2 subtitle1">{t('RequestFormPhysician.PhysicianInformation')}</div>
 
         <form onSubmit={handleSubmit} className={submitted ? 'was-validated' : ''} noValidate>
-          <div className="subtitle2 width_form mb-4">
-            {t('RequestFormPhysician.InvitationMessage')}
-          </div>
+          <div className="subtitle2 mb-4">{t('RequestFormPhysician.InvitationMessage')}</div>
           <div className="form-grid col-lg-8 width_form mb-4">
             <InputText
               name="email"
@@ -206,7 +212,6 @@ export const RequestFormPhysician = ({
           <div className="subtitle1 margin_top_bottom_second">
             {t('RequestFormPhysician.IncomingDocuments')}
           </div>
-
           {uploadedFiles.length > 0 && (
             <div className="uploaded-files-container mb-3">
               {uploadedFiles.map((file) => (
@@ -216,7 +221,11 @@ export const RequestFormPhysician = ({
                     className={`uploaded-file-item ${file.isNeedSign || isTestAccount ? '' : 'uploaded-file-item--signed'}`}
                   >
                     <div className="uploaded-file-icon">
-                      {getFileIcon(file.type) === 'pdf' ? <PdfType /> : <DocType />}
+                      {getFileIcon(file.type) === 'pdf' ? (
+                        <PdfType className="doc_icon_size" />
+                      ) : (
+                        <DocType className="doc_icon_size" />
+                      )}
                     </div>
 
                     <div className="uploaded-file-content">
@@ -226,7 +235,7 @@ export const RequestFormPhysician = ({
                         {file.status !== 'uploading' && (
                           <button
                             type="button"
-                            className="uploaded-file-preview preview-large-screen"
+                            className={`uploaded-file-preview preview-large-screen ${!isTestAccount ? 'mobile_hide' : ''}`}
                             onClick={() => handlePreview(file)}
                           >
                             {t('Common.Preview')}
@@ -259,7 +268,17 @@ export const RequestFormPhysician = ({
                               checked={file.isForSignature}
                               onChange={() => toggleSignature(file.id)}
                             />
-                            <span>{t('Common.RequiresSignature')}</span>
+                            <span>{t('Common.ForSignature')}</span>
+
+                            {file.status !== 'uploading' && (
+                              <button
+                                type="button"
+                                className="uploaded-file-preview preview-large-screen mobile_show"
+                                onClick={() => handlePreview(file)}
+                              >
+                                {t('Common.Preview')}
+                              </button>
+                            )}
                           </label>
                         )}
                         {isTestAccount &&
@@ -273,15 +292,6 @@ export const RequestFormPhysician = ({
                               <span>{t('Common.DoNotRequireSignature')}</span>
                             </label>
                           ))}
-                        {file.status !== 'uploading' && (
-                          <button
-                            type="button"
-                            className="uploaded-file-preview preview-small-screen"
-                            onClick={() => handlePreview(file)}
-                          >
-                            {t('Common.Preview')}
-                          </button>
-                        )}
                       </div>
                     </div>
 

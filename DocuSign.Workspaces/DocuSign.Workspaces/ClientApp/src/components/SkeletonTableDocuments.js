@@ -2,11 +2,11 @@ import React, { useState, useEffect } from 'react';
 import './SkeletonTableDocuments.scss';
 
 export const SkeletonTableDocuments = ({ rowCount = 3 }) => {
-  const [isMobile, setIsMobile] = useState(window.innerWidth < 420);
+  const [isMobile, setIsMobile] = useState(window.innerWidth < 500);
 
   useEffect(() => {
     const handleResize = () => {
-      setIsMobile(window.innerWidth < 420);
+      setIsMobile(window.innerWidth < 500);
     };
 
     window.addEventListener('resize', handleResize);
@@ -16,19 +16,20 @@ export const SkeletonTableDocuments = ({ rowCount = 3 }) => {
   const renderCardsSkeleton = () => {
     return (
       <div className="documents-cards-skeleton">
-        {Array.from({ length: rowCount }).map((_, index) => (
+        {Array.from({ length: 2 }).map((_, index) => (
           <div key={index} className="document-card-skeleton">
             <div className="card-row-skeleton">
-              <div className="skeleton-label" />
-              <div className="skeleton-value" />
+              <div className="skeleton-label_header" />
+              <div className="skeleton-value_header" />
             </div>
             <div className="card-row-skeleton">
               <div className="skeleton-label" />
-              <div className="skeleton-value" />
+            </div>
+            <div className="card-row-skeleton">
+              <div className="skeleton-label skeleton-label_medium" />
             </div>
             <div className="card-row-skeleton">
               <div className="skeleton-label" />
-              <div className="skeleton-value" />
             </div>
           </div>
         ))}

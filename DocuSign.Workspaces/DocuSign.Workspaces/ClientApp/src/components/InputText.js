@@ -20,13 +20,13 @@ export const InputText = ({
   }
   return (
     <div className={wrapperClass}>
-      <label htmlFor={name} style={{ position: 'relative', top: '-4px' }}>
+      <label htmlFor={name} className="label_text_input">
         {label}
       </label>
       <input
         type={type}
         name={name}
-        className="form-control"
+        className={`form-control ${error ? 'error_border' : ''}`}
         placeholder={placeholder}
         value={value}
         onChange={onChange}

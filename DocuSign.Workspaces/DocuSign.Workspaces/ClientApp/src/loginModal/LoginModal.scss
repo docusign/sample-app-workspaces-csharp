@@ -136,7 +136,7 @@
 .auth-option__title {
   font-family: 'Inter', sans-serif;
   font-weight: 400;
-  font-size: 14px;
+  font-size: 16px;
   line-height: 150%;
   color: #151515;
 }
@@ -145,17 +145,19 @@
   display: flex;
   flex-direction: row;
   align-items: center;
+  font-family: 'Inter', sans-serif;
   gap: 16px;
   width: 100%;
   max-width: 576px;
   margin: 0 auto;
   @media (max-width: 600px) {
-    flex-direction: column;
+    flex-direction: column-reverse;
   }
 }
 
 .primary-btn,
 .secondary-btn {
+  font-family: 'Inter', sans-serif;
   display: flex;
   flex-direction: row;
   justify-content: center;
@@ -263,5 +265,39 @@
 @media (max-width: 520px) {
   .profile-form__row {
     grid-template-columns: 1fr;
+  }
+  .auth-modal__description,
+  .auth-modal__note {
+    font-size: 14px;
+  }
+  .auth-option__title {
+    font-size: 14px;
+  }
+
+  .auth-modal__header h2 {
+    font-size: 14px;
+  }
+
+  .auth-modal {
+    padding: 24px;
+  }
+  .auth-modal__actions {
+    gap: 8px;
+  }
+  .secondary-btn {
+    font-size: 16px;
+    letter-spacing: 0;
+    padding: 11px 22px;
+    height: 44px;
+    font-size: 16px;
+    width: 100%;
+  }
+  .primary-btn {
+    font-size: 16px;
+    letter-spacing: 0;
+    padding: 11px 22px;
+    height: 44px;
+    font-size: 16px;
+    width: 100%;
   }
 }

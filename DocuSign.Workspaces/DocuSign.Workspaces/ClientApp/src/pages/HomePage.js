@@ -30,7 +30,6 @@ export default function HomePage() {
     <>
       <div className="home-hero__content">
         <div className="home-hero__grid">
-          {/* <div className="home-hero__elipse"></div> */}
           <div className="home-hero__copy">
             <h1 className="home_title">{t('Welcome')}</h1>
             <p className="home-hero__subtext">{t('Explore')}</p>

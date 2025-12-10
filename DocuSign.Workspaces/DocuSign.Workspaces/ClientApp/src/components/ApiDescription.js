@@ -16,7 +16,7 @@ export const ApiDescription = ({ requesting }) => {
   }
 
   return (
-    <div className="col-lg-4 pt-5 pb-4 behind_scenes">
+    <div className="col-lg-4 pb-4 behind_scenes">
       <div id="accordion">
         <div className="cardCollapse">
           <div className="cardCollapse-header" id="headingOne">
@@ -32,7 +32,7 @@ export const ApiDescription = ({ requesting }) => {
                 }}
               >
                 <div className="collapsed_button">
-                  <h4>{t('ApiDescription.SeeMore')} </h4>
+                  <span className="collapsed_see_more">{t('ApiDescription.SeeMore')} </span>
                   {open ? (
                     <MinusIcon className="plus_minus" />
                   ) : (

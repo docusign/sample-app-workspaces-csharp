@@ -8,6 +8,13 @@ input:-webkit-autofill:active {
 .label_input {
   margin-bottom: 4px;
 }
+.label_text_input {
+  position: relative;
+  top: -4px;
+  @media (max-width: 420px) {
+    top: -8px;
+  }
+}
 
 .form-control::-webkit-input-placeholder,
 .form-control::-moz-placeholder,
@@ -202,7 +209,7 @@ input[type='radio'] {
   flex-direction: row;
   align-items: center;
   color: #ca5048;
-  font-family: 'Inter';
+  font-family: 'Inter', sans-serif;
   font-size: 24px;
   font-weight: 600;
 }
@@ -236,7 +243,6 @@ input[type='radio'] {
 }
 
 .form-holder {
-  margin-top: 30px;
   padding-left: $grid-gutter-width / 2;
   padding-right: $grid-gutter-width / 2;
   border-radius: 24px;
@@ -283,11 +289,13 @@ input[type='radio'] {
 .has-error {
   .invalid-feedback {
     display: block;
+    font-family: 'Inter', sans-serif;
   }
 }
 
 .form-group {
   position: relative;
+  font-family: 'Inter', sans-serif;
   margin-bottom: 5px;
   .valid-feedback,
   .invalid-feedback {
@@ -299,6 +307,7 @@ input[type='radio'] {
 }
 
 .form-control {
+  font-family: 'Inter', sans-serif;
   background-color: #ffffff;
   border-color: #9e9d9f;
   background-image: none !important;
@@ -307,6 +316,12 @@ input[type='radio'] {
   &:invalid,
   &.invalid {
   }
+}
+
+.form-control.error_border,
+.form-control.error_border:focus {
+  border-color: #{$danger} !important;
+  box-shadow: none !important;
 }
 
 .form-control:hover {
@@ -346,7 +361,7 @@ input[type='radio'] {
   font-weight: 400;
   color: #ababab;
   opacity: 0.5;
-  font-family: 'Inter';
+  font-family: 'Inter', sans-serif;
   line-height: 150%;
 }
 
@@ -373,6 +388,9 @@ input[type='radio'] {
   @media (max-width: 768px) {
     margin-top: -20px;
   }
+  @media (max-width: 420px) {
+    margin-top: -16px;
+  }
 }
 
 .form-grid {
@@ -380,6 +398,16 @@ input[type='radio'] {
     display: grid;
     grid-template-columns: 1fr 1fr;
     gap: 0 20px;
+  }
+}
+.margin_bottom_5 {
+  margin-bottom: 40px;
+
+  @media (max-width: 768px) {
+    margin-bottom: 48px;
+  }
+  @media (max-width: 500px) {
+    margin-bottom: 32px;
   }
 }
 .width_form {

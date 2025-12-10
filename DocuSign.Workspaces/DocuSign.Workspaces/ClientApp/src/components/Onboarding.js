@@ -56,24 +56,10 @@ export const Onboarding = ({
                   <thead>
                     <tr>
                       <th onClick={() => handleSort('name')}>
-                        <div className="header-content">
-                          {t('Onboarding.Name')}
-                          <SortIcon
-                            column="label"
-                            key={sortConfig.key}
-                            direction={sortConfig.direction}
-                          />
-                        </div>
+                        <div className="header-content">{t('Onboarding.Name')}</div>
                       </th>
                       <th onClick={() => handleSort('status')}>
-                        <div className="header-content">
-                          {t('Onboarding.Status')}
-                          <SortIcon
-                            column="status"
-                            key={sortConfig.key}
-                            direction={sortConfig.direction}
-                          />
-                        </div>
+                        <div className="header-content">{t('Onboarding.Status')}</div>
                       </th>
                     </tr>
                   </thead>

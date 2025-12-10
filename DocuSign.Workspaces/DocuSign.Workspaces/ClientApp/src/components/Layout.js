@@ -3,6 +3,7 @@ import { Link, Outlet, useNavigate, useLocation } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import LoginModal from '../loginModal/LoginModal';
 import { ReactComponent as ChevronRightIcon } from '../assets/icons/chevron-right.svg';
+import { ReactComponent as CrossIcon } from '../assets/icons/cross.svg';
 
 const resolveApiBase = () => {
   if (process.env.REACT_APP_API_BASE) {
@@ -26,15 +27,25 @@ export default function Layout() {
     { key: 'production', label: t('Layout.Production'), url: 'https://account.docusign.com' },
   ];
   const [accountStatus, setAccountStatus] = useState(null);
-  const [isTestAccount, setIsTestAccount] = useState(
-    () => JSON.parse(sessionStorage.getItem('isTestAccount')) || false
+  const [isTestAccount, setIsTestAccount] = useState(() =>
+    typeof JSON.parse(localStorage.getItem('isTestAccount')) === 'boolean'
+      ? JSON.parse(localStorage.getItem('isTestAccount'))
+      : undefined
   );
   const [isLoginOpen, setIsLoginOpen] = useState(false);
   const [isNavOpen, setIsNavOpen] = useState(false);
+  useEffect(() => {
+    if (typeof isTestAccount === 'boolean')
+      localStorage.setItem('isTestAccount', JSON.stringify(isTestAccount));
+  }, [isTestAccount]);
 
   useEffect(() => {
-    sessionStorage.setItem('isTestAccount', JSON.stringify(isTestAccount));
-  }, [isTestAccount]);
+    if (isLoginOpen) {
+      document.body.classList.add('modal-open');
+    } else {
+      document.body.classList.remove('modal-open');
+    }
+  }, [isLoginOpen]);
 
   const getCookie = (name) => {
     const match = document.cookie.match(new RegExp('(^| )' + name + '=([^;]+)'));
@@ -114,9 +125,15 @@ export default function Layout() {
             </Link>
           </div>
           <button className="nav__toggle" type="button" onClick={() => setIsNavOpen(!isNavOpen)}>
-            <span />
-            <span />
-            <span />
+            {isNavOpen ? (
+              <CrossIcon />
+            ) : (
+              <>
+                <span />
+                <span />
+                <span />
+              </>
+            )}
           </button>
           <nav className={`nav__links ${isNavOpen ? 'nav__links--open' : ''}`}>
             <a
@@ -170,18 +187,20 @@ export default function Layout() {
         </div>
       </footer>
 
-      <LoginModal
-        isOpen={isLoginOpen}
-        apiBase={API_BASE}
-        environments={ENVIRONMENTS}
-        currentStatus={accountStatus}
-        onStatusChange={setAccountStatus}
-        onClose={closeLoginModal}
-        onLogout={logout}
-        resumeAuthStep={getCookie('ds_auth_step') === 'acg-consent' ? 'acg' : null}
-        onClearAuthStep={clearAuthCookie}
-        setIsTestAccount={setIsTestAccount}
-      />
+      {isLoginOpen && (
+        <LoginModal
+          isOpen={isLoginOpen}
+          apiBase={API_BASE}
+          environments={ENVIRONMENTS}
+          currentStatus={accountStatus}
+          onStatusChange={setAccountStatus}
+          onClose={closeLoginModal}
+          onLogout={logout}
+          resumeAuthStep={getCookie('ds_auth_step') === 'acg-consent' ? 'acg' : null}
+          onClearAuthStep={clearAuthCookie}
+          setIsTestAccount={setIsTestAccount}
+        />
+      )}
     </div>
   );
 }

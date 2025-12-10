@@ -2,11 +2,11 @@ import React, { useState, useEffect } from 'react';
 import { ReactComponent as CheckIcon } from '../assets/icons/check.svg';
 
 const StepProgress = ({ steps, currentStep }) => {
-  const [isCompact, setIsCompact] = useState(window.innerWidth < 420);
+  const [isCompact, setIsCompact] = useState(window.innerWidth < 500);
 
   useEffect(() => {
     const handleResize = () => {
-      setIsCompact(window.innerWidth < 420);
+      setIsCompact(window.innerWidth < 500);
     };
 
     window.addEventListener('resize', handleResize);

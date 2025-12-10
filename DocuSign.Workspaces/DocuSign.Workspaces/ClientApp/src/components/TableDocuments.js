@@ -11,11 +11,11 @@ export const TableDocuments = ({ onSave, listFiles }) => {
   const [submitted, setSubmitted] = useState(false);
   const [listPending, setListPending] = useState(listFiles);
   const [sortConfig, setSortConfig] = useState({ key: null, direction: 'asc' });
-  const [isMobile, setIsMobile] = useState(window.innerWidth < 420);
+  const [isMobile, setIsMobile] = useState(window.innerWidth < 500);
 
   useEffect(() => {
     const handleResize = () => {
-      setIsMobile(window.innerWidth < 420);
+      setIsMobile(window.innerWidth < 500);
     };
 
     window.addEventListener('resize', handleResize);
@@ -89,54 +89,26 @@ export const TableDocuments = ({ onSave, listFiles }) => {
 
   const renderTable = () => {
     return (
-      <div className="documents-table-wrapper hide">
+      <div className="documents-table-wrapper">
         <div className="documents-table-container">
           <table className="documents-table">
             <thead>
               <tr>
                 <th onClick={() => handleSort('name')}>
-                  <div className="header-content">
-                    {t('Onboarding.Name')}
-                    <SortIcon
-                      column="label"
-                      key={sortConfig.key}
-                      direction={sortConfig.direction}
-                    />
-                  </div>
+                  <div className="header-content">{t('Onboarding.Name')}</div>
                 </th>
                 {isTestAccount && (
                   <th onClick={() => handleSort('isSigned')}>
-                    <div className="header-content">
-                      {t('TableDocuments.Type')}
-                      <SortIcon
-                        column="type"
-                        key={sortConfig.key}
-                        direction={sortConfig.direction}
-                      />
-                    </div>
+                    <div className="header-content">{t('TableDocuments.Type')}</div>
                   </th>
                 )}
                 {isTestAccount && (
                   <th onClick={() => handleSort('isSigned')}>
-                    <div className="header-content">
-                      {t('TableDocuments.RequiresSignature')}
-                      <SortIcon
-                        column="requires signature"
-                        key={sortConfig.key}
-                        direction={sortConfig.direction}
-                      />
-                    </div>
+                    <div className="header-content">{t('TableDocuments.RequiresSignature')}</div>
                   </th>
                 )}
                 <th onClick={() => handleSort('status')}>
-                  <div className="header-content">
-                    {t('Onboarding.Status')}
-                    <SortIcon
-                      column="status"
-                      key={sortConfig.key}
-                      direction={sortConfig.direction}
-                    />
-                  </div>
+                  <div className="header-content">{t('Onboarding.Status')}</div>
                 </th>
               </tr>
             </thead>
@@ -179,7 +151,9 @@ export const TableDocuments = ({ onSave, listFiles }) => {
           className={submitted ? 'was-validated' : ''}
           noValidate
         >
-          <div className="select-form">{isMobile ? renderCards() : renderTable()}</div>
+          <div className="select-form">
+            {isMobile && isTestAccount ? renderCards() : renderTable()}
+          </div>
         </form>
       </div>
     </div>
