@@ -207,7 +207,7 @@ body.home-page::before {
 }
 
 .nav__logo {
-  height: 40px;
+  height: 36px;
   width: auto;
   display: block;
 }
@@ -599,8 +599,8 @@ body.home-page::before {
   width: 100%;
   margin-top: 30px;
   margin-bottom: 50px;
-  // margin-left: 0px;
   margin-left: 20px;
+  padding-right: 70px;
 }
 
 .step-wrapper {
@@ -608,10 +608,8 @@ body.home-page::before {
   flex-direction: column;
   align-items: center;
   flex: 1;
-  @media (max-width: 768px) {
-    &:last-child {
-      flex: 0;
-    }
+  &:last-child {
+    flex: 0;
   }
 }
 
@@ -776,7 +774,6 @@ body.home-page::before {
 
   .cards {
     padding-top: 4rem;
-    // grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
     margin-top: 3vw;
   }
 
@@ -1101,6 +1098,9 @@ body:not(.home-page) .footer {
     width: 100%;
     flex-wrap: wrap;
   }
+  .step-progress {
+    padding-right: 70px;
+  }
 
   .footer__cta,
   .footer__link {
@@ -1123,6 +1123,9 @@ body:not(.home-page) .footer {
     .main-content {
       padding-top: 40px;
     }
+  }
+  .nav__logo {
+    margin-left: 20px;
   }
   body.home-page::before {
     min-height: 20%;
@@ -1202,7 +1205,8 @@ body:not(.home-page) .footer {
     }
   }
   .step-progress {
-    width: 90%;
+    width: 100%;
+    padding-right: 40px;
   }
   .behind_scenes {
     margin-left: 48px;
@@ -1271,7 +1275,7 @@ body:not(.home-page) .footer {
   }
 
   .nav__logo {
-    height: 30px;
+    height: 24px;
     width: auto;
     display: block;
     margin-left: 20px;
@@ -1427,7 +1431,7 @@ body:not(.home-page) .footer {
   }
 
   .step-progress {
-    width: 90%;
+    width: 100%;
     margin-left: 18px;
   }
   .footer__title {

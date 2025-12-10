@@ -4,6 +4,7 @@ import { useTranslation } from 'react-i18next';
 import LoginModal from '../loginModal/LoginModal';
 import { ReactComponent as ChevronRightIcon } from '../assets/icons/chevron-right.svg';
 import { ReactComponent as CrossIcon } from '../assets/icons/cross.svg';
+import { ReactComponent as LogoIcon } from '../assets/icons/logo_40х40.svg';
 
 const resolveApiBase = () => {
   if (process.env.REACT_APP_API_BASE) {
@@ -89,7 +90,10 @@ export default function Layout() {
     }
   }, [accountStatus]);
 
-  const openLoginModal = () => setIsLoginOpen(true);
+  const openLoginModal = () => {
+    setIsNavOpen(false);
+    setIsLoginOpen(true);
+  };
   const closeLoginModal = () => setIsLoginOpen(false);
 
   const logout = async () => {
@@ -117,11 +121,7 @@ export default function Layout() {
         <div className="nav">
           <div className="nav__brand">
             <Link to="/">
-              <img
-                className="nav__logo"
-                src="/signsphere-logo.png"
-                alt={t('Layout.SignsphereAlt')}
-              />
+              <LogoIcon className="nav__logo" />
             </Link>
           </div>
           <button className="nav__toggle" type="button" onClick={() => setIsNavOpen(!isNavOpen)}>
