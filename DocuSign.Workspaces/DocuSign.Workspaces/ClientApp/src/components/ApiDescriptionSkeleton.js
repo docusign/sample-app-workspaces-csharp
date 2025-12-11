@@ -1,4 +1,3 @@
-import React from 'react';
 import './ApiDescriptionSkeleton.scss';
 
 export const ApiDescriptionSkeleton = ({ isBig }) => {

@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import { ReactComponent as CheckIcon } from '../assets/icons/check.svg';
 
 const StepProgress = ({ steps, currentStep }) => {

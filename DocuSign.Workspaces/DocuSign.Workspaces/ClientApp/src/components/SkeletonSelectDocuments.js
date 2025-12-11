@@ -1,4 +1,3 @@
-import React from 'react';
 import './SkeletonSelectDocuments.scss';
 
 const AgreementRowSkeleton = () => (

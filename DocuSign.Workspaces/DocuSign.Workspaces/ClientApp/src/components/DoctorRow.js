@@ -1,5 +1,3 @@
-import React from 'react';
-
 export const DoctorRow = ({ label, checked, onToggle }) => {
   return (
     <div className="doctor-row">

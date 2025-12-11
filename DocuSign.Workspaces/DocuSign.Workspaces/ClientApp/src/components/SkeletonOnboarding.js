@@ -1,4 +1,3 @@
-import React from 'react';
 import './SkeletonOnboarding.scss';
 
 export const SkeletonOnboarding = ({ rowCount = 5 }) => {

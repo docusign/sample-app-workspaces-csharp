@@ -1,4 +1,4 @@
-import React from 'react';
+import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import parse from 'html-react-parser';
 import { Collapse } from 'react-bootstrap';
@@ -9,7 +9,7 @@ import './ApiDescription.scss';
 
 export const ApiDescription = ({ requesting }) => {
   const { t } = useTranslation();
-  const [open, setOpen] = React.useState(true);
+  const [open, setOpen] = useState(true);
 
   if (requesting) {
     return <ApiDescriptionSkeleton isBig={open} />;

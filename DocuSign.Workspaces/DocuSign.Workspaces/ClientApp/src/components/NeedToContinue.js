@@ -1,7 +1,6 @@
-import React from 'react';
 import { useTranslation } from 'react-i18next';
 
-const NeedToContinue = ({ label, checked, onToggle, onPreview }) => {
+const NeedToContinue = () => {
   const { t } = useTranslation();
   return (
     <div className="need_to-row">
@@ -15,7 +14,7 @@ const NeedToContinue = ({ label, checked, onToggle, onPreview }) => {
           target="_blank"
           rel="noreferrer"
         >
-          {t('NeedToContinue.Link')}{' '}
+          {t('NeedToContinue.Link')}
         </a>
       </div>
     </div>

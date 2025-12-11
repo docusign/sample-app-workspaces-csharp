@@ -1,17 +1,9 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import PropTypes from 'prop-types';
 import { useTranslation } from 'react-i18next';
 import NeedToContinue from '../components/NeedToContinue';
 
-export const Onboarding = ({
-  request,
-  onSave,
-  filesList,
-  onChange,
-  requesting = false,
-  errors = {},
-  onPrevious,
-}) => {
+export const Onboarding = ({ onSave, filesList }) => {
   const { t } = useTranslation();
   const [submitted, setSubmitted] = useState(false);
   const [listToSign, setListToSign] = useState(filesList);
