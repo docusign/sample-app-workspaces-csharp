@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import { useTranslation } from 'react-i18next';
 import { useOutletContext } from 'react-router-dom';
-import { SortIcon } from '../components/SortIcon';
+import NeedToContinue from '../components/NeedToContinue';
 import './TableDocuments.scss';
 
 export const TableDocuments = ({ onSave, listFiles }) => {
@@ -155,6 +155,7 @@ export const TableDocuments = ({ onSave, listFiles }) => {
             {isMobile && isTestAccount ? renderCards() : renderTable()}
           </div>
         </form>
+        <NeedToContinue />
       </div>
     </div>
   );

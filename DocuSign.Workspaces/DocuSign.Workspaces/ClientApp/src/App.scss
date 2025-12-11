@@ -237,6 +237,36 @@ body.home-page::before {
 .nav__link:hover {
   color: #e0e0f2;
 }
+.need_to-row {
+  margin-top: 32px;
+  display: flex;
+  flex-direction: row;
+}
+.need_to-row__label {
+  color: #141414;
+  font-weight: 600;
+  font-family: 'Inter', sans-serif;
+  font-size: 14px;
+  line-height: 150%;
+  margin-top: 0px;
+}
+.need_to__link {
+  background: transparent;
+  color: #4e2ca0;
+  line-height: 150%;
+  font-weight: 600;
+  font-family: 'Inter', sans-serif;
+  font-size: 14px;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  transition: all 0.1s ease 0s;
+  margin-left: 16px;
+}
+.need_to__link:hover {
+  color: #4909de;
+}
 
 .nav__actions {
   padding-right: 2rem;
@@ -1481,6 +1511,19 @@ body:not(.home-page) .footer {
   .behind_scenes {
     margin-left: 0px;
     margin-right: 0px;
+  }
+  .need_to-row {
+    flex-direction: column;
+    margin-top: 24px;
+  }
+  .need_to-row__label {
+    font-size: 12px;
+  }
+  .need_to__link {
+    font-size: 12px;
+
+    margin-left: 0px;
+    margin-top: 8px;
   }
 }
 

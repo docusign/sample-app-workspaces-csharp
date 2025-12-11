@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import PropTypes from 'prop-types';
 import { useTranslation } from 'react-i18next';
-import { SortIcon } from '../components/SortIcon';
+import NeedToContinue from '../components/NeedToContinue';
 
 export const Onboarding = ({
   request,
@@ -80,6 +80,7 @@ export const Onboarding = ({
             </div>
           </div>
         </form>
+        <NeedToContinue />
       </div>
     </div>
   );
