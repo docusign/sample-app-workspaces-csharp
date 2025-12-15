@@ -48,7 +48,7 @@ The Workspaces Sample App demonstrates the following:
 - Press "GENERATE RSA" and save the generated key pairs (it will be used later in "Settings configuration" section to configure "private.key")
 - Installed and configured [Node.js](https://nodejs.org/en/download)
 - Installed and configured [Docker](https://www.docker.com/)
-- Installed and configured [.Net 7.0](https://dotnet.microsoft.com/en-us/download/dotnet/7.0)
+- Installed and configured [.Net 8.0](https://dotnet.microsoft.com/en-us/download/dotnet/8.0)
 
 ### Settings configuration
 
@@ -90,4 +90,4 @@ Create a copy of the file appsettings-example.json, save the copy as appsettings
    ```
    dotnet run --project .\DocuSign.MyWorkspaces\DocuSign.MyWorkspaces.csproj --configuration Debug
    ```
-1. Open a browser to [localhost:5000](http://localhost:5000) (if the page is not openned automatically).
+1. Open a browser to [localhost:5001](https://localhost:5001) (if the page is not openned automatically).
