@@ -143,7 +143,7 @@
     "Description": "Learn more about authentication options with Docusign",
     "LoginWithDevAccount": "Log in with your Docusign developer account",
     "ContinueWithTestAccount": "Continue with a test account",
-    "GetFreeAccount": "If you don't have a Docusign developer account, you can get one for free!",
+    "GetFreeAccount": "If you don't have a Docusign developer account, you can <a href=\"https://www.docusign.com/developers/sandbox/\" target=\"_blank\" rel=\"noreferrer noopener\">get one</a> for free!",
     "LoggingIn": "Logging in...",
     "Error": {
       "UnableToLoadAccountStatus": "Unable to load account status.",

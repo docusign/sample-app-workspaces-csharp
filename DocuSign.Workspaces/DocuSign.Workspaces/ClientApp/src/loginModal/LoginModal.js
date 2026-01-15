@@ -1,5 +1,6 @@
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { useTranslation } from 'react-i18next';
+import parse from 'html-react-parser';
 import './LoginModal.scss';
 
 function LoginModal({
@@ -275,7 +276,7 @@ function LoginModal({
     }
 
     if (!consentGranted) {
-      await requestConsent('Admin');
+      await requestConsent('Individual');
       return;
     }
 
@@ -381,7 +382,7 @@ function LoginModal({
               </div>
             </label>
           </div>
-          <p className="auth-modal__note">{t('LoginModal.GetFreeAccount')}</p>
+          <p className="auth-modal__note">{parse(t('LoginModal.GetFreeAccount'))}</p>
         </div>
         <div className="auth-modal__actions">
           <button className="secondary-btn" type="button" onClick={onClose}>

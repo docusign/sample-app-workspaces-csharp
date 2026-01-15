@@ -38,7 +38,8 @@ public class WealthManagementClient(
 
             var envelopeModel = await UpdateEachEnvelopWithDocument(
                 envelopeId: envelopeId,
-                document: document);
+                document: document,
+                model: createModel);
 
             envelopes.Add(envelopeModel);
         }
@@ -90,7 +91,7 @@ public class WealthManagementClient(
         return envelopeResponse.EnvelopeId;
     }
 
-    private async Task<EnvelopeModel> UpdateEachEnvelopWithDocument(string envelopeId, Document document)
+    private async Task<EnvelopeModel> UpdateEachEnvelopWithDocument(string envelopeId, Document document, WorkspaceAddDocumentsModel model)
     {
         var accountsApi = new AccountsApi(docuSignApiProvider.ApiClient);
         var response = await accountsApi.GetAccountIdentityVerificationAsync(accountRepository.AccountId);
@@ -155,22 +156,39 @@ public class WealthManagementClient(
             ],
         };
 
-        var signer1 = new Signer
-        {
-            Name = "signerName",
-            Email = "signerEmail@mail.com",
-            RoutingOrder = "1",
-            Status = "Created",
-            DeliveryMethod = "Email",
-            RecipientId = "1",
-            Tabs = signer1Tabs,
-            IdentityVerification = recipientIdentityVerification,
-        };
-
         var recipients = new Recipients
         {
-            Signers = [signer1]
+            Signers =
+            [
+                new Signer
+                {
+                    Name = model.PrimaryOwnerFirstName + " " + model.PrimaryOwnerLastName,
+                    Email = model.PrimaryOwnerEmail,
+                    RoutingOrder = "1",
+                    Status = "Created",
+                    DeliveryMethod = "Email",
+                    RecipientId = "1",
+                    Tabs = signer1Tabs,
+                    IdentityVerification = recipientIdentityVerification,
+                }
+            ]
         };
+
+        if (!string.IsNullOrEmpty(model.SecondaryOwnerEmail))
+        {
+           recipients.Signers.Add(new Signer
+            {
+                Name = model.PrimaryOwnerFirstName + " " + model.PrimaryOwnerLastName,
+                Email = model.PrimaryOwnerEmail,
+                RoutingOrder = "1",
+                Status = "Created",
+                DeliveryMethod = "Email",
+                RecipientId = "2",
+                Tabs = signer1Tabs,
+                IdentityVerification = recipientIdentityVerification,
+            });
+        }
+
         env.Recipients = recipients;
 
         await docuSignApiProvider.EnvelopApi.UpdateDocumentsAsync(accountRepository.AccountId, envelopeId, env);
