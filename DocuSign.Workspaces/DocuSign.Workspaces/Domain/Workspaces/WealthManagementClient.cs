@@ -122,7 +122,8 @@ public class WealthManagementClient(
         };
 
         env.Documents = [doc1];
-        var signHere1 = new SignHere
+
+         var signHere1 = new SignHere
         {
             AnchorString = "/sn1/",
             AnchorUnits = "pixels",
@@ -190,8 +191,15 @@ public class WealthManagementClient(
         }
 
         env.Recipients = recipients;
-
         await docuSignApiProvider.EnvelopApi.UpdateDocumentsAsync(accountRepository.AccountId, envelopeId, env);
+
+        var envelope = new Envelope
+        {
+            Recipients = recipients,
+            Status = "Sent"
+        };
+
+        await docuSignApiProvider.EnvelopApi.UpdateAsync(accountRepository.AccountId, envelopeId, envelope);
 
         return new EnvelopeModel(document.Name, env.Status);
     }

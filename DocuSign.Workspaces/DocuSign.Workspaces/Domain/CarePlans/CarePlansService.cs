@@ -119,7 +119,7 @@ public class CarePlansService(IDocuSignApiProvider docuSignApiProvider, IAppConf
                 var signer1 = new Signer
                 {
                     Name = model.Physician.Name,
-                    Email = accountRepository.Email,
+                    Email = model.Email,
                     RecipientId = "1",
                     Status = sentStatus,
                     Tabs = signer1Tabs
