@@ -49,11 +49,11 @@ jobs:
             --name ${{ env.AZURE_WEBAPP_NAME }} \
             --resource-group ${{ secrets.AZURE_RESOURCE_GROUP }} \
             --settings \
-              "DocuSign__IntegrationKey=${{ secrets.DOCUSIGN_INTEGRATION_KEY }}" \
-              "DocuSign__SecretKey=${{ secrets.DOCUSIGN_SECRET_KEY }}" \
-              "DocuSign__SecretKeyProd=${{ secrets.DOCUSIGN_SECRET_KEY_PROD }}" \
-              "DocuSign__RedirectBaseUrl=${{ secrets.DOCUSIGN_REDIRECT_BASE_URL }}" \
-              "DocuSign__EventNotificationBaseUrl=${{ secrets.DOCUSIGN_EVENT_NOTIFICATION_BASE_URL }}" \
+              "DocuSign__IntegrationKey=${{ secrets.DOCUSIGN_INTEGRATIONKEY }}" \
+              "DocuSign__SecretKey=${{ secrets.DOCUSIGN_SECRETKEY }}" \
+              "DocuSign__SecretKeyProd=${{ secrets.DOCUSIGN_SECRETKEYPROD }}" \
+              "DocuSign__RedirectBaseUrl=${{ secrets.DOCUSIGN_REDIRECTBASEURL }}" \
+              "DocuSign__EventNotificationBaseUrl=${{ secrets.DOCUSIGN_EVENTNOTIFICATIONBASEURL }}" \
               "DocuSign__TestAccountConnectionSettings__UserId=${{ secrets.DOCUSIGN_TESTACCOUNTCONNECTIONSETTINGS_USERID }}" \
               "DocuSign__TestAccountConnectionSettings__AccountId=${{ secrets.DOCUSIGN_TESTACCOUNTCONNECTIONSETTINGS_ACCOUNTID }}" \
               "CustomerProfile__Login=${{ secrets.CUSTOMERPROFILE_LOGIN }}" \
