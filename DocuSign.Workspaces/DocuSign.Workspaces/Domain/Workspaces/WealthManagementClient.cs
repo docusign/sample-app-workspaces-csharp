@@ -138,23 +138,7 @@ public class WealthManagementClient(
 
         var recipientIdentityVerification = new RecipientIdentityVerification
         {
-            WorkflowId = workflowId,
-            InputOptions =
-            [
-                new RecipientIdentityInputOption
-                {
-                    Name = "phone_number_list",
-                    ValueType = "PhoneNumberList",
-                    PhoneNumberList =
-                    [
-                        new RecipientIdentityPhoneNumber
-                        {
-                            Number = "1115552222",
-                            CountryCode = "+1",
-                        }
-                    ],
-                }
-            ],
+            WorkflowId = workflowId
         };
 
         var recipients = new Recipients

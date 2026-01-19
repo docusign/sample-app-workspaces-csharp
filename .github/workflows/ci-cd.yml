@@ -43,6 +43,25 @@ jobs:
           push: true
           tags: ${{ secrets.ACR_LOGIN_SERVER }}/${{ env.IMAGE_NAME }}:${{ env.TAG }}
 
+      - name: Configure app settings
+        run: |
+          az webapp config appsettings set \
+            --name ${{ env.AZURE_WEBAPP_NAME }} \
+            --resource-group ${{ secrets.AZURE_RESOURCE_GROUP }} \
+            --settings \
+              "DocuSign__IntegrationKey=${{ secrets.DOCUSIGN_INTEGRATION_KEY }}" \
+              "DocuSign__SecretKey=${{ secrets.DOCUSIGN_SECRET_KEY }}" \
+              "DocuSign__SecretKeyProd=${{ secrets.DOCUSIGN_SECRET_KEY_PROD }}" \
+              "DocuSign__RedirectBaseUrl=${{ secrets.DOCUSIGN_REDIRECT_BASE_URL }}" \
+              "DocuSign__EventNotificationBaseUrl=${{ secrets.DOCUSIGN_EVENT_NOTIFICATION_BASE_URL }}" \
+              "DocuSign__TestAccountConnectionSettings__UserId=${{ secrets.DOCUSIGN_USER_ID }}" \
+              "DocuSign__TestAccountConnectionSettings__AccountId=${{ secrets.DOCUSIGN_ACCOUNT_ID }}" \
+              "CustomerProfile__Login=${{ secrets.CUSTOMERPROFILE_LOGIN }}" \
+              "CustomerProfile__Password=${{ secrets.CUSTOMERPROFILE_PASSWORD }}" \
+              "DocuSign__RSAPrivateKeyFile=/app/private.key" \
+              "DOCUSIGN_PRIVATE_KEY_BASE64=${{ secrets.DOCUSIGN_PRIVATE_KEY_BASE64 }}" \
+              "DOCUSIGN_PRIVATE_KEY=${{ secrets.DOCUSIGN_PRIVATE_KEY }}"
+
       - name: Restart Azure Web App
         run: |
           az webapp restart --name ${{ env.AZURE_WEBAPP_NAME }} --resource-group ${{ secrets.AZURE_RESOURCE_GROUP }}

@@ -65,7 +65,7 @@ namespace DocuSign.Workspaces.Domain.Common.Services
                     authServer,
                     File.ReadAllBytes(_appConfiguration.DocuSign.RSAPrivateKeyFile),
                     _appConfiguration.DocuSign.JWTLifeTime,
-                    new List<string> { "impersonation", "signature" });
+                    new List<string> { "signature" });
             }
             catch (ApiException ex)
             {
@@ -138,8 +138,8 @@ namespace DocuSign.Workspaces.Domain.Common.Services
         public string CreateAdminConsentUrl(string baseUrl, string redirectUrl)
         {
             var integrationKey = _appConfiguration.DocuSign.IntegrationKey;
-            var scope = "openid signature impersonation";
-            var adminConsentScope = "signature impersonation";
+            var scope = "openid signature";
+            var adminConsentScope = "signature";
 
             var fullRedirectUrl = $"{_appConfiguration.DocuSign.RedirectBaseUrl}/{redirectUrl}";
 
@@ -150,7 +150,8 @@ namespace DocuSign.Workspaces.Domain.Common.Services
         public string CreateUserConsentUrl(string baseUrl, string redirectUrl)
         {
             var integrationKey = _appConfiguration.DocuSign.IntegrationKey;
-            var scope = "signature impersonation";
+            var scope = "signature dtr.company.read dtr.rooms.read dtr.rooms.write dtr.documents.write";
+            //var scope = "signature impersonation";
             var fullRedirectUrl = $"{_appConfiguration.DocuSign.RedirectBaseUrl}/{redirectUrl}";
 
             var builder = new UriBuilder($"{baseUrl}/oauth/auth?response_type=code&scope={scope}&client_id={integrationKey}&redirect_uri={fullRedirectUrl}");

@@ -28,4 +28,6 @@ BASH
 FROM base AS final
 WORKDIR /app
 COPY --from=build /app/publish .
-ENTRYPOINT ["dotnet", "DocuSign.Workspaces.dll"]
+COPY DocuSign.Workspaces/DocuSign.Workspaces/entrypoint.sh /app/entrypoint.sh
+RUN chmod +x /app/entrypoint.sh
+ENTRYPOINT ["/app/entrypoint.sh"]
