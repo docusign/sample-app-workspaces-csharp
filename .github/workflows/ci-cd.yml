@@ -54,8 +54,8 @@ jobs:
               "DocuSign__SecretKeyProd=${{ secrets.DOCUSIGN_SECRET_KEY_PROD }}" \
               "DocuSign__RedirectBaseUrl=${{ secrets.DOCUSIGN_REDIRECT_BASE_URL }}" \
               "DocuSign__EventNotificationBaseUrl=${{ secrets.DOCUSIGN_EVENT_NOTIFICATION_BASE_URL }}" \
-              "DocuSign__TestAccountConnectionSettings__UserId=${{ secrets.DOCUSIGN_USER_ID }}" \
-              "DocuSign__TestAccountConnectionSettings__AccountId=${{ secrets.DOCUSIGN_ACCOUNT_ID }}" \
+              "DocuSign__TestAccountConnectionSettings__UserId=${{ secrets.DOCUSIGN_TESTACCOUNTCONNECTIONSETTINGS_USERID }}" \
+              "DocuSign__TestAccountConnectionSettings__AccountId=${{ secrets.DOCUSIGN_TESTACCOUNTCONNECTIONSETTINGS_ACCOUNTID }}" \
               "CustomerProfile__Login=${{ secrets.CUSTOMERPROFILE_LOGIN }}" \
               "CustomerProfile__Password=${{ secrets.CUSTOMERPROFILE_PASSWORD }}" \
               "DocuSign__RSAPrivateKeyFile=/app/private.key" \
