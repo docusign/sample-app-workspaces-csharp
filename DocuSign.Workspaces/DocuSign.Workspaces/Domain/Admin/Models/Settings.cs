@@ -16,6 +16,7 @@ namespace DocuSign.Workspaces.Domain.Admin.Models
 
         public AuthenticationType AuthenticationType { get; set; }
         public string BasePath { get; set; }
+        public string AuthCode { get; set; }
         public string BaseUri { get; set; }
         public string AccountId { get; set; }
         public string UserId { get; set; }

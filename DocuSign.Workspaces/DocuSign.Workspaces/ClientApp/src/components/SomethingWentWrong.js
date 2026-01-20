@@ -1,7 +1,7 @@
 import { useTranslation } from 'react-i18next';
 import { ReactComponent as ShieldIcon } from '../assets/icons/shield-cross.svg';
 
-export const SomethingWentWrong = ({ tryAgain }) => {
+export const SomethingWentWrong = ({ tryAgain, message }) => {
   const { t } = useTranslation();
 
   return (
@@ -10,13 +10,16 @@ export const SomethingWentWrong = ({ tryAgain }) => {
         <div className="warning-text">
           <ShieldIcon className="shield-icon" />
           <span className="warning-text_margin">
-            {t('SomethingWent')}
-            <span
-              style={{ color: 'inherit', textDecoration: 'underline', cursor: 'pointer' }}
-              onClick={tryAgain}
-            >
-              {t('TryAgain')}
+            <span className="warning-text-line">
+              {t('SomethingWent')}
+              <span
+                style={{ color: 'inherit', textDecoration: 'underline', cursor: 'pointer' }}
+                onClick={tryAgain}
+              >
+                {t('TryAgain')}
+              </span>
             </span>
+            {message ? <span className="warning-text-detail">{message}</span> : null}
           </span>
         </div>
       </div>

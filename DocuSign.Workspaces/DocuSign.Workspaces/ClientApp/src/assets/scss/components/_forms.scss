@@ -215,6 +215,20 @@ input[type='radio'] {
 }
 .warning-text_margin {
   margin-left: 24px;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+.warning-text-line {
+  display: inline-flex;
+  gap: 6px;
+  flex-wrap: wrap;
+}
+.warning-text-detail {
+  font-family: 'Inter', sans-serif;
+  font-size: 14px;
+  font-weight: 400;
+  color: #13131b;
 }
 .shield-icon {
   width: 32px;

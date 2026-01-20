@@ -48,8 +48,8 @@ namespace DocuSign.Workspaces.Controllers.Admin
 
             return model.ConsentType switch
             {
-                ConsentType.Admin => Ok(new ResponseAccountAuthorizeModel(_authenticationService.CreateAdminConsentUrl(model.BasePath, $"api/consentcallback"))),
-                ConsentType.Individual => Ok(new ResponseAccountAuthorizeModel(_authenticationService.CreateUserConsentUrl(model.BasePath, $"api/consentcallback"))),
+                ConsentType.Admin => Ok(new ResponseAccountAuthorizeModel(_authenticationService.CreateAdminConsentUrl(model.BasePath, "api/consentcallback"))),
+                ConsentType.Individual => Ok(new ResponseAccountAuthorizeModel(_authenticationService.CreateUserConsentUrl(model.BasePath, "api/consentcallback"))),
                 _ => BadRequest("Unknown consent type")
             };
         }
@@ -71,17 +71,19 @@ namespace DocuSign.Workspaces.Controllers.Admin
             var settings = _settingsRepository.Get();
             settings.IsConsentGranted = true;
             settings.UserId = _authenticationService.PrePopulateUserId(settings.BasePath, code);
+            settings.AuthCode = code;
             _settingsRepository.Save(settings);
             return LocalRedirect("/");
         }
 
         [HttpGet]
         [Route("/api/accounts")]
-        public IActionResult GetAccounts(string basePath, string userId)
+        public async Task<IActionResult> GetAccounts(string basePath, string userId)
         {
             try
             {
-                var result = _authenticationService.GetAccounts(basePath, userId);
+                var result = await _authenticationService.GetAccountsAsync(
+                    basePath, userId);
                 return Ok(result);
             }
             catch (ApplicationApiException ex)
@@ -97,8 +99,7 @@ namespace DocuSign.Workspaces.Controllers.Admin
             var connectionSettings = CreateConnectionSettings(model);
             try
             {
-                var principal =
-                    _authenticationService.AuthenticateFromJwt(connectionSettings);
+                var principal = await _authenticationService.AuthenticateFromJwtAsync(connectionSettings);
 
                 await HttpContext.SignInAsync(
                     CookieAuthenticationDefaults.AuthenticationScheme,
@@ -110,7 +111,6 @@ namespace DocuSign.Workspaces.Controllers.Admin
                 settings.UserId = model.UserId;
                 settings.AccountId = model.AccountId;
                 settings.BaseUri = model.BaseUri;
-                settings.TemplatesDataSource = GetTemplatesDataSource(connectionSettings.AccountId);
                 settings.Template = TemplateNames.DefaultTemplateId;
                 settings.SignatureTypesDataSource = GetSignatureTypesDataSource(connectionSettings.AccountId);
                 settings.SignatureType = SignatureInfo.DefaultProviderName;
@@ -256,21 +256,6 @@ namespace DocuSign.Workspaces.Controllers.Admin
             };
 
             result.AddRange(signatureProviders.SignatureProviders.Select(p => new DataSourceItem(p.SignatureProviderName, p.SignatureProviderDisplayName)));
-            return result;
-        }
-
-        private IEnumerable<DataSourceItem> GetTemplatesDataSource(string accountId)
-        {
-            var userTemplates = _docuSignApiProvider.TemplatesApi.ListTemplates(accountId);
-            var result = new List<DataSourceItem>
-            {
-                new()
-                {
-                    Key = TemplateNames.DefaultTemplateId,
-                    Value = TemplateNames.DefaultTemplateName
-                }
-            };
-            result.AddRange(userTemplates.EnvelopeTemplates.Select(t => new DataSourceItem(t.TemplateId, t.Name)));
             return result;
         }
     }

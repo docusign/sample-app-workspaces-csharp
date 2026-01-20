@@ -112,13 +112,14 @@ export const UseCaseTwoPage = () => {
         body: JSON.stringify(payload),
       });
       if (!res.ok) {
-        throw new Error(`${t('Common.ServerError')}${res.status}`);
+        const message = await res.text();
+        throw new Error(message || `${t('Common.ServerError')}${res.status}`);
       }
 
       const data = await res.json();
       setListFiles(data);
     } catch (error) {
-      setErrorOnboarding(t('Common.Error'));
+      setErrorOnboarding(error.message || t('Common.Error'));
     } finally {
       setRequesting(false);
     }
@@ -177,6 +178,7 @@ export const UseCaseTwoPage = () => {
         {currentStep === 1 &&
           (errorOnboarding ? (
             <SomethingWentWrong
+              message={errorOnboarding}
               tryAgain={() => {
                 setCurrentStep(0);
                 scrollToTop();

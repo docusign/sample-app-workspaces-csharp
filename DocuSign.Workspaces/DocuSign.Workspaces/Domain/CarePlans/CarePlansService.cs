@@ -78,7 +78,15 @@ public class CarePlansService(IDocuSignApiProvider docuSignApiProvider, IAppConf
             FirstName = model.Physician.Name,
             LastName = ""
         };
-        await docuSignApiProvider.WorkspaceUsers.AddWorkspaceUserAsync(accountRepository.AccountId, model.Physician.WorkspaceId, userForCreate);
+        try
+        {
+            await docuSignApiProvider.WorkspaceUsers.AddWorkspaceUserAsync(accountRepository.AccountId, model.Physician.WorkspaceId, userForCreate);
+        }
+        catch (Exception e)
+        {
+            Console.WriteLine(e);
+            throw;
+        }
 
         foreach (var document in model.Documents)
         {
