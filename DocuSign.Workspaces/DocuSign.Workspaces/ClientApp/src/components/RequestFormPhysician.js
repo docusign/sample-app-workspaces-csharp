@@ -16,15 +16,6 @@ import { ReactComponent as DocType } from '../assets/icons/doc.svg';
 
 const listFiles = [
   {
-    id: 211,
-    isForSignature: true,
-    type: 'pdf',
-    name: 'Patient Lab Report.pdf',
-    path: '/Patient Lab Report.pdf',
-    isNeedSign: true,
-    status: 'success',
-  },
-  {
     id: 212,
     isForSignature: true,
     type: 'pdf',
@@ -35,10 +26,19 @@ const listFiles = [
   },
   {
     id: 213,
-    isForSignature: false,
+    isForSignature: true,
     type: 'pdf',
     name: 'Specialized Home Care Plan.pdf',
     path: '/Specialized Home Care Plan.pdf',
+    isNeedSign: true,
+    status: 'success',
+  },
+  {
+    id: 211,
+    isForSignature: false,
+    type: 'pdf',
+    name: 'Patient Lab Report.pdf',
+    path: '/Patient Lab Report.pdf',
     isNeedSign: false,
     status: 'success',
   },

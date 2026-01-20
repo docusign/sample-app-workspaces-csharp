@@ -42,6 +42,7 @@ public class CarePlansService(IDocuSignApiProvider docuSignApiProvider, IAppConf
                     Name = physician + " Workspace"
                 };
                 var workspace = await docuSignApiProvider.Workspace2.CreateWorkspaceAsync(accountRepository.AccountId, workspaceBody);
+
                 physiciansWorkspaces.Add(new PhysicianModel
                 {
                     Name = physician,
@@ -70,6 +71,15 @@ public class CarePlansService(IDocuSignApiProvider docuSignApiProvider, IAppConf
     {
         const string sentStatus = "sent";
         var documents = new List<CareDocumentsModel>();
+
+        var userForCreate = new WorkspaceUserForCreate
+        {
+            Email = model.Email,
+            FirstName = model.Physician.Name,
+            LastName = ""
+        };
+        await docuSignApiProvider.WorkspaceUsers.AddWorkspaceUserAsync(accountRepository.AccountId, model.Physician.WorkspaceId, userForCreate);
+
         foreach (var document in model.Documents)
         {
             if (document.IsForSignature)
@@ -150,14 +160,6 @@ public class CarePlansService(IDocuSignApiProvider docuSignApiProvider, IAppConf
                     }
                 };
                 await docuSignApiProvider.WorkspaceDocuments.AddWorkspaceDocumentAsync(accountRepository.AccountId, model.Physician.WorkspaceId, documentRequest);
-
-                var userForCreate = new WorkspaceUserForCreate
-                {
-                    Email = model.Email,
-                    FirstName = model.Physician.Name,
-                    LastName = ""
-                };
-                await docuSignApiProvider.WorkspaceUsers.AddWorkspaceUserAsync(accountRepository.AccountId, model.Physician.WorkspaceId, userForCreate);
 
                 documents.Add(new CareDocumentsModel(document.Name, document.IsForSignature, string.Empty));
             }
