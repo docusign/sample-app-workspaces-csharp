@@ -1,5 +1,4 @@
-﻿using DocuSign.Workspaces.Controllers.Common.Models;
-using DocuSign.Workspaces.Domain.Admin.Models;
+﻿using DocuSign.Workspaces.Domain.Admin.Models;
 using DocuSign.Workspaces.Domain.Admin.Services.Interfaces;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.Cookies;
@@ -16,40 +15,26 @@ using IAuthenticationService = DocuSign.Workspaces.Domain.Admin.Services.Interfa
 
 namespace DocuSign.Workspaces.Controllers.Admin
 {
-    public class AdminController : Controller
+    public class AdminController(
+        IAuthenticationService authenticationService,
+        ISettingsRepository settingsRepository,
+        IAccountRepository accountRepository,
+        IDocuSignApiProvider docuSignApiProvider,
+        ITestAccountConnectionSettingsRepository testAccountConnectionSettingsRepository)
+        : Controller
     {
-        private readonly IAuthenticationService _authenticationService;
-        private readonly ISettingsRepository _settingsRepository;
-        private readonly IAccountRepository _accountRepository;
-        private readonly IDocuSignApiProvider _docuSignApiProvider;
-        private readonly ITestAccountConnectionSettingsRepository _testAccountConnectionSettingsRepository;
-
-        public AdminController(
-            IAuthenticationService authenticationService,
-            ISettingsRepository settingsRepository,
-            IAccountRepository accountRepository,
-            IDocuSignApiProvider docuSignApiProvider,
-            ITestAccountConnectionSettingsRepository testAccountConnectionSettingsRepository)
-        {
-            _authenticationService = authenticationService;
-            _settingsRepository = settingsRepository;
-            _docuSignApiProvider = docuSignApiProvider;
-            _accountRepository = accountRepository;
-            _testAccountConnectionSettingsRepository = testAccountConnectionSettingsRepository;
-        }
 
         [HttpPost]
         [Route("/api/account/consent/obtain")]
         public IActionResult ObtainConsent([FromBody] RequestAccountAuthorizeModel model)
         {
-            var settings = _settingsRepository.Get();
+            var settings = settingsRepository.Get();
             settings.BasePath = model.BasePath;
-            _settingsRepository.Save(settings);
+            settingsRepository.Save(settings);
 
             return model.ConsentType switch
             {
-                ConsentType.Admin => Ok(new ResponseAccountAuthorizeModel(_authenticationService.CreateAdminConsentUrl(model.BasePath, "api/consentcallback"))),
-                ConsentType.Individual => Ok(new ResponseAccountAuthorizeModel(_authenticationService.CreateUserConsentUrl(model.BasePath, "api/consentcallback"))),
+                ConsentType.Individual => Ok(new ResponseAccountAuthorizeModel(authenticationService.CreateUserConsentUrl(model.BasePath, "api/consentcallback"))),
                 _ => BadRequest("Unknown consent type")
             };
         }
@@ -58,9 +43,9 @@ namespace DocuSign.Workspaces.Controllers.Admin
         [Route("/api/account/consent/remove")]
         public IActionResult RemoveConsent()
         {
-            var settings = _settingsRepository.Get();
+            var settings = settingsRepository.Get();
             settings.IsConsentGranted = false;
-            _settingsRepository.Save(settings);
+            settingsRepository.Save(settings);
             return NoContent();
         }
 
@@ -68,11 +53,11 @@ namespace DocuSign.Workspaces.Controllers.Admin
         [Route("/api/consentcallback")]
         public IActionResult ConsentCallback(string code)
         {
-            var settings = _settingsRepository.Get();
+            var settings = settingsRepository.Get();
             settings.IsConsentGranted = true;
-            settings.UserId = _authenticationService.PrePopulateUserId(settings.BasePath, code);
+            settings.UserId = authenticationService.PrePopulateUserId(settings.BasePath, code);
             settings.AuthCode = code;
-            _settingsRepository.Save(settings);
+            settingsRepository.Save(settings);
             return LocalRedirect("/");
         }
 
@@ -82,7 +67,7 @@ namespace DocuSign.Workspaces.Controllers.Admin
         {
             try
             {
-                var result = await _authenticationService.GetAccountsAsync(
+                var result = await authenticationService.GetAccountsAsync(
                     basePath, userId);
                 return Ok(result);
             }
@@ -99,14 +84,14 @@ namespace DocuSign.Workspaces.Controllers.Admin
             var connectionSettings = CreateConnectionSettings(model);
             try
             {
-                var principal = await _authenticationService.AuthenticateFromJwtAsync(connectionSettings);
+                var principal = await authenticationService.AuthenticateFromJwtAsync(connectionSettings);
 
                 await HttpContext.SignInAsync(
                     CookieAuthenticationDefaults.AuthenticationScheme,
                     principal);
                 HttpContext.User = principal;
 
-                var settings = _settingsRepository.Get();
+                var settings = settingsRepository.Get();
                 settings.AuthenticationType = model.AuthenticationType;
                 settings.UserId = model.UserId;
                 settings.AccountId = model.AccountId;
@@ -114,11 +99,12 @@ namespace DocuSign.Workspaces.Controllers.Admin
                 settings.Template = TemplateNames.DefaultTemplateId;
                 settings.SignatureTypesDataSource = GetSignatureTypesDataSource(connectionSettings.AccountId);
                 settings.SignatureType = SignatureInfo.DefaultProviderName;
-                _settingsRepository.Save(settings);
+                settingsRepository.Save(settings);
             }
-            catch (ApplicationApiException ex)
+            catch (ApplicationApiException)
             {
-                return BadRequest(CreateErrorDetails(ex.Details, model));
+                var consentUrl = authenticationService.CreateTestAccountConsentUrl(connectionSettings.BasePath, "");
+                Redirect(consentUrl);
             }
 
             return NoContent();
@@ -133,10 +119,10 @@ namespace DocuSign.Workspaces.Controllers.Admin
                 ConnectedUser = new ConnectedUserModel
                 {
                     Name = HttpContext.User.Identity?.Name ?? string.Empty,
-                    Email = _accountRepository.Email,
-                    AccountName = _accountRepository.AccountName
+                    Email = accountRepository.Email,
+                    AccountName = accountRepository.AccountName
                 },
-                IsConsentGranted = _settingsRepository.Get().IsConsentGranted,
+                IsConsentGranted = settingsRepository.Get().IsConsentGranted,
                 IsConnected = HttpContext.User.Identity != null && HttpContext.User.Identity.IsAuthenticated
             };
             return Ok(model);
@@ -148,12 +134,12 @@ namespace DocuSign.Workspaces.Controllers.Admin
         public async Task<IActionResult> Disconnect()
         {
             await HttpContext.SignOutAsync();
-            var settings = _settingsRepository.Get();
+            var settings = settingsRepository.Get();
             settings.Template = null;
             settings.SignatureType = null;
             settings.TemplatesDataSource = null;
             settings.SignatureTypesDataSource = null;
-            _settingsRepository.Save(settings);
+            settingsRepository.Save(settings);
             return NoContent();
         }
 
@@ -172,7 +158,7 @@ namespace DocuSign.Workspaces.Controllers.Admin
         [Route("/api/settings")]
         public IActionResult GetSetting()
         {
-            var settings = _settingsRepository.Get();
+            var settings = settingsRepository.Get();
             return Ok(new SettingsModel
             {
                 BasePath = settings.BasePath,
@@ -189,7 +175,7 @@ namespace DocuSign.Workspaces.Controllers.Admin
         [Route("/api/settings/datasource")]
         public IActionResult GetDatasource()
         {
-            var settings = _settingsRepository.Get();
+            var settings = settingsRepository.Get();
             return Ok(new DataSourceModel
             {
                 SignatureTypes = settings.SignatureTypesDataSource,
@@ -201,14 +187,14 @@ namespace DocuSign.Workspaces.Controllers.Admin
         [Route("/api/settings")]
         public IActionResult SetSettings([FromBody] SettingsModel model)
         {
-            var settings = _settingsRepository.Get();
+            var settings = settingsRepository.Get();
             settings.BaseUri = settings.BaseUri;
             settings.UserId = model.UserId;
             settings.AccountId = model.AccountId;
             settings.Template = model.Template;
             settings.SignatureType = model.SignatureType;
             settings.UserProfile = model.UserProfile;
-            _settingsRepository.Save(settings);
+            settingsRepository.Save(settings);
 
             return Ok(model);
         }
@@ -224,28 +210,16 @@ namespace DocuSign.Workspaces.Controllers.Admin
                     AccountId = model.AccountId,
                     UserId = model.UserId
                 },
-                AuthenticationType.TestAccount => _testAccountConnectionSettingsRepository.Get(),
+                AuthenticationType.TestAccount => testAccountConnectionSettingsRepository.Get(),
                 _ => null
             };
 
             return connectionSettings;
         }
 
-        private ErrorDetailsModel CreateErrorDetails(ApiErrorDetails error, RequestAccountConnectModel model)
-        {
-            return error.Error switch
-            {
-                ApiErrorDetails.InvalidBasePath => ErrorDetailsModel.CreateErrorDetailsForOneModelProperty(error.Error, model, connectModel => connectModel.BasePath),
-                ApiErrorDetails.InvalidBaseUri => ErrorDetailsModel.CreateErrorDetailsForOneModelProperty(error.Error, model, connectModel => connectModel.BaseUri),
-                ApiErrorDetails.InvalidUserId => ErrorDetailsModel.CreateErrorDetailsForOneModelProperty(error.Error, model, connectModel => connectModel.UserId),
-                ApiErrorDetails.InvalidAccountId => ErrorDetailsModel.CreateErrorDetailsForOneModelProperty(error.Error, model, connectModel => connectModel.AccountId),
-                _ => ErrorDetailsModel.CreateGeneralErrorDetails(error.Error)
-            };
-        }
-
         private IEnumerable<DataSourceItem> GetSignatureTypesDataSource(string accountId)
         {
-            var signatureProviders = _docuSignApiProvider.AccountsApi.ListSignatureProviders(accountId);
+            var signatureProviders = docuSignApiProvider.AccountsApi.ListSignatureProviders(accountId);
             var result = new List<DataSourceItem>
             {
                 new()

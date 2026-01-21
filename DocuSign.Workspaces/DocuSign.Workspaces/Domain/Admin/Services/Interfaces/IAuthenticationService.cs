@@ -10,11 +10,9 @@ namespace DocuSign.Workspaces.Domain.Admin.Services.Interfaces
     {
         Task<ClaimsPrincipal> AuthenticateFromJwtAsync(AccountConnectionSettings accountConnectionSettings);
 
-        string CreateAdminConsentUrl(string baseUrl, string redirectUrl);
-
         string CreateUserConsentUrl(string baseUrl, string redirectUrl);
 
-        void AuthenticateForProfileManagement(string login, string password);
+        string CreateTestAccountConsentUrl(string baseUrl, string redirectUrl);
 
         string PrePopulateUserId(string basePath, string code);
 
