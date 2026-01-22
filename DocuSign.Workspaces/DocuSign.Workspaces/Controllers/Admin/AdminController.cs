@@ -104,7 +104,7 @@ namespace DocuSign.Workspaces.Controllers.Admin
             catch (ApplicationApiException)
             {
                 var consentUrl = authenticationService.CreateTestAccountConsentUrl(connectionSettings.BasePath, "");
-                Redirect(consentUrl);
+                return Ok(new { redirectUrl = consentUrl });
             }
 
             return NoContent();
