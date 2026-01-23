@@ -8,5 +8,5 @@ public interface IWealthManagementClient
 {
     Task<string> CreateWorkspaces(CreateWorkspacesModel createWorkspacesModel);
 
-    Task<List<EnvelopeModel>> AddSelectedDocumentsForClientPackage(WorkspaceAddDocumentsModel createModel);
+    Task<List<ResponseWealthManagementModel>> HandleDocuments(HandleDocumentsModel createModel);
 }

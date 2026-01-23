@@ -13,10 +13,28 @@ public class CarePlansController(ICarePlansService carePlansService) : Controlle
 {
     [HttpGet]
     [Route("/api/care-plans/physicians")]
-    public async Task<List<PhysicianModel>> GetPhysicians()
+    public async Task<IActionResult> GetPhysicians()
     {
-        var physicians = await carePlansService.GetPhysician();
-        return physicians;
+        try
+        {
+            var physicians = await carePlansService.GetPhysician();
+            return Ok(physicians);
+        }
+        catch (ApplicationApiException ex)
+        {
+            var message = ex.Details?.ErrorDescription ?? ex.Details?.Error ?? ex.Message;
+            return BadRequest(message);
+        }
+        catch (Docusign.IAM.SDK.Models.Errors.ErrorDetails e)
+        {
+            return e.StatusCode == 401 ?
+                BadRequest("Please check that the default account has access to the workspaces.") :
+                BadRequest(e.Message);
+        }
+        catch (Exception e)
+        {
+            return BadRequest(e.Message);
+        }
     }
 
     [HttpPost]

@@ -337,7 +337,7 @@ export const RequestFormPhysician = ({
               disabled={
                 requesting ||
                 !selectedPhysician ||
-                !uploadedFiles.some((f) => f.isForSignature) ||
+                uploadedFiles.length === 0 ||
                 !request.email ||
                 errors.email
               }

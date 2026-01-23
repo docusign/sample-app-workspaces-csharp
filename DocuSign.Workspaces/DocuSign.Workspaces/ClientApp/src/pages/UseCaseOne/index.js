@@ -79,8 +79,8 @@ export const UseCaseOnePage = () => {
         body: JSON.stringify(payload),
       });
       if (!res.ok) {
-        toast.error(`${t('Common.ServerError')}${res.status}`);
-        throw new Error(`${t('Common.ServerError')}${res.status}`);
+        const message = await res.text();
+        throw new Error(message || `${t('Common.ServerError')}${res.status}`);
       }
       const workspaceId = await res.text();
 

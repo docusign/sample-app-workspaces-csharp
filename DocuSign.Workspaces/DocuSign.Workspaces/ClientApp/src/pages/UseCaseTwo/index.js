@@ -63,7 +63,8 @@ export const UseCaseTwoPage = () => {
       });
 
       if (!res.ok) {
-        throw new Error(`${t('Common.ServerError')}${res.status}`);
+        const message = await res.text();
+        throw new Error(message || `${t('Common.ServerError')}${res.status}`);
       }
       const physician = await res.json();
       setListPhysician(physician);

@@ -2,7 +2,7 @@ using System.Collections.Generic;
 
 namespace DocuSign.Workspaces.Domain.Workspaces.Models;
 
-public class WorkspaceAddDocumentsModel
+public class HandleDocumentsModel
 {
     public string WorkspaceId { get; set; }
     public List<Document> Documents { get; set; }
@@ -18,4 +18,5 @@ public class Document
 {
     public string Base64String { get; set; }
     public string Name { get; set; }
+    public bool IsForSignature { get; set; }
 }

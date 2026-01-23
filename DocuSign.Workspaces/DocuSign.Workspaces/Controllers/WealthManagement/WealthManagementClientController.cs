@@ -1,7 +1,9 @@
+using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using DocuSign.Workspaces.Domain.Workspaces;
 using DocuSign.Workspaces.Domain.Workspaces.Models;
+using DocuSign.Workspaces.Infrastructure.Exceptions;
 using Microsoft.AspNetCore.Mvc;
 
 namespace DocuSign.Workspaces.Controllers.WealthManagement;
@@ -10,17 +12,51 @@ public class WealthManagementClientController(IWealthManagementClient wealthMana
 {
     [HttpPost]
     [Route("/api/workspaces/create")]
-    public async Task<string> CreateWorkspaces([FromBody] CreateWorkspacesModel workspacesModel)
+    public async Task<IActionResult> CreateWorkspaces([FromBody] CreateWorkspacesModel workspacesModel)
     {
-        var workspaceId = await wealthManagementClient.CreateWorkspaces(workspacesModel);
-        return workspaceId;
+        try
+        {
+            var workspaceId = await wealthManagementClient.CreateWorkspaces(workspacesModel);
+            return Ok(workspaceId);
+        }
+        catch (ApplicationApiException ex)
+        {
+            var message = ex.Details?.ErrorDescription ?? ex.Details?.Error ?? ex.Message;
+            return BadRequest(message);
+        }
+        catch (Docusign.IAM.SDK.Models.Errors.ErrorDetails e)
+        {
+            return e.StatusCode == 401 ?
+                BadRequest("Please check that the default account has access to the workspaces.") :
+                BadRequest(e.Message);
+        }
+        catch (Exception e)
+        {
+            return BadRequest(e.Message);
+        }
     }
 
     [HttpPost]
     [Route("/api/workspaces/add-selected-documents")]
-    public async Task<List<EnvelopeModel>> AddSelectedDocuments([FromBody] WorkspaceAddDocumentsModel model)
+    public async Task<IActionResult> AddSelectedDocuments([FromBody] HandleDocumentsModel model)
     {
-        var envelopes = await wealthManagementClient.AddSelectedDocumentsForClientPackage(model);
-        return envelopes;
+        try
+        {
+            var envelopes = await wealthManagementClient.HandleDocuments(model);
+            return Ok(envelopes);
+        }
+        catch (ApplicationApiException ex)
+        {
+            var message = ex.Details?.ErrorDescription ?? ex.Details?.Error ?? ex.Message;
+            return BadRequest(message);
+        }
+        catch (Docusign.IAM.SDK.Models.Errors.ErrorDetails e)
+        {
+            return BadRequest(e.Message);
+        }
+        catch (Exception e)
+        {
+            return BadRequest(e.Message);
+        }
     }
 }

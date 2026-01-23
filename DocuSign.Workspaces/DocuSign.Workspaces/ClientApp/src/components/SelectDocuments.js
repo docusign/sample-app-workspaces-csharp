@@ -9,21 +9,34 @@ const listToSign = [
     id: 21,
     name: 'Engagement Agreement.pdf',
     path: '/Engagement Agreement placeholder.pdf',
+    isForSignature: true,
   },
   {
     id: 22,
     name: 'IRA Products Agreement.pdf',
     path: '/IRA Products Agreement.pdf',
+    isForSignature: true,
   },
   {
     id: 23,
     name: 'ETF Products Agreement.pdf',
     path: '/ETF PRODUCTS AGREEMENT.pdf',
+    isForSignature: true,
   },
 ];
 const uploadRequest = [
-  { id: 11, name: 'Pay Stub.pdf', path: '/Tax Return.pdf' },
-  { id: 12, name: 'Tax Return.pdf', path: '/Pay Statement.pdf' },
+  { 
+    id: 11,
+    name: 'Pay Stub.pdf',
+    path: '/Tax Return.pdf',
+    isForSignature: false 
+},
+  { 
+    id: 12, 
+    name: 'Tax Return.pdf', 
+    path: '/Pay Statement.pdf', 
+    isForSignature: false 
+  },
 ];
 
 export const SelectDocuments = ({ onAddDocuments, requesting = false, onPrevious }) => {
