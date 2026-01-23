@@ -64,7 +64,7 @@ public class WealthManagementClient(
             Name = document.Name + " Upload " + Guid.NewGuid(),
             Description = "Description Test",
             DueDate = DateTime.Now,
-            Status = WorkspaceUploadRequestStatus.Draft,
+            Status = WorkspaceUploadRequestStatus.InProgress,
             Assignments =
             [
                 new CreateWorkspaceUploadRequestAssignment
