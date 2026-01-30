@@ -15,51 +15,36 @@ public class CarePlansService(IDocuSignApiProvider docuSignApiProvider, IAppConf
     public async Task<List<PhysicianModel>> GetPhysician()
     {
         var physiciansWorkspaces = new List<PhysicianModel>();
-        if (appConfiguration.DocuSign.TestAccountConnectionSettings.AccountId == accountRepository.AccountId)
+
+        List<string> physicians = ["Dr. Max Payne", "Dr. Angela Kerr", "Dr. Luke Heer"];
+        var workspaces = await docuSignApiProvider.Workspace2.GetWorkspacesAsync(accountRepository.AccountId);
+        if (workspaces.Workspaces != null || workspaces.Workspaces?.Count != 0)
         {
-            List<string> physicians = ["Dr. Max Payne", "Dr. Angela Kerr", "Dr. Luke Heer"];
-            var workspaces = await docuSignApiProvider.Workspace2.GetWorkspacesAsync(accountRepository.AccountId);
-            if (workspaces.Workspaces != null || workspaces.Workspaces?.Count != 0)
+            var physician = workspaces.Workspaces
+                ?.Where(a => physicians.Contains(a.Name + " Workspace"))
+                .Select(a => new PhysicianModel
+                {
+                    Name = a.Name,
+                    WorkspaceId = a.WorkspaceId
+                }).ToList();
+
+            if (physician?.Count == physicians.Count)
             {
-                var physician = workspaces.Workspaces
-                    ?.Where(a => physicians.Contains(a.Name + " Workspace"))
-                    .Select(a => new PhysicianModel
-                    {
-                        Name = a.Name,
-                        WorkspaceId = a.WorkspaceId
-                    }).ToList();
-
-                if (physician?.Count == physicians.Count)
-                {
-                    return physician;
-                }
-            }
-
-            foreach (var physician in physicians)
-            {
-                var workspaceBody = new CreateWorkspaceBody
-                {
-                    Name = physician + " Workspace"
-                };
-                var workspace = await docuSignApiProvider.Workspace2.CreateWorkspaceAsync(accountRepository.AccountId, workspaceBody);
-
-                physiciansWorkspaces.Add(new PhysicianModel
-                {
-                    Name = physician,
-                    WorkspaceId = workspace.WorkspaceId
-                });
+                return physician;
             }
         }
-        else
+
+        foreach (var physician in physicians)
         {
             var workspaceBody = new CreateWorkspaceBody
             {
-                Name = accountRepository.AccountName + " Workspace"
+                Name = physician + " Workspace"
             };
             var workspace = await docuSignApiProvider.Workspace2.CreateWorkspaceAsync(accountRepository.AccountId, workspaceBody);
+
             physiciansWorkspaces.Add(new PhysicianModel
             {
-                Name = accountRepository.AccountName,
+                Name = physician,
                 WorkspaceId = workspace.WorkspaceId
             });
         }
