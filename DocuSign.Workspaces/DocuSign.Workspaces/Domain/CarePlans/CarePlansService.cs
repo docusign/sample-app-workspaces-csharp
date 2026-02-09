@@ -20,17 +20,19 @@ public class CarePlansService(IDocuSignApiProvider docuSignApiProvider, IAppConf
         var workspaces = await docuSignApiProvider.Workspace2.GetWorkspacesAsync(accountRepository.AccountId);
         if (workspaces.Workspaces != null || workspaces.Workspaces?.Count != 0)
         {
-            var physician = workspaces.Workspaces
-                ?.Where(a => physicians.Contains(a.Name + " Workspace"))
+            var createdPhysician = workspaces.Workspaces
+                ?.Where(w =>
+                        !string.IsNullOrWhiteSpace(w.Name) &&
+                        physicians.Any(p => w.Name.StartsWith(p + " Workspace", StringComparison.OrdinalIgnoreCase)))
                 .Select(a => new PhysicianModel
                 {
                     Name = a.Name,
                     WorkspaceId = a.WorkspaceId
                 }).ToList();
 
-            if (physician?.Count == physicians.Count)
+            if (createdPhysician?.Count >= physicians.Count)
             {
-                return physician;
+                return createdPhysician.DistinctBy(a => a.Name).ToList();
             }
         }
 
