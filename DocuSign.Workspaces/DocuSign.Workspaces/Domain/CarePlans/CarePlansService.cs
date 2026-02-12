@@ -5,7 +5,6 @@ using System.Linq;
 using System.Threading.Tasks;
 using DocuSign.eSign.Model;
 using Docusign.IAM.SDK.Models.Components;
-using Docusign.IAM.SDK.Models.Errors;
 using DocuSign.Workspaces.Domain.CarePlans.Model;
 using DocuSign.Workspaces.Infrastructure.Services.Interfaces;
 using Microsoft.Extensions.Logging;
@@ -72,7 +71,26 @@ public class CarePlansService(
     {
         const string sentStatus = "sent";
         var documents = new List<CareDocumentsModel>();
-        await EnsureWorkspaceUserAsync(model);
+
+        var userForCreate = new WorkspaceUserForCreate
+        {
+            Email = model.Email,
+            FirstName = model.Physician.Name,
+            LastName = ""
+        };
+            await ExecuteDocuSignCallAsync(
+                "WorkspaceUsers.AddWorkspaceUserAsync",
+                new
+                {
+                    accountRepository.AccountId,
+                    model.Physician.WorkspaceId,
+                    model.Email
+                },
+                () => docuSignApiProvider.WorkspaceUsers.AddWorkspaceUserAsync(
+                    accountRepository.AccountId,
+                    model.Physician.WorkspaceId,
+                    userForCreate));
+
 
         foreach (var document in model.Documents)
         {
@@ -201,80 +219,6 @@ public class CarePlansService(
         }
 
         return documents;
-    }
-
-    private async Task EnsureWorkspaceUserAsync(SubmitToPhysiciansModel model)
-    {
-        if (string.IsNullOrWhiteSpace(model.Email) || string.IsNullOrWhiteSpace(model.Physician?.WorkspaceId))
-        {
-            return;
-        }
-
-        if (await WorkspaceContainsUserAsync(model.Physician.WorkspaceId, model.Email))
-        {
-            return;
-        }
-
-        var userForCreate = new WorkspaceUserForCreate
-        {
-            Email = model.Email,
-            FirstName = model.Physician.Name,
-            LastName = ""
-        };
-
-        try
-        {
-            await ExecuteDocuSignCallAsync(
-                "WorkspaceUsers.AddWorkspaceUserAsync",
-                new
-                {
-                    accountRepository.AccountId,
-                    model.Physician.WorkspaceId,
-                    model.Email
-                },
-                () => docuSignApiProvider.WorkspaceUsers.AddWorkspaceUserAsync(
-                    accountRepository.AccountId,
-                    model.Physician.WorkspaceId,
-                    userForCreate));
-        }
-        catch (APIException)
-        {
-            if (!await WorkspaceContainsUserAsync(model.Physician.WorkspaceId, model.Email))
-            {
-                throw;
-            }
-        }
-    }
-
-    private async Task<bool> WorkspaceContainsUserAsync(string workspaceId, string email)
-    {
-        var request = new Docusign.IAM.SDK.Models.Requests.GetWorkspaceUsersRequest
-        {
-            AccountId = accountRepository.AccountId,
-            WorkspaceId = workspaceId
-        };
-        var users = await ExecuteDocuSignCallAsync(
-            "WorkspaceUsers.GetWorkspaceUsersAsync",
-            new
-            {
-                accountRepository.AccountId,
-                WorkspaceId = workspaceId,
-                LookupEmail = email
-            },
-            () => docuSignApiProvider.WorkspaceUsers.GetWorkspaceUsersAsync(request));
-
-        return users.Users?.Any(u =>
-            !string.IsNullOrWhiteSpace(u.Email) &&
-            string.Equals(u.Email, email, StringComparison.OrdinalIgnoreCase)) == true;
-    }
-
-    private async Task ExecuteDocuSignCallAsync(string operation, object context, Func<Task> operationCall)
-    {
-        await ExecuteDocuSignCallAsync<object>(operation, context, async () =>
-        {
-            await operationCall();
-            return null;
-        });
     }
 
     private async Task<T> ExecuteDocuSignCallAsync<T>(string operation, object context, Func<Task<T>> operationCall)
