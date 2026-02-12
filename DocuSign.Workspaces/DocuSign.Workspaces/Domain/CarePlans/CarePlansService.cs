@@ -1,15 +1,22 @@
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Threading.Tasks;
 using DocuSign.eSign.Model;
 using Docusign.IAM.SDK.Models.Components;
+using Docusign.IAM.SDK.Models.Errors;
 using DocuSign.Workspaces.Domain.CarePlans.Model;
 using DocuSign.Workspaces.Infrastructure.Services.Interfaces;
+using Microsoft.Extensions.Logging;
 
 namespace DocuSign.Workspaces.Domain.CarePlans;
 
-public class CarePlansService(IDocuSignApiProvider docuSignApiProvider, IAppConfiguration appConfiguration, IAccountRepository accountRepository)
+public class CarePlansService(
+    IDocuSignApiProvider docuSignApiProvider,
+    IAppConfiguration appConfiguration,
+    IAccountRepository accountRepository,
+    ILogger<CarePlansService> logger)
     : ICarePlansService
 {
     public async Task<List<PhysicianModel>> GetPhysician()
@@ -17,7 +24,11 @@ public class CarePlansService(IDocuSignApiProvider docuSignApiProvider, IAppConf
         var physiciansWorkspaces = new List<PhysicianModel>();
 
         List<string> physicians = ["Dr. Max Payne", "Dr. Angela Kerr", "Dr. Luke Heer"];
-        var workspaces = await docuSignApiProvider.Workspace2.GetWorkspacesAsync(accountRepository.AccountId);
+        var workspaces = await ExecuteDocuSignCallAsync(
+            "Workspace2.GetWorkspacesAsync",
+            new { accountRepository.AccountId },
+            () => docuSignApiProvider.Workspace2.GetWorkspacesAsync(accountRepository.AccountId));
+
         if (workspaces.Workspaces != null || workspaces.Workspaces?.Count != 0)
         {
             var createdPhysician = workspaces.Workspaces
@@ -42,7 +53,10 @@ public class CarePlansService(IDocuSignApiProvider docuSignApiProvider, IAppConf
             {
                 Name = physician + " Workspace"
             };
-            var workspace = await docuSignApiProvider.Workspace2.CreateWorkspaceAsync(accountRepository.AccountId, workspaceBody);
+            var workspace = await ExecuteDocuSignCallAsync(
+                "Workspace2.CreateWorkspaceAsync",
+                new { accountRepository.AccountId, WorkspaceName = workspaceBody.Name },
+                () => docuSignApiProvider.Workspace2.CreateWorkspaceAsync(accountRepository.AccountId, workspaceBody));
 
             physiciansWorkspaces.Add(new PhysicianModel
             {
@@ -58,22 +72,7 @@ public class CarePlansService(IDocuSignApiProvider docuSignApiProvider, IAppConf
     {
         const string sentStatus = "sent";
         var documents = new List<CareDocumentsModel>();
-
-        var userForCreate = new WorkspaceUserForCreate
-        {
-            Email = model.Email,
-            FirstName = model.Physician.Name,
-            LastName = ""
-        };
-        try
-        {
-            await docuSignApiProvider.WorkspaceUsers.AddWorkspaceUserAsync(accountRepository.AccountId, model.Physician.WorkspaceId, userForCreate);
-        }
-        catch (Exception e)
-        {
-            Console.WriteLine(e);
-            throw;
-        }
+        //await EnsureWorkspaceUserAsync(model);
 
         foreach (var document in model.Documents)
         {
@@ -84,10 +83,18 @@ public class CarePlansService(IDocuSignApiProvider docuSignApiProvider, IAppConf
                     EnvelopeName = document.Name
                 };
 
-                var envelopeResponse = await docuSignApiProvider.Workspace2.CreateWorkspaceEnvelopeAsync(
-                    accountRepository.AccountId,
-                    model.Physician.WorkspaceId,
-                    workspaceEnvelopeForCreate);
+                var envelopeResponse = await ExecuteDocuSignCallAsync(
+                    "Workspace2.CreateWorkspaceEnvelopeAsync",
+                    new
+                    {
+                        accountRepository.AccountId,
+                        model.Physician.WorkspaceId,
+                        DocumentName = document.Name
+                    },
+                    () => docuSignApiProvider.Workspace2.CreateWorkspaceEnvelopeAsync(
+                        accountRepository.AccountId,
+                        model.Physician.WorkspaceId,
+                        workspaceEnvelopeForCreate));
 
                 var eventNotificationUrl = $"{appConfiguration.DocuSign.EventNotificationBaseUrl}/api/callback/event";
 
@@ -135,12 +142,33 @@ public class CarePlansService(IDocuSignApiProvider docuSignApiProvider, IAppConf
                     Signers = [signer1]
                 };
 
-                await docuSignApiProvider.EnvelopApi.UpdateRecipientsAsync(accountRepository.AccountId, envelopeResponse.EnvelopeId, recipients);
+                await ExecuteDocuSignCallAsync(
+                    "EnvelopApi.UpdateRecipientsAsync",
+                    new
+                    {
+                        accountRepository.AccountId,
+                        envelopeResponse.EnvelopeId,
+                        RecipientEmail = model.Email
+                    },
+                    () => docuSignApiProvider.EnvelopApi.UpdateRecipientsAsync(accountRepository.AccountId, envelopeResponse.EnvelopeId, recipients));
 
-                await docuSignApiProvider.EnvelopApi.UpdateDocumentsAsync(accountRepository.AccountId, envelopeResponse.EnvelopeId, env);
+                await ExecuteDocuSignCallAsync(
+                    "EnvelopApi.UpdateDocumentsAsync",
+                    new
+                    {
+                        accountRepository.AccountId,
+                        envelopeResponse.EnvelopeId,
+                        DocumentName = document.Name
+                    },
+                    () => docuSignApiProvider.EnvelopApi.UpdateDocumentsAsync(accountRepository.AccountId, envelopeResponse.EnvelopeId, env));
 
-                await docuSignApiProvider.EnvelopApi.UpdateAsync(accountRepository.AccountId, envelopeResponse.EnvelopeId,
-                    new Envelope(Status: sentStatus));
+                await ExecuteDocuSignCallAsync(
+                    "EnvelopApi.UpdateAsync",
+                    new { accountRepository.AccountId, envelopeResponse.EnvelopeId, Status = sentStatus },
+                    () => docuSignApiProvider.EnvelopApi.UpdateAsync(
+                        accountRepository.AccountId,
+                        envelopeResponse.EnvelopeId,
+                        new Envelope(Status: sentStatus)));
 
                 documents.Add(new CareDocumentsModel(document.Name, document.IsForSignature, sentStatus));
             }
@@ -154,12 +182,118 @@ public class CarePlansService(IDocuSignApiProvider docuSignApiProvider, IAppConf
                         FileName = document.Name
                     }
                 };
-                await docuSignApiProvider.WorkspaceDocuments.AddWorkspaceDocumentAsync(accountRepository.AccountId, model.Physician.WorkspaceId, documentRequest);
+                await ExecuteDocuSignCallAsync(
+                    "WorkspaceDocuments.AddWorkspaceDocumentAsync",
+                    new
+                    {
+                        accountRepository.AccountId,
+                        model.Physician.WorkspaceId,
+                        DocumentName = document.Name,
+                        RequiresSignature = document.IsForSignature
+                    },
+                    () => docuSignApiProvider.WorkspaceDocuments.AddWorkspaceDocumentAsync(
+                        accountRepository.AccountId,
+                        model.Physician.WorkspaceId,
+                        documentRequest));
 
                 documents.Add(new CareDocumentsModel(document.Name, document.IsForSignature, string.Empty));
             }
         }
 
         return documents;
+    }
+
+    private async Task EnsureWorkspaceUserAsync(SubmitToPhysiciansModel model)
+    {
+        if (string.IsNullOrWhiteSpace(model.Email) || string.IsNullOrWhiteSpace(model.Physician?.WorkspaceId))
+        {
+            return;
+        }
+
+        if (await WorkspaceContainsUserAsync(model.Physician.WorkspaceId, model.Email))
+        {
+            return;
+        }
+
+        var userForCreate = new WorkspaceUserForCreate
+        {
+            Email = model.Email,
+            FirstName = model.Physician.Name,
+            LastName = ""
+        };
+
+        try
+        {
+            await ExecuteDocuSignCallAsync(
+                "WorkspaceUsers.AddWorkspaceUserAsync",
+                new
+                {
+                    accountRepository.AccountId,
+                    model.Physician.WorkspaceId,
+                    model.Email
+                },
+                () => docuSignApiProvider.WorkspaceUsers.AddWorkspaceUserAsync(
+                    accountRepository.AccountId,
+                    model.Physician.WorkspaceId,
+                    userForCreate));
+        }
+        catch (APIException)
+        {
+            if (!await WorkspaceContainsUserAsync(model.Physician.WorkspaceId, model.Email))
+            {
+                throw;
+            }
+        }
+    }
+
+    private async Task<bool> WorkspaceContainsUserAsync(string workspaceId, string email)
+    {
+        var request = new Docusign.IAM.SDK.Models.Requests.GetWorkspaceUsersRequest
+        {
+            AccountId = accountRepository.AccountId,
+            WorkspaceId = workspaceId
+        };
+        var users = await ExecuteDocuSignCallAsync(
+            "WorkspaceUsers.GetWorkspaceUsersAsync",
+            new
+            {
+                accountRepository.AccountId,
+                WorkspaceId = workspaceId,
+                LookupEmail = email
+            },
+            () => docuSignApiProvider.WorkspaceUsers.GetWorkspaceUsersAsync(request));
+
+        return users.Users?.Any(u =>
+            !string.IsNullOrWhiteSpace(u.Email) &&
+            string.Equals(u.Email, email, StringComparison.OrdinalIgnoreCase)) == true;
+    }
+
+    private async Task ExecuteDocuSignCallAsync(string operation, object context, Func<Task> operationCall)
+    {
+        await ExecuteDocuSignCallAsync<object>(operation, context, async () =>
+        {
+            await operationCall();
+            return null;
+        });
+    }
+
+    private async Task<T> ExecuteDocuSignCallAsync<T>(string operation, object context, Func<Task<T>> operationCall)
+    {
+        var stopwatch = Stopwatch.StartNew();
+        logger.LogInformation("DocuSign request started: {Operation}. Context: {@Context}", operation, context);
+
+        try
+        {
+            var result = await operationCall();
+            logger.LogInformation("DocuSign request succeeded: {Operation}. DurationMs: {DurationMs}. Context: {@Context}",
+                operation, stopwatch.ElapsedMilliseconds, context);
+            return result;
+        }
+        catch (Exception ex)
+        {
+            logger.LogError(ex, "DocuSign request failed: {Operation}. DurationMs: {DurationMs}. Context: {@Context}",
+                operation, stopwatch.ElapsedMilliseconds, context);
+            throw;
+        }
     }
 }
