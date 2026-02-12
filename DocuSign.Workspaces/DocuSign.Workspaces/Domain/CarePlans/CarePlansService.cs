@@ -72,7 +72,7 @@ public class CarePlansService(
     {
         const string sentStatus = "sent";
         var documents = new List<CareDocumentsModel>();
-        //await EnsureWorkspaceUserAsync(model);
+        await EnsureWorkspaceUserAsync(model);
 
         foreach (var document in model.Documents)
         {
