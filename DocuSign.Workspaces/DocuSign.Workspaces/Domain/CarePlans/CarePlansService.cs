@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
+using System.Text.Json;
 using System.Threading.Tasks;
 using DocuSign.eSign.Model;
 using Docusign.IAM.SDK.Models.Components;
@@ -76,7 +77,7 @@ public class CarePlansService(
         {
             Email = model.Email,
             FirstName = model.Physician.Name,
-            LastName = ""
+            LastName = "Last Name"
         };
             await ExecuteDocuSignCallAsync(
                 "WorkspaceUsers.AddWorkspaceUserAsync",
