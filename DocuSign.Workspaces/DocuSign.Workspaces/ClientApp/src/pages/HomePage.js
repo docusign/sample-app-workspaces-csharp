@@ -42,14 +42,14 @@ export default function HomePage() {
                 title: t('WealthManagement'),
                 cta: t('GetStarted'),
                 url: '/use-case1',
-                features: [t('RemoteSigning'), t('Templates'), t('BrandingIntegration')],
+                features: [t('Case1Bullet1'), t('Case1Bullet2'), t('Case1Bullet3')],
               },
               {
                 icon: <NoteIcon />,
                 title: t('CarePlans'),
                 cta: t('GetStarted'),
                 url: '/use-case2',
-                features: [t('PersistentWorkspaces'), t('DocumentAggregation'), t('SignAndAssign')],
+                features: [t('Case2Bullet1'), t('Case2Bullet2'), t('Case2Bullet3')],
               },
             ].map((card, index) => (
               <div className="card_home" key={card.title}>
