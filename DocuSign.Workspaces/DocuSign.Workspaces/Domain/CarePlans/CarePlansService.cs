@@ -23,7 +23,7 @@ public class CarePlansService(
     {
         var physiciansWorkspaces = new List<PhysicianModel>();
 
-        List<string> physicians = ["Dr. Max Payne", "Dr. Angela Kerr", "Dr. Luke Heer"];
+        List<string> physicians = ["Max Payne", "Angela Kerr", "Luke Heer"];
         var workspaces = await ExecuteDocuSignCallAsync(
             "Workspace2.GetWorkspacesAsync",
             new { accountRepository.AccountId },
@@ -33,8 +33,7 @@ public class CarePlansService(
         {
             var createdPhysician = workspaces.Workspaces
                 ?.Where(w =>
-                        !string.IsNullOrWhiteSpace(w.Name) &&
-                        physicians.Any(p => w.Name.StartsWith(p + " Workspace", StringComparison.OrdinalIgnoreCase)))
+                    !string.IsNullOrWhiteSpace(w.Name) && physicians.Any(p => p == w.Name))
                 .Select(a => new PhysicianModel
                 {
                     Name = a.Name,
@@ -51,7 +50,7 @@ public class CarePlansService(
         {
             var workspaceBody = new CreateWorkspaceBody
             {
-                Name = physician.Split(' ')[1] + " " + physician.Split(' ')[2]
+                Name = physician
             };
             var workspace = await ExecuteDocuSignCallAsync(
                 "Workspace2.CreateWorkspaceAsync",
@@ -76,22 +75,21 @@ public class CarePlansService(
         var userForCreate = new WorkspaceUserForCreate
         {
             Email = model.Email,
-            FirstName = model.Physician.Name.Split(' ')[1],
-            LastName = model.Physician.Name.Split(' ')[2]
+            FirstName = model.Physician.Name.Split(' ')[0],
+            LastName = model.Physician.Name.Split(' ')[1]
         };
-            await ExecuteDocuSignCallAsync(
-                "WorkspaceUsers.AddWorkspaceUserAsync",
-                new
-                {
-                    accountRepository.AccountId,
-                    model.Physician.WorkspaceId,
-                    model.Email
-                },
-                () => docuSignApiProvider.WorkspaceUsers.AddWorkspaceUserAsync(
-                    accountRepository.AccountId,
-                    model.Physician.WorkspaceId,
-                    userForCreate));
-
+        await ExecuteDocuSignCallAsync(
+            "WorkspaceUsers.AddWorkspaceUserAsync",
+            new
+            {
+                accountRepository.AccountId,
+                model.Physician.WorkspaceId,
+                model.Email
+            },
+            () => docuSignApiProvider.WorkspaceUsers.AddWorkspaceUserAsync(
+                accountRepository.AccountId,
+                model.Physician.WorkspaceId,
+                userForCreate));
 
         foreach (var document in model.Documents)
         {
