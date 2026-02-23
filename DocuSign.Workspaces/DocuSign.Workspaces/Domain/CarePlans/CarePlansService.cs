@@ -51,7 +51,7 @@ public class CarePlansService(
         {
             var workspaceBody = new CreateWorkspaceBody
             {
-                Name = physician + " Workspace"
+                Name = physician.Split(' ')[1] + " " + physician.Split(' ')[2]
             };
             var workspace = await ExecuteDocuSignCallAsync(
                 "Workspace2.CreateWorkspaceAsync",
@@ -76,8 +76,8 @@ public class CarePlansService(
         var userForCreate = new WorkspaceUserForCreate
         {
             Email = model.Email,
-            FirstName = model.Physician.Name,
-            LastName = "Last Name"
+            FirstName = model.Physician.Name.Split(' ')[1],
+            LastName = model.Physician.Name.Split(' ')[2]
         };
             await ExecuteDocuSignCallAsync(
                 "WorkspaceUsers.AddWorkspaceUserAsync",
