@@ -45,7 +45,7 @@ function WorkspaceAccessErrorModal({ isOpen, onClose }) {
               {t('WorkspaceAccessError.ViewDocumentation')} →
             </a>
             <a
-              href="https://support.docusign.com/"
+              href="https://developers.docusign.com/support/"
               target="_blank"
               rel="noreferrer"
               className="workspace-error-modal__link"
