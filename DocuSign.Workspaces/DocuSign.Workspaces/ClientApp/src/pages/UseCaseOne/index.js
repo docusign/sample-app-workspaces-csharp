@@ -10,6 +10,7 @@ import { SkeletonSelectDocuments } from '../../components/SkeletonSelectDocument
 import { SkeletonTableDocuments } from '../../components/SkeletonTableDocuments';
 import { Onboarding } from '../../components/Onboarding';
 import { SomethingWentWrong } from '../../components/SomethingWentWrong';
+import WorkspaceAccessErrorModal from '../../components/WorkspaceAccessErrorModal';
 import { API_BASE } from '../../components/Layout';
 import { showToast } from '../../components/CustomToaster';
 import { prepareDocuments } from '../../components/helper/filesConverter';
@@ -39,6 +40,7 @@ export const UseCaseOnePage = () => {
   const [currentStep, setCurrentStep] = useState(0);
   const [respFiles, setRespFiles] = useState([]);
   const [isMobile, setIsMobile] = useState(window.innerWidth < 500);
+  const [showWorkspaceAccessError, setShowWorkspaceAccessError] = useState(false);
 
   useEffect(() => {
     const handleResize = () => {
@@ -87,7 +89,13 @@ export const UseCaseOnePage = () => {
       setWorkspaceId(workspaceId);
       showToast(t('UseCaseOne.WorkspaceCreatedSuccess'));
     } catch (error) {
-      toast.error(error.message);
+      if (error.message.includes('check that the default account has access to the workspaces')) {
+        setShowWorkspaceAccessError(true);
+        setCurrentStep(0);
+        scrollToTop();
+      } else {
+        toast.error(error.message);
+      }
     } finally {
       setRequesting(false);
     }
@@ -118,14 +126,21 @@ export const UseCaseOnePage = () => {
         body: JSON.stringify(payload),
       });
       if (!res.ok) {
-        throw new Error(`${t('Common.ServerError')}${res.status}`);
+        const message = await res.text();
+        throw new Error(message || `${t('Common.ServerError')}${res.status}`);
       }
 
       const data = await res.json();
       setRespFiles(data);
       showToast(t('UseCaseOne.EnvelopeSuccessfullyCreated'));
     } catch (error) {
-      setErrorOnboarding(t('Common.Error'));
+      if (error.message.includes('check that the default account has access to the workspaces')) {
+        setShowWorkspaceAccessError(true);
+        setCurrentStep(0);
+        scrollToTop();
+      } else {
+        setErrorOnboarding(t('Common.Error'));
+      }
     } finally {
       setRequesting(false);
     }
@@ -225,6 +240,10 @@ export const UseCaseOnePage = () => {
       <Toaster
         position={isMobile ? 'top-right' : 'top-center'}
         containerStyle={isMobile ? { top: 95, right: 8 } : { top: 85 }}
+      />
+      <WorkspaceAccessErrorModal
+        isOpen={showWorkspaceAccessError}
+        onClose={() => setShowWorkspaceAccessError(false)}
       />
     </section>
   );

@@ -9,6 +9,7 @@ namespace DocuSign.Workspaces.Infrastructure.Services
     {
         public AppSettingsConfiguration(IConfiguration configuration)
         {
+            ClientAppUrl = configuration["ClientAppUrl"];
             DocuSign = new AppConfigurationDocuSign
             {
                 IntegrationKey = configuration["DocuSign:IntegrationKey"],
@@ -33,6 +34,7 @@ namespace DocuSign.Workspaces.Infrastructure.Services
             };
         }
 
+        public string ClientAppUrl { get; set; }
         public AppConfigurationDocuSign DocuSign { get; set; }
         public AppConfigurationCustomerProfile CustomerProfile { get; set; }
     }

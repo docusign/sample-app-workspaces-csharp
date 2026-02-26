@@ -7,7 +7,7 @@ import { ReactComponent as ArrowLeftIcon } from '../assets/icons/arrow-left.svg'
 const listToSign = [
   {
     id: 21,
-    name: 'Engagement Agreement.pdf',
+    name: 'Engagement Letter.pdf',
     path: '/Engagement Agreement placeholder.pdf',
     isForSignature: true,
   },
@@ -95,6 +95,7 @@ export const SelectDocuments = ({ onAddDocuments, requesting = false, onPrevious
               onPreview={() => {
                 handlePreview(item);
               }}
+              showPreview={false}
             />
           ))}
         </div>

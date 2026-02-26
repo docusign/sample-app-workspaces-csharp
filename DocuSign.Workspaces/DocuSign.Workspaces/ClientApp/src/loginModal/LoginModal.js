@@ -1,6 +1,7 @@
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import parse from 'html-react-parser';
+import { useAcgLogin } from '../hooks/useAcgLogin';
 import './LoginModal.scss';
 
 function LoginModal({
@@ -17,17 +18,13 @@ function LoginModal({
     const { t } = useTranslation();
     const defaultEnv = useMemo(() => environments?.[0]?.url || '', [environments]);
 
+    const { loginWithAcg, isLoading: isAcgLoading, error, setError } = useAcgLogin(apiBase, defaultEnv);
+
     const [selectedAuth, setSelectedAuth] = useState('jwt'); // acg | jwt
-    const [isLoading, setIsLoading] = useState(false);
-    const [error, setError] = useState('');
+    const [isJwtLoading, setIsJwtLoading] = useState(false);
     const [accountStatus, setAccountStatus] = useState(currentStatus);
-    const [settings, setSettings] = useState(null);
-    const [acgForm, setAcgForm] = useState({
-        basePath: defaultEnv,
-        baseUri: '',
-        accountId: '',
-        userId: '',
-    });
+    
+    const isLoading = selectedAuth === 'acg' ? isAcgLoading : isJwtLoading;
 
     const autoConnectTriggered = useRef(false);
     const latestLoginWithAcg = useRef(null);
@@ -40,9 +37,6 @@ function LoginModal({
         if (isOpen) {
             setError('');
             setAccountStatus(currentStatus);
-            if (currentStatus?.basePath) {
-                setAcgForm((prev) => ({ ...prev, basePath: currentStatus.basePath }));
-            }
 
             if (resumeAuthStep === 'jwt') {
                 setSelectedAuth('jwt');
@@ -101,92 +95,25 @@ function LoginModal({
         []
     );
 
-    const normalizeSettings = useCallback(
-        (settingsJson) => ({
-            ...settingsJson,
-            userProfile: settingsJson.userProfile || settingsJson.UserProfile || {},
-        }),
-        []
-    );
-
     const fetchStatusAndSettings = useCallback(async () => {
-        const [statusRes, settingsRes] = await Promise.all([
-            fetch(`${apiBase}/api/account/status`, { credentials: 'include' }),
-            fetch(`${apiBase}/api/settings`, { credentials: 'include' }),
-        ]);
+        const statusRes = await fetch(`${apiBase}/api/account/status`, { credentials: 'include' });
 
         if (!statusRes.ok) {
             const message = await statusRes.text();
             throw new Error(message || t('LoginModal.Error.UnableToLoadAccountStatus'));
         }
-        if (!settingsRes.ok) {
-            const message = await settingsRes.text();
-            throw new Error(message || t('LoginModal.Error.UnableToLoadSettings'));
-        }
 
         const statusJson = await statusRes.json();
-        const settingsJson = await settingsRes.json();
-
         const normalizedStatus = normalizeStatus(statusJson);
-        const normalizedSettings = normalizeSettings(settingsJson);
 
         setAccountStatus(normalizedStatus);
         onStatusChange(normalizedStatus);
-        setSettings(normalizedSettings);
-        setAcgForm((prev) => ({
-            ...prev,
-            basePath: normalizedSettings.basePath || normalizedSettings.BasePath || prev.basePath,
-            baseUri: normalizedSettings.baseUri || normalizedSettings.BaseUri || prev.baseUri,
-            accountId: normalizedSettings.accountId || normalizedSettings.AccountId || prev.accountId,
-            userId: normalizedSettings.userId || normalizedSettings.UserId || prev.userId,
-        }));
 
-        return { status: normalizedStatus, settings: normalizedSettings };
-    }, [apiBase, t, normalizeStatus, normalizeSettings, onStatusChange, setAcgForm]);
-
-    const requestConsent = useCallback(
-        async (consentType) => {
-            setIsLoading(true);
-            setError('');
-            try {
-                const consentBasePath = acgForm.basePath || defaultEnv;
-                const response = await fetch(`${apiBase}/api/account/consent/obtain`, {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    credentials: 'include',
-                    body: JSON.stringify({
-                        basePath: consentBasePath,
-                        redirectUrl: '/',
-                        consentType,
-                    }),
-                });
-
-                if (!response.ok) {
-                    const message = await response.text();
-                    throw new Error(message || t('LoginModal.Error.UnableToStartConsentFlow'));
-                }
-
-
-                const payload = await response.json();
-                if (payload.redirectUrl) {
-                    document.cookie = 'ds_auth_step=acg-consent; path=/; SameSite=Lax';
-                    window.location.href = payload.redirectUrl;
-                    return;
-                }
-
-                await fetchStatusAndSettings();
-                setSelectedAuth('acg');
-            } catch (err) {
-                setError(err.message);
-            } finally {
-                setIsLoading(false);
-            }
-        },
-        [apiBase, t, acgForm, defaultEnv, fetchStatusAndSettings, setSelectedAuth]
-    );
+        return normalizedStatus;
+    }, [apiBase, t, normalizeStatus, onStatusChange]);
 
     const connectTestAccount = async () => {
-        setIsLoading(true);
+        setIsJwtLoading(true);
         setError('');
         try {
             const response = await fetch(`${apiBase}/api/account/connect`, {
@@ -220,128 +147,32 @@ function LoginModal({
         } catch (err) {
             setError(err.message);
         } finally {
-            setIsLoading(false);
+            setIsJwtLoading(false);
         }
     };
 
-    const fetchDefaultAccountDetails = useCallback(
-        async (basePath, userId) => {
-            const query = new URLSearchParams({ basePath, userId });
-            const response = await fetch(`${apiBase}/api/accounts?${query.toString()}`, {
-                credentials: 'include',
-            });
-            if (!response.ok) {
-                const message = await response.text();
-                throw new Error(message || t('LoginModal.Error.UnableToLoadAccounts'));
-            }
-            const payload = await response.json();
-            if (!Array.isArray(payload) || payload.length === 0) {
-                throw new Error(t('LoginModal.Error.NoAccounts'));
-            }
-            const defaultAccount = payload.find((acct) => acct.isDefault || acct.IsDefault) ?? payload[0];
-            return {
-                accountId: defaultAccount.accountId || defaultAccount.AccountId,
-                baseUri: defaultAccount.baseUri || defaultAccount.BaseUri,
-            };
-        },
-        [apiBase, t]
-    );
-
-    const performUserAccountConnection = useCallback(
-        async ({ basePath, baseUri, accountId, userId }) => {
-            const response = await fetch(`${apiBase}/api/account/connect`, {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                credentials: 'include',
-                body: JSON.stringify({
-                    authenticationType: 'UserAccount',
-                    basePath,
-                    baseUri,
-                    accountId,
-                    userId,
-                }),
-            });
-
-            if (!response.ok) {
-                const message = await response.text();
-                throw new Error(message || t('LoginModal.Error.UnableToConnectAccount'));
-            }
-
-            await fetchStatusAndSettings();
-            onClearAuthStep?.();
-            onClose();
-        },
-        [apiBase, t, fetchStatusAndSettings, onClearAuthStep, onClose]
-    );
-
-    const loginWithAcg = useCallback(async () => {
-        setError('');
-        let latestSettings = settings;
-        let consentGranted = accountStatus?.isConsentGranted;
-
-        if (!consentGranted || !latestSettings) {
-            try {
-                const latest = await fetchStatusAndSettings();
-                latestSettings = latest?.settings ?? latestSettings;
-                consentGranted = latest?.status?.isConsentGranted ?? consentGranted;
-            } catch (err) {
-                setError(err.message);
-                return;
-            }
-        }
-
-        if (!consentGranted) {
-            await requestConsent('Individual');
-            return;
-        }
-
-        setIsLoading(true);
+    const handleLoginWithAcg = useCallback(async () => {
         try {
-            const basePath =
-                latestSettings?.basePath || latestSettings?.BasePath || acgForm.basePath || defaultEnv;
-            const userId = latestSettings?.userId || latestSettings?.UserId || acgForm.userId;
-
-            if (!basePath || !userId) {
-                throw new Error(t('LoginModal.Error.IncompleteConsent'));
-            }
-
-            const { accountId, baseUri } = await fetchDefaultAccountDetails(basePath, userId);
-            setAcgForm((prev) => ({
-                ...prev,
-                basePath,
-                userId,
-                accountId,
-                baseUri,
-            }));
-
-            await performUserAccountConnection({ basePath, baseUri, accountId, userId });
+            await loginWithAcg(async () => {
+                await fetchStatusAndSettings();
+                onClearAuthStep?.();
+                onClose();
+            });
         } catch (err) {
-            setError(err.message);
-        } finally {
-            setIsLoading(false);
+            // Error already set by the hook
         }
-    }, [
-        settings,
-        accountStatus,
-        fetchStatusAndSettings,
-        requestConsent,
-        acgForm,
-        defaultEnv,
-        fetchDefaultAccountDetails,
-        performUserAccountConnection,
-        t,
-    ]);
+    }, [loginWithAcg, fetchStatusAndSettings, onClearAuthStep, onClose]);
 
     useEffect(() => {
-        latestLoginWithAcg.current = loginWithAcg;
-    }, [loginWithAcg]);
+        latestLoginWithAcg.current = handleLoginWithAcg;
+    }, [handleLoginWithAcg]);
 
     const goToSelectedAuthStep = () => {
         if (!selectedAuth) return;
         if (selectedAuth === 'jwt') {
             connectTestAccount();
         } else {
-            loginWithAcg();
+            handleLoginWithAcg();
         }
     };
 

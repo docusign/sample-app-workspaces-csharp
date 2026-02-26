@@ -8,6 +8,7 @@ import { ApiDescription } from '../../components/ApiDescription';
 import { TableDocuments } from '../../components/TableDocuments';
 import { SkeletonTableDocuments } from '../../components/SkeletonTableDocuments';
 import { SomethingWentWrong } from '../../components/SomethingWentWrong';
+import WorkspaceAccessErrorModal from '../../components/WorkspaceAccessErrorModal';
 import { API_BASE } from '../../components/Layout';
 import { prepareDocuments } from '../../components/helper/filesConverter';
 
@@ -35,6 +36,7 @@ export const UseCaseTwoPage = () => {
   const [errorOnboarding, setErrorOnboarding] = useState('');
   const [selectedPhysician, setSelectedPhysician] = useState(undefined);
   const [isMobile, setIsMobile] = useState(window.innerWidth < 500);
+  const [showWorkspaceAccessError, setShowWorkspaceAccessError] = useState(false);
 
   useEffect(() => {
     const handleResize = () => {
@@ -69,7 +71,11 @@ export const UseCaseTwoPage = () => {
       const physician = await res.json();
       setListPhysician(physician);
     } catch (error) {
-      toast.error(error.message);
+      if (error.message.includes('check that the default account has access to the workspaces')) {
+        setShowWorkspaceAccessError(true);
+      } else {
+        toast.error(error.message);
+      }
     } finally {
       setIsLoadingPhysician(false);
     }
@@ -120,7 +126,13 @@ export const UseCaseTwoPage = () => {
       const data = await res.json();
       setListFiles(data);
     } catch (error) {
-      setErrorOnboarding(error.message || t('Common.Error'));
+      if (error.message.includes('check that the default account has access to the workspaces')) {
+        setShowWorkspaceAccessError(true);
+        setCurrentStep(0);
+        scrollToTop();
+      } else {
+        setErrorOnboarding(error.message || t('Common.Error'));
+      }
     } finally {
       setRequesting(false);
     }
@@ -195,6 +207,10 @@ export const UseCaseTwoPage = () => {
       <Toaster
         position={isMobile ? 'top-right' : 'top-center'}
         containerStyle={isMobile ? { top: 95, right: 8 } : { top: 85 }}
+      />
+      <WorkspaceAccessErrorModal
+        isOpen={showWorkspaceAccessError}
+        onClose={() => setShowWorkspaceAccessError(false)}
       />
     </section>
   );

@@ -3,7 +3,7 @@
   "GithubSource": "Github Source",
   "Logout": "Log out",
   "Login": "Login",
-  "Copyright": "© 2025 Docusign Inc.",
+  "Copyright": "© 2026 Docusign Inc.",
   "Welcome": "Welcome to the Workspaces Sample App",
   "Explore": "Explore how organizations use Workspaces to manage, share, and approve critical documents across teams and clients, secured with Authorization Code Grant authentication.",
   "WealthManagement": "Wealth Management Client Engagement",
@@ -171,5 +171,13 @@
     "UploadDocuments": "Upload Documents",
     "AcceptedFormats": "Accepted formats: PDF, DOCX. Max file size: 50MB",
     "ChooseFile": "Choose File"
+  },
+  "WorkspaceAccessError": {
+    "Title": "Enable Workspaces for your account",
+    "Description": "Visit the Workspaces tab in your developer account using the button below — no additional action is required.",
+    "EnableWorkspaces": "Enable Workspaces",
+    "NeedHelp": "Need help?",
+    "ViewDocumentation": "View Workspaces API Documentation",
+    "ContactSupport": "Contact Docusign Support"
   }
 }
