@@ -1,6 +1,6 @@
 import { useTranslation } from 'react-i18next';
 
-export const AgreementRow = ({ label, checked, onToggle, onPreview }) => {
+export const AgreementRow = ({ label, checked, onToggle, onPreview, showPreview = true }) => {
   const { t } = useTranslation();
   return (
     <div className="agreement-row">
@@ -12,10 +12,11 @@ export const AgreementRow = ({ label, checked, onToggle, onPreview }) => {
           className="agreement-row__checkbox"
         />
         {label}
-
-        <button onClick={onPreview} className="agreement-row__preview-btn">
-          {t('Common.Preview')}
-        </button>
+        {showPreview && onPreview && (
+          <button onClick={onPreview} className="agreement-row__preview-btn">
+            {t('Common.Preview')}
+          </button>
+        )}
       </label>
     </div>
   );

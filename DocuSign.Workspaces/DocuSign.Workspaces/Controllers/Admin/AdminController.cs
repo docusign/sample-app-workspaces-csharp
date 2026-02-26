@@ -20,7 +20,8 @@ namespace DocuSign.Workspaces.Controllers.Admin
         ISettingsRepository settingsRepository,
         IAccountRepository accountRepository,
         IDocuSignApiProvider docuSignApiProvider,
-        ITestAccountConnectionSettingsRepository testAccountConnectionSettingsRepository)
+        ITestAccountConnectionSettingsRepository testAccountConnectionSettingsRepository,
+        IAppConfiguration appConfiguration)
         : Controller
     {
 
@@ -58,7 +59,12 @@ namespace DocuSign.Workspaces.Controllers.Admin
             settings.UserId = authenticationService.PrePopulateUserId(settings.BasePath, code);
             settings.AuthCode = code;
             settingsRepository.Save(settings);
-            return LocalRedirect("/");
+            
+            // Redirect to client app URL (frontend) instead of backend
+            var redirectUrl = !string.IsNullOrEmpty(appConfiguration.ClientAppUrl) 
+                ? appConfiguration.ClientAppUrl 
+                : "/";
+            return Redirect(redirectUrl);
         }
 
         [HttpGet]
