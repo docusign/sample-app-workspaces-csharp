@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useEffect } from 'react';
 import { useOutletContext, useNavigate } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import { ReactComponent as ArrowRightIcon } from '../assets/icons/arrow-right.svg';
@@ -8,9 +8,8 @@ import { ReactComponent as NoteIcon } from '../assets/icons/note.svg';
 
 export default function HomePage() {
   const { t } = useTranslation();
-  const { openLoginModal, accountStatus } = useOutletContext();
+  const { handleDirectLogin, accountStatus } = useOutletContext();
   const navigate = useNavigate();
-  const [pendingNavigationUrl, setPendingNavigationUrl] = useState(null);
 
   useEffect(() => {
     document.body.classList.add('home-page');
@@ -20,11 +19,13 @@ export default function HomePage() {
   }, []);
 
   useEffect(() => {
-    if (accountStatus?.isConnected && pendingNavigationUrl) {
-      navigate(pendingNavigationUrl);
-      setPendingNavigationUrl(null);
+    // Check for pending navigation after login
+    const pendingUrl = sessionStorage.getItem('pendingNavigationUrl');
+    if (accountStatus?.isConnected && pendingUrl) {
+      sessionStorage.removeItem('pendingNavigationUrl');
+      navigate(pendingUrl);
     }
-  }, [accountStatus?.isConnected, pendingNavigationUrl, navigate]);
+  }, [accountStatus?.isConnected, navigate]);
 
   return (
     <>
@@ -64,8 +65,9 @@ export default function HomePage() {
                     if (accountStatus?.isConnected) {
                       navigate(card.url);
                     } else {
-                      setPendingNavigationUrl(card.url);
-                      openLoginModal();
+                      // Store the intended destination before login
+                      sessionStorage.setItem('pendingNavigationUrl', card.url);
+                      handleDirectLogin();
                     }
                   }}
                 >

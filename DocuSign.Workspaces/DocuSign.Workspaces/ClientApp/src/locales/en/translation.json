@@ -171,5 +171,13 @@
     "UploadDocuments": "Upload Documents",
     "AcceptedFormats": "Accepted formats: PDF, DOCX. Max file size: 50MB",
     "ChooseFile": "Choose File"
+  },
+  "WorkspaceAccessError": {
+    "Title": "Enable Workspaces for your account",
+    "Description": "Visit the Workspaces tab in your developer account using the button below — no additional action is required.",
+    "EnableWorkspaces": "Enable Workspaces",
+    "NeedHelp": "Need help?",
+    "ViewDocumentation": "View Workspaces API Documentation",
+    "ContactSupport": "Contact Docusign Support"
   }
 }

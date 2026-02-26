@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react';
 import { Link, Outlet, useNavigate, useLocation } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import LoginModal from '../loginModal/LoginModal';
+import { useAcgLogin } from '../hooks/useAcgLogin';
 import { ReactComponent as ChevronRightIcon } from '../assets/icons/chevron-right.svg';
 import { ReactComponent as CrossIcon } from '../assets/icons/cross.svg';
 import { ReactComponent as LogoIcon } from '../assets/icons/logo_40х40.svg';
@@ -27,6 +28,9 @@ export default function Layout() {
     { key: 'demo', label: t('Layout.Demo'), url: 'https://account-d.docusign.com' },
     { key: 'production', label: t('Layout.Production'), url: 'https://account.docusign.com' },
   ];
+  
+  const { loginWithAcg } = useAcgLogin(API_BASE, ENVIRONMENTS[0].url);
+  
   const [accountStatus, setAccountStatus] = useState(null);
   const [isTestAccount, setIsTestAccount] = useState(() =>
     typeof JSON.parse(localStorage.getItem('isTestAccount')) === 'boolean'
@@ -86,9 +90,30 @@ export default function Layout() {
   useEffect(() => {
     const authStep = getCookie('ds_auth_step');
     if (authStep === 'acg-consent' && accountStatus?.isConsentGranted) {
-      setIsLoginOpen(true);
+      // Complete ACG login directly without opening modal
+      setIsTestAccount(false);
+      loginWithAcg(async () => {
+        await fetchStatus();
+        clearAuthCookie();
+      }).catch(err => {
+        console.error('Failed to complete ACG login after consent:', err);
+        clearAuthCookie();
+      });
     }
-  }, [accountStatus]);
+  }, [accountStatus, loginWithAcg]);
+
+  const handleDirectLogin = async () => {
+    setIsNavOpen(false);
+    setIsTestAccount(false);
+    try {
+      await loginWithAcg(async () => {
+        await fetchStatus();
+        clearAuthCookie();
+      });
+    } catch (err) {
+      console.error('Login failed:', err);
+    }
+  };
 
   const openLoginModal = () => {
     setIsNavOpen(false);
@@ -167,7 +192,7 @@ export default function Layout() {
                 <button
                   className="pill pill--light nav__cta"
                   type="button"
-                  onClick={openLoginModal}
+                  onClick={handleDirectLogin}
                 >
                   {t('Login')}
                 </button>
@@ -178,7 +203,7 @@ export default function Layout() {
       </header>
 
       <main className="main-content">
-        <Outlet context={{ openLoginModal, accountStatus, isTestAccount }} />
+        <Outlet context={{ openLoginModal, handleDirectLogin, accountStatus, isTestAccount }} />
       </main>
 
       <footer className="footer">
