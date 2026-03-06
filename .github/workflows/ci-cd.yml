@@ -1,0 +1,67 @@
+name: Build and Deploy to Azure Web App
+
+on:
+  workflow_dispatch:
+  push:
+    branches:
+      - main
+
+env:
+  AZURE_WEBAPP_NAME: "workspaces"
+  IMAGE_NAME: "workspaces"
+  TAG: "latest"
+  DOCKER_FILE_PATH: "DocuSign.Workspaces/DocuSign.Workspaces/Dockerfile"
+
+permissions:
+  id-token: write 
+  contents: read
+
+jobs:
+  build_and_deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v6
+
+      # Log in to Azure via OIDC
+      - name: Azure Login
+        uses: azure/login@v2
+        with:
+          client-id: ${{ secrets.AZURE_CLIENT_ID }}
+          tenant-id: ${{ secrets.AZURE_TENANT_ID }}
+          subscription-id: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
+
+      - name: Login to ACR
+        run: az acr login --name ${{ secrets.ACR_LOGIN_SERVER }}
+
+      - name: Build and Push Docker Image
+        uses: docker/build-push-action@v6
+        with:
+          context: .
+          file: ${{ env.DOCKER_FILE_PATH }}
+          push: true
+          tags: ${{ secrets.ACR_LOGIN_SERVER }}/${{ env.IMAGE_NAME }}:${{ env.TAG }}
+
+      - name: Configure app settings
+        run: |
+          az webapp config appsettings set \
+            --name ${{ env.AZURE_WEBAPP_NAME }} \
+            --resource-group ${{ secrets.AZURE_RESOURCE_GROUP }} \
+            --settings \
+              "DocuSign__IntegrationKey=${{ secrets.DOCUSIGN_INTEGRATIONKEY }}" \
+              "DocuSign__SecretKey=${{ secrets.DOCUSIGN_SECRETKEY }}" \
+              "DocuSign__SecretKeyProd=${{ secrets.DOCUSIGN_SECRETKEYPROD }}" \
+              "DocuSign__RedirectBaseUrl=${{ secrets.DOCUSIGN_REDIRECTBASEURL }}" \
+              "DocuSign__EventNotificationBaseUrl=${{ secrets.DOCUSIGN_EVENTNOTIFICATIONBASEURL }}" \
+              "DocuSign__TestAccountConnectionSettings__UserId=${{ secrets.DOCUSIGN_TESTACCOUNTCONNECTIONSETTINGS_USERID }}" \
+              "DocuSign__TestAccountConnectionSettings__AccountId=${{ secrets.DOCUSIGN_TESTACCOUNTCONNECTIONSETTINGS_ACCOUNTID }}" \
+              "CustomerProfile__Login=${{ secrets.CUSTOMERPROFILE_LOGIN }}" \
+              "CustomerProfile__Password=${{ secrets.CUSTOMERPROFILE_PASSWORD }}" \
+              "DocuSign__RSAPrivateKeyFile=/app/private.key" \
+              "DOCUSIGN_PRIVATE_KEY_BASE64=${{ secrets.DOCUSIGN_PRIVATE_KEY_BASE64 }}" \
+              "DOCUSIGN_PRIVATE_KEY=${{ secrets.DOCUSIGN_PRIVATE_KEY }}"
+
+      - name: Restart Azure Web App
+        run: |
+          az webapp restart --name ${{ env.AZURE_WEBAPP_NAME }} --resource-group ${{ secrets.AZURE_RESOURCE_GROUP }}

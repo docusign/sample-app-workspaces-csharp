@@ -1,0 +1,39 @@
+.btn {
+  text-transform: uppercase;
+  letter-spacing: 0.4px;
+  min-width: 144px;
+
+  &.btn-danger {
+    &.disabled,
+    &:disabled {
+      color: #6e47cc;
+    }
+  }
+
+  &.btn-secondary {
+    border: 2px solid $danger;
+    color: $danger;
+    letter-spacing: 0.7px;
+
+    &:focus,
+    &:hover,
+    &:active {
+      background-color: $gray-300;
+      border-color: $danger !important;
+      color: $danger !important;
+    }
+
+    &.disabled,
+    &:disabled {
+      background-color: $white;
+      border-color: #d1d1d1 !important;
+      color: #d1d1d1 !important;
+    }
+  }
+}
+
+.nav-btn {
+  margin: 1rem;
+  min-width: 100px;
+  text-transform: none;
+}
