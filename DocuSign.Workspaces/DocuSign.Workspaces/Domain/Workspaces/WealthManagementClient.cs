@@ -74,11 +74,11 @@ public class WealthManagementClient(
                     LastName = createModel.PrimaryOwnerLastName,
                     UploadRequestResponsibilityTypeId = WorkspaceUploadRequestResponsibilityType.Assignee
                 },
-                new CreateWorkspaceUploadRequestAssignment
-                {
-                    AssigneeUserId = workspace.CreatedByUserId,
-                    UploadRequestResponsibilityTypeId = WorkspaceUploadRequestResponsibilityType.Watcher
-                }
+                // new CreateWorkspaceUploadRequestAssignment
+                // {
+                //     AssigneeUserId = workspace.CreatedByUserId,
+                //     UploadRequestResponsibilityTypeId = WorkspaceUploadRequestResponsibilityType.Watcher
+                // }
             ]
         };
 
