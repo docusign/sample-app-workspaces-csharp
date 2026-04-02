@@ -1,93 +1,185 @@
-# Workspaces Sample Application: React
 
-## Introduction
 
-The Workspaces Sample App provides ISV developers with a practical example of how to build a quality in-product integration. This is a Single Page Application (SPA) leveraging the Docusign C# eSignature SDK. The SPA is created using React.js and .Net Web API. You can find a live instance at [https://Workspaces.sampleapps.docusign.com/](https://Workspaces.sampleapps.docusign.com/).
+# **Workspaces Sample Application: C\# / React**
 
-The Workspaces Sample App demonstrates the following:
+## **Overview**
 
-1. **Authentication** with Docusign via [JWT Grant](https://developers.docusign.com/platform/auth/jwt/) or [ACG](https://developers.docusign.com/platform/auth/authcode/).
-2. **Send an Employment Contract:**
-   This use case presents a scenario wherein the ISV’s app enables an employee to send an employment contract to a new hire.
-   Key elements:
-   - Composite templates
-   - Envelope-level Connect notifications
-   - Electronic or digital signature options (SBS)
-   - Embedded sending
-   - Remote signing via email notification
-3. **T&Cs Contract:**
-   This use case presents a scenario in which a sales employee is sending a standard Terms and Conditions document along with a Contract document to an external buyer.
-   Key elements:
-   - Composite templates
-   - Envelope-level Connect notifications
-   - Prepopulated field data
-   - Recipient Authentication with Access Code
-4. **Update Customer Profile Self-service:**
-   This use case presents a scenario in which an online customer portal provides a means for customers to update their profiles. The app requires password authentication. As an added level of security, the embedded signing session will require that the signer pass an IDV check.
-   Key elements:
-   - Composite templates
-   - Envelope-level Connect notifications
-   - Embedded signing with login data mapped to security elements
-   - IDV or SMS/Phone authentication
-5. **Custom Quote:**
-   This use case presents a scenario in which a sales employee is sending a generated custom quote to a prospective buyer.
-   Key elements:
-   - Composite templates with anchor tabs
-   - Envelope-level Connect notifications
-   - Remote signing via SMS delivery
+The Workspaces Sample App is a Single Page Application (SPA) built with **React.js** (frontend) and **.NET 8.0 Web API** (backend). It demonstrates practical examples of building Workspaces as an in-product integration using the **Docusign C\# eSignature SDK**.
 
-## Prerequisites
+A live instance of the application is available at: https://workspaces.sampleapps.docusign.com/
 
-- Create a Docusign [Developer Account](https://go.docusign.com/o/sandbox/).
-- Create an application on the [Apps and Keys](https://admindemo.docusign.com/authenticate?goTo=appsAndKeys) page.
-- Add redirect URIs:
-  - `{ PROTOCOL }://{ DOMAIN }`
-  - `{ PROTOCOL }://{ DOMAIN }/admin`
-  - `{ PROTOCOL }://{ DOMAIN }/api/consentcallback`
-- Press "ADD SECRET KEY" and save the generated key (it will be used later in "Settings configuration" section to configure {SecretKey})
-- Press "GENERATE RSA" and save the generated key pairs (it will be used later in "Settings configuration" section to configure "private.key")
-- Installed and configured [Node.js](https://nodejs.org/en/download)
-- Installed and configured [Docker](https://www.docker.com/)
-- Installed and configured [.Net 8.0](https://dotnet.microsoft.com/en-us/download/dotnet/8.0)
+---
 
-### Settings configuration
+## **Features**
 
-Create a copy of the file appsettings-example.json, save the copy as appsettings.json, and fill in the data:
+This application demonstrates the following Docusign use cases:
 
-- {IntegrationKey} - integration key of the application created in section "Create an application on the Apps and Keys page" above (GUID)
-- {SecretKey} - the application secret code that was generated in "Prerequisites" section
-- Save generate private RSA key (section "Prerequisites") to the file \sample-app-Workspaces-csharp\Docusign.MyWorkspaces\DocuSign.MyWorkspaces\private.key
-- {RedirectBaseUrl} - internal redirection URL that is used during the obtaining consent and embedded signing process
-- {EventNotificationBaseUrl} - public base URL of the application that is used by Docusign Events webhook
-- "TestAccountConnectionSettings" section:
-  - {AuthBasePath} - base authentication URL that is used during loging with a test account
-  - {BaseUri} - base API url that is used to call the API endpoints in case using the test account
-  - {UserId} - ID of the test user
-  - {AccontId} - ID of the account that is connected to the test user
-- "CustomerProfile" section:
-  - {Login} - hardcoded login that is used as a part of Use Case 3
-  - {Password} - hardcoded password that is used as a part of Use Case 3:
+1. **Authentication** — Authorization Code Grant (ACG)  
+2. **Dynamically create transactional spaces** — Workspace creation, Workspace envelope creation, document upload request  
+3. **Persistent workspaces** — Workspace lookup, envelope creation, document upload 
 
-## Local installation instructions (without Docker)
+---
 
-1. Clone the git repository to your local machine
-1. Make the Settings configuration described above
-1. Open a terminal and navigate to \sample-app-Workspaces-csharp\DocuSign.MyWorkspaces\DocuSign.MyWorkspaces\ClientApp folder
-1. Install required client application packages running the following command in the terminal:
-   ```
-   npm install
-   ```
-1. Start the client application running the following command in the terminal:
-   ```
-   npm start
-   ```
-1. Open a new terminal and navigate to \sample-app-Workspaces-csharp\DocuSign.MyWorkspaces
-1. Build the .Net solution:
-   ```
-   dotnet build --configuration Debug
-   ```
-1. Start the .NET application:
-   ```
-   dotnet run --project .\DocuSign.MyWorkspaces\DocuSign.MyWorkspaces.csproj --configuration Debug
-   ```
-1. Open a browser to [localhost:5001](https://localhost:5001) (if the page is not openned automatically).
+## **Prerequisites**
+
+Before building or running the application, ensure the following are installed and configured:
+
+| Requirement | Notes |
+| ----- | ----- |
+| [Node.js](https://nodejs.org/en/download) | Required to build the React frontend |
+| [.NET 8.0 SDK](https://dotnet.microsoft.com/en-us/download/dotnet/8.0) | Required to build and run the backend API |
+| [Docker](https://www.docker.com/) | Required only for containerized deployment |
+| Docusign Developer Account | [Sign up here](https://go.docusign.com/o/sandbox/) |
+
+### **Docusign app setup**
+
+1. Log in to your Docusign Developer Account and navigate to the [Apps and Keys](https://admindemo.docusign.com/authenticate?goTo=appsAndKeys) page.  
+2. Create a new application and note down the **Integration Key**.  
+3. Add the following **Redirect URIs** for your app:  
+   * `{PROTOCOL}://{DOMAIN}`  
+   * `{PROTOCOL}://{DOMAIN}/admin`  
+   * `{PROTOCOL}://{DOMAIN}/api/consentcallback`  
+4. Click **ADD SECRET KEY** and save the generated key — this is your `{SecretKey}`.  
+5. Click **GENERATE RSA** and save both the public and private key — the private key will be stored as `private.key`.
+
+---
+
+## **Configuration**
+
+### **1\. Create `appsettings.json`**
+
+Copy the example config file and fill in your values:
+
+```shell
+cp DocuSign.Workspaces/DocuSign.Workspaces/appsettings-example.json DocuSign.Workspaces/DocuSign.Workspaces/appsettings.json
+```
+
+Edit `appsettings.json` and replace the following placeholders:
+
+| Placeholder | Description |
+| ----- | ----- |
+| `{ClientAppUrl}` | URL of the React frontend (e.g. http://localhost:3000) |
+| `{IntegrationKey}` | The Integration Key (GUID) from your Docusign app |
+| `{SecretKey}` | The secret key generated in the Docusign Apps and Keys page |
+| `{SecretKeyProd}` | Secret key for the production Docusign app — not required for local development |
+| `{RedirectBaseUrl}` | Internal redirection URL used for consent and embedded signing (e.g. http://localhost:3000) |
+| `{EventNotificationBaseUrl}` | Public base URL used by the Docusign Events webhook (e.g. http://localhost:5000) |
+| `{AuthBasePath}` | Base authentication URL (e.g. https://account-d.docusign.com) |
+| `{BaseUri}` | Base API URL for test account API calls (e.g. https://demo.docusign.net) |
+| `{UserId}` | ID of the test user |
+| `{AccountId}` | ID of the account connected to the test user |
+| `{Login}` | Hardcoded login used in Use Case 3 (Customer Profile) |
+| `{Password}` | Hardcoded password used in Use Case 3 (Customer Profile) |
+
+### **2\. Add the RSA Private Key**
+
+Save the RSA private key generated during Docusign app setup to:
+
+```
+sample-app-workspaces-csharp/DocuSign.Workspaces/DocuSign.Workspaces/private.key
+```
+
+---
+
+## **Local Installation (Without Docker)**
+
+Follow these steps to run the application locally:
+
+### **Step 1 — Clone the Repository**
+
+```shell
+git clone https://github.com/docusign/sample-app-workspaces-csharp.git
+cd sample-app-workspaces-csharp
+```
+
+### **Step 2 — Configure the Application**
+
+Complete the **Configuration** steps above before proceeding.
+
+### **Step 3 — Install Frontend Dependencies**
+
+Navigate to the React client app folder and install Node packages:
+
+```shell
+cd DocuSign.Workspaces/DocuSign.Workspaces/ClientApp/
+npm install
+```
+
+### **Step 4 — Start the Frontend**
+
+```shell
+npm start
+```
+
+Leave this terminal running. The React dev server will start on its default port.
+
+### **Step 5 — Build the .NET Backend**
+
+Open a **new terminal** and navigate to the solution root:
+
+```shell
+cd DocuSign.Workspaces
+dotnet build --configuration Debug
+```
+
+### **Step 6 — Run the .NET Backend**
+
+```shell
+dotnet run --project ./DocuSign.Workspaces/DocuSign.Workspaces.csproj --configuration Debug
+```
+
+### **Step 7 — Open the App**
+
+Open a browser and go to:
+
+```
+https://localhost:3000
+```
+
+---
+
+## **Project Structure**
+
+```
+sample-app-workspaces-csharp/
+├── .github/workflows/              # CI/CD workflows
+├── DocuSign.Workspaces/            # Solution directory
+│   ├── DocuSign.Workspaces/        # Main project directory
+│   │   ├── ClientApp/              # React.js frontend (SPA)
+│   │   ├── appsettings-example.json
+│   │   ├── appsettings.json        # Your local config (not committed)
+│   │   └── private.key             # Your RSA private key (not committed)
+│   └── DocuSign.Workspaces.sln
+├── .gitignore
+├── LICENSE
+├── README.md
+└── package-lock.json
+```
+
+---
+
+## **Technology Stack**
+
+| Layer | Technology |
+| ----- | ----- |
+| Frontend | React.js, SCSS |
+| Backend | .NET 8.0 Web API, C\# |
+| Auth | Docusign JWT Grant / ACG |
+| SDK | Docusign C\# eSignature SDK |
+| Containerization | Docker |
+
+---
+
+## **Additional Resources**
+
+* [Docusign Developer Center](https://developers.docusign.com/)  
+* [JWT Grant Authentication](https://developers.docusign.com/platform/auth/jwt/)  
+* [Authorization Code Grant](https://developers.docusign.com/platform/auth/authcode/)  
+* [eSignature REST API Reference](https://developers.docusign.com/docs/esign-rest-api/)
+
+---
+
+## **License**
+
+This project is licensed under the [MIT License](LICENSE).
+
