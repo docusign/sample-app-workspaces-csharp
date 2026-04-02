@@ -181,5 +181,5 @@ sample-app-workspaces-csharp/
 
 ## **License**
 
-This project is licensed under the [MIT License](https://claude.ai/chat/LICENSE).
+This project is licensed under the [MIT License](LICENSE).
 
