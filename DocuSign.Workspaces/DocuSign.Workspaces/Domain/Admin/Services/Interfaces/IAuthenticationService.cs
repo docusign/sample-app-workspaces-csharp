@@ -16,6 +16,6 @@ namespace DocuSign.Workspaces.Domain.Admin.Services.Interfaces
 
         string PrePopulateUserId(string basePath, string code);
 
-        Task<List<ResponseGetAccountsModel>> GetAccountsAsync(string basePath, string userId);
+        Task<List<ResponseGetAccountsModel>> GetAccountsAsync();
     }
 }

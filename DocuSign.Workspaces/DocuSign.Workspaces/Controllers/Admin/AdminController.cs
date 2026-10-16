@@ -1,4 +1,5 @@
-﻿using DocuSign.Workspaces.Domain.Admin.Models;
+﻿using System;
+using DocuSign.Workspaces.Domain.Admin.Models;
 using DocuSign.Workspaces.Domain.Admin.Services.Interfaces;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.Cookies;
@@ -10,7 +11,9 @@ using System.Threading.Tasks;
 using DocuSign.Workspaces.Controllers.Admin.Models;
 using DocuSign.Workspaces.Infrastructure.Exceptions;
 using DocuSign.Workspaces.Infrastructure.Models;
+using DocuSign.Workspaces.Infrastructure.Validation;
 using DocuSign.Workspaces.Infrastructure.Services.Interfaces;
+using Microsoft.Extensions.Logging;
 using IAuthenticationService = DocuSign.Workspaces.Domain.Admin.Services.Interfaces.IAuthenticationService;
 
 namespace DocuSign.Workspaces.Controllers.Admin
@@ -21,7 +24,8 @@ namespace DocuSign.Workspaces.Controllers.Admin
         IAccountRepository accountRepository,
         IDocuSignApiProvider docuSignApiProvider,
         ITestAccountConnectionSettingsRepository testAccountConnectionSettingsRepository,
-        IAppConfiguration appConfiguration)
+        IAppConfiguration appConfiguration,
+        ILogger<AdminController> logger)
         : Controller
     {
 
@@ -29,6 +33,16 @@ namespace DocuSign.Workspaces.Controllers.Admin
         [Route("/api/account/consent/obtain")]
         public IActionResult ObtainConsent([FromBody] RequestAccountAuthorizeModel model)
         {
+            try
+            {
+                DocuSignEndpointValidator.ValidateBasePath(model.BasePath);
+            }
+            catch (ArgumentException)
+            {
+                logger.LogWarning("Rejected basePath in consent request: {BasePath}", model.BasePath);
+                return BadRequest("Invalid basePath. Must be a known DocuSign authentication endpoint using HTTPS.");
+            }
+
             var settings = settingsRepository.Get();
             settings.BasePath = model.BasePath;
             settingsRepository.Save(settings);
@@ -69,12 +83,18 @@ namespace DocuSign.Workspaces.Controllers.Admin
 
         [HttpGet]
         [Route("/api/accounts")]
-        public async Task<IActionResult> GetAccounts(string basePath, string userId)
+        public async Task<IActionResult> GetAccounts()
         {
+            var settings = settingsRepository.Get();
+            if (!settings.IsConsentGranted || string.IsNullOrEmpty(settings.UserId))
+            {
+                logger.LogWarning("Accounts request rejected: consent not granted or userId missing");
+                return BadRequest("Consent must be granted before listing accounts.");
+            }
+
             try
             {
-                var result = await authenticationService.GetAccountsAsync(
-                    basePath, userId);
+                var result = await authenticationService.GetAccountsAsync();
                 return Ok(result);
             }
             catch (ApplicationApiException ex)
@@ -88,6 +108,12 @@ namespace DocuSign.Workspaces.Controllers.Admin
         public async Task<IActionResult> Connect([FromBody] RequestAccountConnectModel model)
         {
             var connectionSettings = CreateConnectionSettings(model);
+            if (connectionSettings == null)
+            {
+                logger.LogWarning("Connect request rejected: invalid auth type or missing consent. AuthType={AuthType}", model.AuthenticationType);
+                return BadRequest("Invalid authentication type.");
+            }
+
             try
             {
                 var principal = await authenticationService.AuthenticateFromJwtAsync(connectionSettings);
@@ -99,8 +125,8 @@ namespace DocuSign.Workspaces.Controllers.Admin
 
                 var settings = settingsRepository.Get();
                 settings.AuthenticationType = model.AuthenticationType;
-                settings.UserId = model.UserId;
-                settings.AccountId = model.AccountId;
+                settings.UserId = connectionSettings.UserId;
+                settings.AccountId = connectionSettings.AccountId;
                 settings.BaseUri = model.BaseUri;
                 settings.Template = TemplateNames.DefaultTemplateId;
                 settings.SignatureTypesDataSource = GetSignatureTypesDataSource(connectionSettings.AccountId);
@@ -177,6 +203,7 @@ namespace DocuSign.Workspaces.Controllers.Admin
             });
         }
 
+        [Authorize]
         [HttpGet]
         [Route("/api/settings/datasource")]
         public IActionResult GetDatasource()
@@ -189,6 +216,7 @@ namespace DocuSign.Workspaces.Controllers.Admin
             });
         }
 
+        [Authorize]
         [HttpPut]
         [Route("/api/settings")]
         public IActionResult SetSettings([FromBody] SettingsModel model)
@@ -209,18 +237,27 @@ namespace DocuSign.Workspaces.Controllers.Admin
         {
             var connectionSettings = model.AuthenticationType switch
             {
-                AuthenticationType.UserAccount => new AccountConnectionSettings
-                {
-                    BasePath = model.BasePath,
-                    BaseUri = model.BaseUri,
-                    AccountId = model.AccountId,
-                    UserId = model.UserId
-                },
+                AuthenticationType.UserAccount => CreateUserAccountConnectionSettings(model),
                 AuthenticationType.TestAccount => testAccountConnectionSettingsRepository.Get(),
                 _ => null
             };
 
             return connectionSettings;
+        }
+
+        private AccountConnectionSettings CreateUserAccountConnectionSettings(RequestAccountConnectModel model)
+        {
+            var settings = settingsRepository.Get();
+            if (!settings.IsConsentGranted || string.IsNullOrEmpty(settings.UserId) || string.IsNullOrEmpty(settings.BasePath))
+                return null;
+
+            return new AccountConnectionSettings
+            {
+                BasePath = settings.BasePath,
+                BaseUri = model.BaseUri,
+                AccountId = model.AccountId,
+                UserId = settings.UserId
+            };
         }
 
         private IEnumerable<DataSourceItem> GetSignatureTypesDataSource(string accountId)

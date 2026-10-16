@@ -61,7 +61,7 @@ namespace DocuSign.Workspaces
             {
                 config.Cookie.Name = "UserLoginCookie";
                 config.Cookie.HttpOnly = true;
-                config.Cookie.SameSite = SameSiteMode.Lax;
+                config.Cookie.SameSite = SameSiteMode.Strict;
                 config.Cookie.SecurePolicy = CookieSecurePolicy.Always;
             });
 

@@ -10,8 +10,10 @@ using DocuSign.Workspaces.Controllers.Admin.Models;
 using DocuSign.Workspaces.Domain.Admin.Models;
 using DocuSign.Workspaces.Domain.Admin.Services.Interfaces;
 using DocuSign.Workspaces.Infrastructure.Exceptions;
+using DocuSign.Workspaces.Infrastructure.Validation;
 using DocuSign.Workspaces.Infrastructure.Services.Interfaces;
 using Microsoft.AspNetCore.Authentication.Cookies;
+using Microsoft.Extensions.Logging;
 using IAuthenticationService = DocuSign.Workspaces.Domain.Admin.Services.Interfaces.IAuthenticationService;
 
 namespace DocuSign.Workspaces.Domain.Common.Services
@@ -21,19 +23,24 @@ namespace DocuSign.Workspaces.Domain.Common.Services
         private readonly IAppConfiguration _appConfiguration;
         private readonly IDocuSignClientsFactory _docuSignClientsFactory;
         private readonly ISettingsRepository _settingsRepository;
+        private readonly ILogger<AuthenticationService> _logger;
 
         public AuthenticationService(
             IDocuSignClientsFactory docuSignClientsFactory,
             IAppConfiguration appConfiguration,
-            ISettingsRepository settingsRepository)
+            ISettingsRepository settingsRepository,
+            ILogger<AuthenticationService> logger)
         {
             _docuSignClientsFactory = docuSignClientsFactory;
             _appConfiguration = appConfiguration;
             _settingsRepository = settingsRepository;
+            _logger = logger;
         }
 
         public string PrePopulateUserId(string basePath, string code)
         {
+            DocuSignEndpointValidator.ValidateBasePath(basePath);
+
             var authServer = new Uri(basePath).Host;
             var apiClient = _docuSignClientsFactory.BuildDocuSignAuthClient(authServer);
             OAuth.OAuthToken authToken;
@@ -51,17 +58,27 @@ namespace DocuSign.Workspaces.Domain.Common.Services
             return userInfo.Sub;
         }
 
-        public async Task<List<ResponseGetAccountsModel>> GetAccountsAsync(string basePath, string userId)
+        public async Task<List<ResponseGetAccountsModel>> GetAccountsAsync()
         {
             var settings = _settingsRepository.Get();
 
-            var authServer = new Uri(basePath).Host;
+            if (!settings.IsConsentGranted || string.IsNullOrEmpty(settings.UserId))
+            {
+                _logger.LogWarning("GetAccountsAsync rejected: consent not granted or userId missing");
+                throw new InvalidOperationException("Consent must be granted before listing accounts.");
+            }
+
+            DocuSignEndpointValidator.ValidateBasePath(settings.BasePath);
+
+            var authServer = new Uri(settings.BasePath).Host;
             var apiClient = _docuSignClientsFactory.BuildDocuSignAuthClient(authServer);
+
+            _logger.LogInformation("Requesting accounts for UserId={UserId} via {AuthServer}", settings.UserId, authServer);
 
             OAuth.OAuthToken authToken;
             try
             {
-                if (settings.IsConsentGranted)
+                if (!string.IsNullOrEmpty(settings.AuthCode))
                 {
                     authToken = await apiClient.GenerateAccessTokenAsync(
                         _appConfiguration.DocuSign.IntegrationKey,
@@ -72,7 +89,7 @@ namespace DocuSign.Workspaces.Domain.Common.Services
                 {
                     authToken = await apiClient.RequestJWTUserTokenAsync(
                         _appConfiguration.DocuSign.IntegrationKey,
-                        userId,
+                        settings.UserId,
                         authServer,
                         await File.ReadAllBytesAsync(_appConfiguration.DocuSign.RSAPrivateKeyFile),
                         _appConfiguration.DocuSign.JWTLifeTime,
@@ -97,6 +114,11 @@ namespace DocuSign.Workspaces.Domain.Common.Services
 
         public async Task<ClaimsPrincipal> AuthenticateFromJwtAsync(AccountConnectionSettings accountConnectionSettings)
         {
+            DocuSignEndpointValidator.ValidateBasePath(accountConnectionSettings.BasePath);
+
+            _logger.LogInformation("Authenticating UserId={UserId} for AccountId={AccountId} via {BasePath}",
+                accountConnectionSettings.UserId, accountConnectionSettings.AccountId, accountConnectionSettings.BasePath);
+
             var settings = _settingsRepository.Get();
             var authServer = new Uri(accountConnectionSettings.BasePath).Host;
             var apiClient = _docuSignClientsFactory.BuildDocuSignAuthClient(authServer);
@@ -131,11 +153,15 @@ namespace DocuSign.Workspaces.Domain.Common.Services
 
             if (account == null)
             {
+                _logger.LogWarning("Account validation failed: AccountId={AccountId} not found for UserId={UserId}",
+                    accountConnectionSettings.AccountId, accountConnectionSettings.UserId);
                 throw ApplicationApiException.CreateInvalidAccountException();
             }
 
             if (account.BaseUri != accountConnectionSettings.BaseUri)
             {
+                _logger.LogWarning("BaseUri mismatch: expected={Expected}, supplied={Supplied} for AccountId={AccountId}",
+                    account.BaseUri, accountConnectionSettings.BaseUri, accountConnectionSettings.AccountId);
                 throw ApplicationApiException.CreateInvalidBaseUriException();
             }
 
@@ -159,6 +185,7 @@ namespace DocuSign.Workspaces.Domain.Common.Services
 
         public string CreateUserConsentUrl(string baseUrl, string redirectUrl)
         {
+            DocuSignEndpointValidator.ValidateBasePath(baseUrl);
             var integrationKey = _appConfiguration.DocuSign.IntegrationKey;
             var scope = "signature dtr.company.read dtr.rooms.read dtr.rooms.write dtr.documents.write";
             var fullRedirectUrl = $"{_appConfiguration.DocuSign.RedirectBaseUrl}/{redirectUrl}";
@@ -169,6 +196,7 @@ namespace DocuSign.Workspaces.Domain.Common.Services
 
         public string CreateTestAccountConsentUrl(string baseUrl, string redirectUrl)
         {
+            DocuSignEndpointValidator.ValidateBasePath(baseUrl);
             var integrationKey = _appConfiguration.DocuSign.IntegrationKey;
             const string scope = "signature impersonation dtr.company.read dtr.rooms.read dtr.rooms.write dtr.documents.write";
             var fullRedirectUrl = $"{_appConfiguration.DocuSign.RedirectBaseUrl}/{redirectUrl}";
