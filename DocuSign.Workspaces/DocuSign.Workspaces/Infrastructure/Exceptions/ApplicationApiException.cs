@@ -36,8 +36,8 @@ namespace DocuSign.Workspaces.Infrastructure.Exceptions
             {
                 case HttpStatusCode.InternalServerError:
                     return ApiErrorDetails.CreateInvalidBaseUriError();
-                case HttpStatusCode.BadRequest:
-                    return JsonConvert.DeserializeObject<ApiErrorDetails>(ex.ErrorContent);
+                case HttpStatusCode.BadRequest when ex.ErrorContent != null:
+                    return JsonConvert.DeserializeObject<ApiErrorDetails>(ex.ErrorContent) ?? new ApiErrorDetails();
                 default:
                     return new ApiErrorDetails();
             }
