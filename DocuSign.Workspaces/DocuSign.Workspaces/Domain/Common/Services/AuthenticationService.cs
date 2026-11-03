@@ -44,14 +44,7 @@ namespace DocuSign.Workspaces.Domain.Common.Services
             var authServer = new Uri(basePath).Host;
             var apiClient = _docuSignClientsFactory.BuildDocuSignAuthClient(authServer);
             OAuth.OAuthToken authToken;
-            if (authServer.Contains("-d")) // demo
-            {
-                authToken = apiClient.GenerateAccessToken(_appConfiguration.DocuSign.IntegrationKey, _appConfiguration.DocuSign.SecretKey, code);
-            }
-            else // prod
-            {
-                authToken = apiClient.GenerateAccessToken(_appConfiguration.DocuSign.IntegrationKey, _appConfiguration.DocuSign.SecretKeyProd, code);
-            }
+            authToken = apiClient.GenerateAccessToken(_appConfiguration.DocuSign.IntegrationKey, SecretKeyFor(authServer), code);
 
             var userInfo = apiClient.GetUserInfo(authToken.access_token);
 
@@ -82,7 +75,7 @@ namespace DocuSign.Workspaces.Domain.Common.Services
                 {
                     authToken = await apiClient.GenerateAccessTokenAsync(
                         _appConfiguration.DocuSign.IntegrationKey,
-                        _appConfiguration.DocuSign.SecretKey,
+                        SecretKeyFor(authServer),
                         settings.AuthCode);
                 }
                 else
@@ -129,7 +122,7 @@ namespace DocuSign.Workspaces.Domain.Common.Services
                 {
                     authToken = await apiClient.GenerateAccessTokenAsync(
                         _appConfiguration.DocuSign.IntegrationKey,
-                        _appConfiguration.DocuSign.SecretKey,
+                        SecretKeyFor(authServer),
                         settings.AuthCode);
                 }
                 else
@@ -183,14 +176,21 @@ namespace DocuSign.Workspaces.Domain.Common.Services
             return new ClaimsPrincipal(claimsIdentity);
         }
 
-        public string CreateUserConsentUrl(string baseUrl, string redirectUrl)
+        private string SecretKeyFor(string authServer)
+        {
+            return DocuSignEndpointValidator.IsDemoHost(authServer)
+                ? _appConfiguration.DocuSign.SecretKey
+                : _appConfiguration.DocuSign.SecretKeyProd;
+        }
+
+        public string CreateUserConsentUrl(string baseUrl, string redirectUrl, string state)
         {
             DocuSignEndpointValidator.ValidateBasePath(baseUrl);
             var integrationKey = _appConfiguration.DocuSign.IntegrationKey;
             var scope = "signature dtr.company.read dtr.rooms.read dtr.rooms.write dtr.documents.write";
             var fullRedirectUrl = $"{_appConfiguration.DocuSign.RedirectBaseUrl}/{redirectUrl}";
 
-            var builder = new UriBuilder($"{baseUrl}/oauth/auth?response_type=code&scope={scope}&client_id={integrationKey}&redirect_uri={fullRedirectUrl}");
+            var builder = new UriBuilder($"{baseUrl}/oauth/auth?response_type=code&scope={scope}&client_id={integrationKey}&redirect_uri={fullRedirectUrl}&state={Uri.EscapeDataString(state)}");
             return builder.ToString();
         }
 
