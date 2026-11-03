@@ -231,3 +231,8 @@ _Pvt_Extensions
 .fake/
 
 /Properties/launchSettings.json
+
+# Secrets: never commit signing keys or local credentials
+private*.key
+*.pem
+appsettings.json

@@ -54,6 +54,10 @@ public class WealthManagementClientController(IWealthManagementClient wealthMana
         {
             return BadRequest(e.Message);
         }
+        catch (Docusign.IAM.SDK.Models.Errors.APIException e)
+        {
+            return BadRequest(e.Body ?? e.Message);
+        }
         catch (Exception e)
         {
             return BadRequest(e.Message);

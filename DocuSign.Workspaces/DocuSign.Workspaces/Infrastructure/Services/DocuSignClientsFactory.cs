@@ -49,7 +49,9 @@ namespace DocuSign.Workspaces.Infrastructure.Services
 
         public DocuSignClient BuildDocuSignAuthClient(string authServer)
         {
-            var client = new DocuSignClient();
+            var client = new DocuSignClient(
+                "https://demo.docusign.net/restapi",
+                new HttpClient(AuthHostGuardHandler.Create()));
             client.SetOAuthBasePath(authServer);
             return client;
         }

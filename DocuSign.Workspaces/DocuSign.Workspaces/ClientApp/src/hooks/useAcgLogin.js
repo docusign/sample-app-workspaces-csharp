@@ -77,9 +77,8 @@ export const useAcgLogin = (apiBase, defaultEnvironment) => {
   );
 
   const fetchDefaultAccountDetails = useCallback(
-    async (basePath, userId) => {
-      const query = new URLSearchParams({ basePath, userId });
-      const response = await fetch(`${apiBase}/api/accounts?${query.toString()}`, {
+    async () => {
+      const response = await fetch(`${apiBase}/api/accounts`, {
         credentials: 'include',
       });
       if (!response.ok) {
@@ -104,17 +103,15 @@ export const useAcgLogin = (apiBase, defaultEnvironment) => {
   );
 
   const performUserAccountConnection = useCallback(
-    async ({ basePath, baseUri, accountId, userId }) => {
+    async ({ baseUri, accountId }) => {
       const response = await fetch(`${apiBase}/api/account/connect`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         credentials: 'include',
         body: JSON.stringify({
           authenticationType: 'UserAccount',
-          basePath,
           baseUri,
           accountId,
-          userId,
         }),
       });
 
@@ -133,22 +130,14 @@ export const useAcgLogin = (apiBase, defaultEnvironment) => {
 
       try {
         const status = await fetchStatus();
-        
+
         if (!status.isConsentGranted) {
           await requestConsent(defaultEnvironment);
           return; // Will redirect
         }
 
-        const settings = await fetchSettings();
-        const basePath = settings.basePath || settings.BasePath || defaultEnvironment;
-        const userId = settings.userId || settings.UserId;
-
-        if (!basePath || !userId) {
-          throw new Error(t('LoginModal.Error.IncompleteConsent'));
-        }
-
-        const { accountId, baseUri } = await fetchDefaultAccountDetails(basePath, userId);
-        await performUserAccountConnection({ basePath, baseUri, accountId, userId });
+        const { accountId, baseUri } = await fetchDefaultAccountDetails();
+        await performUserAccountConnection({ baseUri, accountId });
 
         if (onSuccess) {
           await onSuccess();
@@ -162,7 +151,6 @@ export const useAcgLogin = (apiBase, defaultEnvironment) => {
     },
     [
       fetchStatus,
-      fetchSettings,
       requestConsent,
       fetchDefaultAccountDetails,
       performUserAccountConnection,

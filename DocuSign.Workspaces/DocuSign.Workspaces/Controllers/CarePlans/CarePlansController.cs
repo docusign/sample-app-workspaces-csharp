@@ -59,7 +59,6 @@ public class CarePlansController(ICarePlansService carePlansService) : Controlle
         }
         catch (Exception ex)
         {
-            var tp = ex.GetType().ToString();
             return StatusCode(500, ex.Message);
         }
     }

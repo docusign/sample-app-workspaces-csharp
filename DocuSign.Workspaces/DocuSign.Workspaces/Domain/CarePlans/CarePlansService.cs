@@ -115,23 +115,6 @@ public class CarePlansService(
 
                 var eventNotificationUrl = $"{appConfiguration.DocuSign.EventNotificationBaseUrl}/api/callback/event";
 
-                var env = new EnvelopeDefinition
-                {
-                    EmailSubject = "Please Sign",
-                    EmailBlurb = "Sample text for email body",
-                    Status = sentStatus,
-                    EventNotifications = EventService.ConfigureEventNotifications(eventNotificationUrl)
-                };
-
-                var doc1 = new Document
-                {
-                    DocumentId = "1",
-                    Name = document.Name,
-                    DocumentBase64 = document.Base64String
-                };
-
-                env.Documents = [doc1];
-
                 var signHere1 = new SignHere
                 {
                     AnchorString = "/sn1/",
@@ -154,10 +137,26 @@ public class CarePlansService(
                     Tabs = signer1Tabs
                 };
 
-                var recipients = new Recipients
+                var doc1 = new DocuSign.eSign.Model.Document
                 {
-                    Signers = [signer1]
+                    DocumentId = "1",
+                    Name = document.Name,
+                    DocumentBase64 = document.Base64String
                 };
+
+                // PUT .../documents only adds documents; recipients, subject and status are ignored here
+                await ExecuteDocuSignCallAsync(
+                    "EnvelopApi.UpdateDocumentsAsync",
+                    new
+                    {
+                        accountRepository.AccountId,
+                        envelopeResponse.EnvelopeId,
+                        DocumentName = document.Name
+                    },
+                    () => docuSignApiProvider.EnvelopApi.UpdateDocumentsAsync(
+                        accountRepository.AccountId,
+                        envelopeResponse.EnvelopeId,
+                        new EnvelopeDefinition { Documents = [doc1] }));
 
                 await ExecuteDocuSignCallAsync(
                     "EnvelopApi.UpdateRecipientsAsync",
@@ -167,17 +166,18 @@ public class CarePlansService(
                         envelopeResponse.EnvelopeId,
                         RecipientEmail = model.Email
                     },
-                    () => docuSignApiProvider.EnvelopApi.UpdateRecipientsAsync(accountRepository.AccountId, envelopeResponse.EnvelopeId, recipients));
-
-                await ExecuteDocuSignCallAsync(
-                    "EnvelopApi.UpdateDocumentsAsync",
-                    new
-                    {
+                    () => docuSignApiProvider.EnvelopApi.UpdateRecipientsAsync(
                         accountRepository.AccountId,
                         envelopeResponse.EnvelopeId,
-                        DocumentName = document.Name
-                    },
-                    () => docuSignApiProvider.EnvelopApi.UpdateDocumentsAsync(accountRepository.AccountId, envelopeResponse.EnvelopeId, env));
+                        new Recipients { Signers = [signer1] }));
+
+                // A draft can only be sent once it has documents, recipients, tabs and a subject line
+                var envelope = new Envelope
+                {
+                    EmailSubject = "Please Sign",
+                    EmailBlurb = "Sample text for email body",
+                    Status = sentStatus
+                };
 
                 await ExecuteDocuSignCallAsync(
                     "EnvelopApi.UpdateAsync",
@@ -185,7 +185,7 @@ public class CarePlansService(
                     () => docuSignApiProvider.EnvelopApi.UpdateAsync(
                         accountRepository.AccountId,
                         envelopeResponse.EnvelopeId,
-                        new Envelope(Status: sentStatus)));
+                        envelope));
 
                 documents.Add(new CareDocumentsModel(document.Name, document.IsForSignature, sentStatus));
             }
