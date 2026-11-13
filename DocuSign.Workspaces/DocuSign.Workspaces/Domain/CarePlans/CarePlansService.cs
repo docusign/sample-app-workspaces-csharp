@@ -93,11 +93,35 @@ public class CarePlansService(
 
         foreach (var document in model.Documents)
         {
+            var documentRequest = new AddWorkspaceDocumentRequest
+            {
+                File = new AddWorkspaceDocumentRequestFile
+                {
+                    Content = Convert.FromBase64String(document.Base64String),
+                    FileName = document.Name
+                }
+            };
+
+            var addedDocumentResponse = await ExecuteDocuSignCallAsync(
+                "WorkspaceDocuments.AddWorkspaceDocumentAsync",
+                new
+                {
+                    accountRepository.AccountId,
+                    model.Physician.WorkspaceId,
+                    DocumentName = document.Name,
+                    RequiresSignature = document.IsForSignature
+                },
+                () => docuSignApiProvider.WorkspaceDocuments.AddWorkspaceDocumentAsync(
+                    accountRepository.AccountId,
+                    model.Physician.WorkspaceId,
+                    documentRequest));
+
             if (document.IsForSignature)
             {
                 var workspaceEnvelopeForCreate = new WorkspaceEnvelopeForCreate
                 {
-                    EnvelopeName = document.Name
+                    EnvelopeName = document.Name,
+                    DocumentIds = [addedDocumentResponse.DocumentId]
                 };
 
                 var envelopeResponse = await ExecuteDocuSignCallAsync(
@@ -114,23 +138,6 @@ public class CarePlansService(
                         workspaceEnvelopeForCreate));
 
                 var eventNotificationUrl = $"{appConfiguration.DocuSign.EventNotificationBaseUrl}/api/callback/event";
-
-                var env = new EnvelopeDefinition
-                {
-                    EmailSubject = "Please Sign",
-                    EmailBlurb = "Sample text for email body",
-                    Status = sentStatus,
-                    EventNotifications = EventService.ConfigureEventNotifications(eventNotificationUrl)
-                };
-
-                var doc1 = new Document
-                {
-                    DocumentId = "1",
-                    Name = document.Name,
-                    DocumentBase64 = document.Base64String
-                };
-
-                env.Documents = [doc1];
 
                 var signHere1 = new SignHere
                 {
@@ -159,60 +166,35 @@ public class CarePlansService(
                     Signers = [signer1]
                 };
 
-                await ExecuteDocuSignCallAsync(
-                    "EnvelopApi.UpdateRecipientsAsync",
-                    new
-                    {
-                        accountRepository.AccountId,
-                        envelopeResponse.EnvelopeId,
-                        RecipientEmail = model.Email
-                    },
-                    () => docuSignApiProvider.EnvelopApi.UpdateRecipientsAsync(accountRepository.AccountId, envelopeResponse.EnvelopeId, recipients));
-
-                await ExecuteDocuSignCallAsync(
-                    "EnvelopApi.UpdateDocumentsAsync",
-                    new
-                    {
-                        accountRepository.AccountId,
-                        envelopeResponse.EnvelopeId,
-                        DocumentName = document.Name
-                    },
-                    () => docuSignApiProvider.EnvelopApi.UpdateDocumentsAsync(accountRepository.AccountId, envelopeResponse.EnvelopeId, env));
+                var updateEnvelopeRequest = new Envelope
+                {
+                    EmailSubject = "Please Sign",
+                    EmailBlurb = "Sample text for email body",
+                    EnvelopeId = envelopeResponse.EnvelopeId,
+                    Recipients = recipients,
+                    Status = sentStatus,
+                };
 
                 await ExecuteDocuSignCallAsync(
                     "EnvelopApi.UpdateAsync",
-                    new { accountRepository.AccountId, envelopeResponse.EnvelopeId, Status = sentStatus },
+                    new
+                    {
+                        accountRepository.AccountId,
+                        envelopeResponse.EnvelopeId,
+                        EmailSubject = "Please Sign",
+                        EmailBlurb = "Sample text for email body",
+                        Recipients = recipients,
+                        Status = sentStatus
+                    },
                     () => docuSignApiProvider.EnvelopApi.UpdateAsync(
                         accountRepository.AccountId,
                         envelopeResponse.EnvelopeId,
-                        new Envelope(Status: sentStatus)));
+                        updateEnvelopeRequest));
 
                 documents.Add(new CareDocumentsModel(document.Name, document.IsForSignature, sentStatus));
             }
             else
             {
-                var documentRequest = new AddWorkspaceDocumentRequest
-                {
-                    File = new AddWorkspaceDocumentRequestFile
-                    {
-                        Content = Convert.FromBase64String(document.Base64String),
-                        FileName = document.Name
-                    }
-                };
-                await ExecuteDocuSignCallAsync(
-                    "WorkspaceDocuments.AddWorkspaceDocumentAsync",
-                    new
-                    {
-                        accountRepository.AccountId,
-                        model.Physician.WorkspaceId,
-                        DocumentName = document.Name,
-                        RequiresSignature = document.IsForSignature
-                    },
-                    () => docuSignApiProvider.WorkspaceDocuments.AddWorkspaceDocumentAsync(
-                        accountRepository.AccountId,
-                        model.Physician.WorkspaceId,
-                        documentRequest));
-
                 documents.Add(new CareDocumentsModel(document.Name, document.IsForSignature, string.Empty));
             }
         }
