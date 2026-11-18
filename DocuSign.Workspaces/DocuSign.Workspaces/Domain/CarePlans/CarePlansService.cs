@@ -93,11 +93,35 @@ public class CarePlansService(
 
         foreach (var document in model.Documents)
         {
+            var documentRequest = new AddWorkspaceDocumentRequest
+            {
+                File = new AddWorkspaceDocumentRequestFile
+                {
+                    Content = Convert.FromBase64String(document.Base64String),
+                    FileName = document.Name
+                }
+            };
+
+            var addedDocumentResponse = await ExecuteDocuSignCallAsync(
+                "WorkspaceDocuments.AddWorkspaceDocumentAsync",
+                new
+                {
+                    accountRepository.AccountId,
+                    model.Physician.WorkspaceId,
+                    DocumentName = document.Name,
+                    RequiresSignature = document.IsForSignature
+                },
+                () => docuSignApiProvider.WorkspaceDocuments.AddWorkspaceDocumentAsync(
+                    accountRepository.AccountId,
+                    model.Physician.WorkspaceId,
+                    documentRequest));
+
             if (document.IsForSignature)
             {
                 var workspaceEnvelopeForCreate = new WorkspaceEnvelopeForCreate
                 {
-                    EnvelopeName = document.Name
+                    EnvelopeName = document.Name,
+                    DocumentIds = [addedDocumentResponse.DocumentId]
                 };
 
                 var envelopeResponse = await ExecuteDocuSignCallAsync(
@@ -144,75 +168,35 @@ public class CarePlansService(
                     DocumentBase64 = document.Base64String
                 };
 
-                // PUT .../documents only adds documents; recipients, subject and status are ignored here
-                await ExecuteDocuSignCallAsync(
-                    "EnvelopApi.UpdateDocumentsAsync",
-                    new
-                    {
-                        accountRepository.AccountId,
-                        envelopeResponse.EnvelopeId,
-                        DocumentName = document.Name
-                    },
-                    () => docuSignApiProvider.EnvelopApi.UpdateDocumentsAsync(
-                        accountRepository.AccountId,
-                        envelopeResponse.EnvelopeId,
-                        new EnvelopeDefinition { Documents = [doc1] }));
-
-                await ExecuteDocuSignCallAsync(
-                    "EnvelopApi.UpdateRecipientsAsync",
-                    new
-                    {
-                        accountRepository.AccountId,
-                        envelopeResponse.EnvelopeId,
-                        RecipientEmail = model.Email
-                    },
-                    () => docuSignApiProvider.EnvelopApi.UpdateRecipientsAsync(
-                        accountRepository.AccountId,
-                        envelopeResponse.EnvelopeId,
-                        new Recipients { Signers = [signer1] }));
-
-                // A draft can only be sent once it has documents, recipients, tabs and a subject line
-                var envelope = new Envelope
+                var updateEnvelopeRequest = new Envelope
                 {
                     EmailSubject = "Please Sign",
                     EmailBlurb = "Sample text for email body",
-                    Status = sentStatus
+                    EnvelopeId = envelopeResponse.EnvelopeId,
+                    Recipients = recipients,
+                    Status = sentStatus,
                 };
 
                 await ExecuteDocuSignCallAsync(
                     "EnvelopApi.UpdateAsync",
-                    new { accountRepository.AccountId, envelopeResponse.EnvelopeId, Status = sentStatus },
+                    new
+                    {
+                        accountRepository.AccountId,
+                        envelopeResponse.EnvelopeId,
+                        EmailSubject = "Please Sign",
+                        EmailBlurb = "Sample text for email body",
+                        Recipients = recipients,
+                        Status = sentStatus
+                    },
                     () => docuSignApiProvider.EnvelopApi.UpdateAsync(
                         accountRepository.AccountId,
                         envelopeResponse.EnvelopeId,
-                        envelope));
+                        updateEnvelopeRequest));
 
                 documents.Add(new CareDocumentsModel(document.Name, document.IsForSignature, sentStatus));
             }
             else
             {
-                var documentRequest = new AddWorkspaceDocumentRequest
-                {
-                    File = new AddWorkspaceDocumentRequestFile
-                    {
-                        Content = Convert.FromBase64String(document.Base64String),
-                        FileName = document.Name
-                    }
-                };
-                await ExecuteDocuSignCallAsync(
-                    "WorkspaceDocuments.AddWorkspaceDocumentAsync",
-                    new
-                    {
-                        accountRepository.AccountId,
-                        model.Physician.WorkspaceId,
-                        DocumentName = document.Name,
-                        RequiresSignature = document.IsForSignature
-                    },
-                    () => docuSignApiProvider.WorkspaceDocuments.AddWorkspaceDocumentAsync(
-                        accountRepository.AccountId,
-                        model.Physician.WorkspaceId,
-                        documentRequest));
-
                 documents.Add(new CareDocumentsModel(document.Name, document.IsForSignature, string.Empty));
             }
         }

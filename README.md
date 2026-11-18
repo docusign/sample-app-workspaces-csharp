@@ -26,7 +26,7 @@ Before building or running the application, ensure the following are installed a
 
 | Requirement | Notes |
 | ----- | ----- |
-| [Node.js](https://nodejs.org/en/download) | Required to build the React frontend |
+| [Node.js](https://nodejs.org/en/download) `22.23.4`, `24.22.1`, `26.12.1` or higher | Required to build the React frontend |
 | [.NET 8.0 SDK](https://dotnet.microsoft.com/en-us/download/dotnet/8.0) | Required to build and run the backend API |
 | [Docker](https://www.docker.com/) | Required only for containerized deployment |
 | Docusign Developer Account | [Sign up here](https://go.docusign.com/o/sandbox/) |

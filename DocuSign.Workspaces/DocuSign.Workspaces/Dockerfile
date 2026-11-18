@@ -3,7 +3,7 @@ WORKDIR /app
 ENV ASPNETCORE_URLS=http://+:80
 EXPOSE 80
 
-FROM node:20-bullseye-slim AS node
+FROM node:26.12.1-bookworm-slim AS node
 
 FROM mcr.microsoft.com/dotnet/sdk:8.0-bookworm-slim AS build
 ENV NPM_CONFIG_LEGACY_PEER_DEPS=true
